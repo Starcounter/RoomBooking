@@ -1,0 +1,23 @@
+{
+  "Html": "/roombooking/screens/Calendar.html",
+  "SelectedDate$": "",
+  "Bookings": [
+    {
+      "BeginUtcDate": "",
+      "EndUtcDate": "",
+      "$BeginDate": { "Bind": "BeginDateStr" },
+      "BeginDate": "",
+      "$EndDate": { "Bind": "EndDateStr" },
+      "EndDate": "",
+      "Title": "",
+      "$IsSelected": { "Bind": "IsSelectedFlag" },
+      "IsSelected": false,
+      "SelectedTrigger$": 0
+    }
+  ],
+  "NewBooking": {
+    "BeginDate$": "",
+    "EndDate$": "",
+    "CreateTrigger$": 0
+  }
+}

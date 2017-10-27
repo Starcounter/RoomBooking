@@ -1,0 +1,25 @@
+﻿<link rel="import" href="/sys/polymer/polymer.html">
+<link rel="stylesheet" href="/roombooking/css/maincontentpage.css" />
+
+<template>
+    <template is="dom-bind">
+
+        <!--<starcounter-include partial="{{model.Partial}}"></starcounter-include>-->
+        <div class="maincontentContainer">
+
+
+            <div class="calendarContainer">
+                <template is="imported-template"  model="{{model.CalendarPartial}}" content$="{{model.CalendarPartial.Html}}">
+                </template>
+            </div>
+
+            <div class="contentContainer">
+
+                <template is="imported-template"  model="{{model.ContentPartial}}" content$="{{model.ContentPartial.Html}}">
+                </template>
+            </div>
+
+        </div>
+
+    </template>
+</template>

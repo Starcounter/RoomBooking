@@ -1,0 +1,93 @@
+<dom-module id="sgb-daypicker">
+
+    <template>
+        <style>
+            /* CSS rules for your element */
+
+            .holder {
+                display: flex;
+                flex-direction: row;
+                height: 100%;
+            }
+
+            .stepButton {
+                flex: 0 0 70px;
+                height: 70px;
+            }
+
+            .datePart {
+                flex: 1 0 auto;
+                height: 70px;
+            }
+
+            h1 {
+                text-align:center;
+                font-size: 60px;
+                margin:0px;
+            }
+
+            input {
+                border: none;
+                border-left: 1px solid #E5E5E5;
+                border-right: 1px solid #E5E5E5;
+                background: #F2F2F2;
+                text-align: center;
+            }
+
+            button {
+                border: none;
+                background: #F2F2F2;
+            }
+        </style>
+
+        <h1>{{day}}</h1>
+
+        <div class="holder">
+            <button class="stepButton" on-tap="decreaseTrigger">&lt;</button>
+            <input class="datePart" type="date" value="{{date::input}}" />
+            <button class="stepButton" on-tap="increaseTrigger">&gt;</button>
+        </div>
+
+    </template>
+
+    <script>
+        Polymer({
+            is: "sgb-daypicker",
+            properties: {
+                date: {
+                    type: String,
+                    notify: true,
+                    observer: '_dateChanged'
+                },
+                day: {
+                    type: String,
+                }
+            },
+            _dateChanged: function (newValue, oldValue) {
+//                this.day = new Date(this.date).getDay();
+
+                this.day = new Date(this.date).toLocaleString('en-us', { weekday: 'long' });
+
+
+            },
+            increaseTrigger: function () {
+                this.date = this.adjustDate(this.date, 1);
+            },
+            decreaseTrigger: function () {
+                this.date = this.adjustDate(this.date, -1);
+            },
+            adjustDate: function (date, adjustDays) {
+                var dateObj = new Date(date);
+                var num = dateObj.setDate(dateObj.getDate() + adjustDays);
+                return new Date(num).toLocaleDateString();
+            },
+            attached: function () {
+//                console.log('attached');
+
+                //this.day = new Date(this.date).getDay();
+
+            }
+        });
+    </script>
+
+</dom-module>

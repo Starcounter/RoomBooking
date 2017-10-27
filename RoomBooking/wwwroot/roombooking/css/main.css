@@ -1,0 +1,11 @@
+﻿.mainPage {
+    display: flex;
+    flex-direction:column;
+    height:100%;
+}
+
+
+.mainContent {
+    flex: 1 100%;
+}
+

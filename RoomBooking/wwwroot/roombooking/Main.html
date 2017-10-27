@@ -1,0 +1,35 @@
+﻿<link rel="import" href="/sys/polymer/polymer.html">
+<link rel="stylesheet" href="/RoomBooking/css/main.css" />
+
+<template>
+    <template is="dom-bind">
+
+
+        <div class="mainPage">
+
+
+            <div class="mainContent">
+
+                <!-- Error MessageBox -->
+                <template is="imported-template" model="{{model.ErrorMessage}}" content$="{{model.ErrorMessage.Html}}">
+                </template>
+                <!-- MessageBox -->
+                <template is="imported-template" model="{{model.MessageBox}}" content$="{{model.MessageBox.Html}}">
+                </template>
+
+
+                <template is="imported-template" model="{{model.Content}}" content$="{{model.Content.Html}}">
+                </template>
+            </div>
+
+        </div>
+
+        <link is="puppet-redirect" history url$="{{model.RedirectUrl}}" />
+
+
+
+    </template>
+
+
+
+</template>

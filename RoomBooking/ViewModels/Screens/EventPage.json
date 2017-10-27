@@ -1,0 +1,19 @@
+{
+  "Html": "/roombooking/screens/Event.html",
+  "Title": "",
+  "Booking": {
+    "BeginUtcDate": "",
+    "EndUtcDate": "",
+    "Title": "",
+    "Description": "",
+    "Room": {
+      "Name": ""
+    }
+  },
+  "Participants": [
+    {
+      "Name": ""
+    }
+  ],
+  "CloseTrigger$": 0
+}

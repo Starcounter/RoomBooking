@@ -1,0 +1,11 @@
+{
+  "Html": "/roombooking/screens/NewBooking.html",
+  "BeginDay$": "",
+  "StartTime$": "",
+  "DurationHours$": 0,
+  "DurationMinutes$": 0,
+  "Title$": "",
+  "CreatedBy$": "",
+  "CreateBookingTrigger$": 0,
+  "CloseTrigger$": 0
+}

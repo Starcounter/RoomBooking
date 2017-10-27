@@ -1,0 +1,12 @@
+﻿.maincontentContainer {
+    display: flex;
+    height:100%;
+}
+
+.calendarContainer {
+    flex: 1 500px;
+}
+
+.contentContainer {
+    flex: 1 100%;
+}

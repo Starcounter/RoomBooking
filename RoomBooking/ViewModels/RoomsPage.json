@@ -1,0 +1,12 @@
+{
+  "Html": "/roombooking/Rooms.html",
+  "Rooms": [
+    {
+      "Name": "",
+      "TimeZone": "",
+      "DaylightSavings": false,
+      "Url": "",
+      "DeleteTrigger$": 0
+    }
+  ]
+}

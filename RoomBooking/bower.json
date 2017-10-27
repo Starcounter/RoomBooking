@@ -1,0 +1,23 @@
+{
+  "name": "RoomBooking",
+  "authors": [
+    "andwah <anders.wahlgren@societyobjects.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "wwwroot/sys",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "juicy-select": "juicy/juicy-select#^1.0.0",
+    "fortune-cookie": "^2.0.3",
+    "iron-cookie": "wincinderith/iron-cookie#^2.0.2"
+  }
+}

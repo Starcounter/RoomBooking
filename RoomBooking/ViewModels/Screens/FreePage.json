@@ -1,0 +1,9 @@
+{
+  "Html": "/roombooking/screens/Free.html",
+  "$TimeUntilNextEvent": { "Bind": "TimeUntilNextEventStr" },
+  "TimeUntilNextEvent": "",
+  "Room": {
+    "Name": ""
+  },
+  "ClaimTrigger$": 0
+}

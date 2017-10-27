@@ -1,0 +1,39 @@
+﻿<link rel="import" href="/sys/polymer/polymer.html">
+
+<template>
+    <template is="dom-bind">
+        
+        <div style="padding:20px;background-color:#e9e9e9;height:100%">
+            <h1>NewBooking</h1>
+
+            <input type="time" value="{{model.StartTime$::input}}" placeholder="StartTime" />
+            <p>
+                <i>StartTime</i>
+            </p>
+
+            <input type="date" value="{{model.BeginDay$::input}}" placeholder="BeginDay" />
+            <p>
+                <i>BeginDay</i>
+            </p>
+
+            <input type="number" min="0" max="8" value="{{model.DurationHours$::input}}" placeholder="DurationHours" />
+            <p>
+                <i>DurationHours</i>
+            </p>
+
+            <input type="number" min="0" max="60" step="15" value="{{model.DurationMinutes$::input}}" placeholder="DurationMinutes" />
+            <p>
+                <i>DurationMinutes</i>
+            </p>
+
+            <input type="text" value="{{model.Title$::input}}" placeholder="Title" />
+            <p>
+                <i>Title</i>
+            </p>
+
+            <button type="button" value="{{model.CreateBookingTrigger$::click}}" class="btn btn-sm btn-primary" onclick="++this.value">Create</button>
+            <button type="button" value="{{model.CloseTrigger$::click}}" class="btn btn-sm btn-default" onclick="++this.value">Close</button>
+        </div>
+
+    </template>
+</template>

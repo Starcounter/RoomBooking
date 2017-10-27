@@ -1,0 +1,16 @@
+{
+  "Html": "/RoomBooking/Partials/ScreenPartial.html",
+  "Enable$": false,
+  "Rooms": [
+    {
+      "Id": "",
+      "Name": "",
+      "$Url": { "Bind": "UrlString" },
+      "Url": "",
+      "SelectTrigger$": 0
+    }
+  ],
+  "SelectedRoomId$": "",
+  "Message": "",
+  "Name": ""
+}

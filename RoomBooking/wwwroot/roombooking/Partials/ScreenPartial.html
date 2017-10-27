@@ -1,0 +1,26 @@
+﻿<link rel="import" href="/sys/polymer/polymer.html">
+
+<template>
+    <template is="dom-bind">
+        <div style="border:1px solid red">
+     
+            <h5>Room Booking</h5>
+
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" checked="{{model.Enable$::change}}" placeholder="Enable">Enable
+                </label>
+            </div>
+
+            <juicy-select caption-text="Select room"
+                          value="{{model.SelectedRoomId$}}"
+                          options="{{model.Rooms}}"
+                          text-property="Name"
+                          value-property="Id">
+                <select class="form-control"></select>
+            </juicy-select>
+
+        </div>
+    </template>
+
+</template>
