@@ -1,38 +1,89 @@
 ﻿<link rel="import" href="/sys/polymer/polymer.html">
+<!--<link rel="import" href="/roombooking/elements/sgb-countdown-button/sgb-countdown-button.html" />-->
 
 <template>
+
+    <style>
+        .modalbackdrop {
+            padding: 30px;
+            height: 100%;
+            background-color: #44A40D;
+        }
+
+
+        .newbooking {
+            box-shadow: 0px 1px 2px #cccccc;
+            height: 100%;
+            background-color:white;
+            border-radius:5px;
+        }
+
+
+        .newbooking .header {
+            background-color: #606060;
+            color: white;
+            font-size: 30px;
+            padding: 15px;
+            font-family: Roboto;
+            text-align: center;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            }
+
+            .newbooking .content {
+                padding: 30px;
+                font-family: Roboto;
+            }
+    </style>
+
+
     <template is="dom-bind">
-        
-        <div style="padding:20px;background-color:#e9e9e9;height:100%">
-            <h1>NewBooking</h1>
 
-            <input type="time" value="{{model.StartTime$::input}}" placeholder="StartTime" />
-            <p>
-                <i>StartTime</i>
-            </p>
+        <div class="modalbackdrop">
 
-            <input type="date" value="{{model.BeginDay$::input}}" placeholder="BeginDay" />
-            <p>
-                <i>BeginDay</i>
-            </p>
+            <div class="newbooking">
+                <div class="header">
+                    <div>NEW BOOKING</div>
+                </div>
 
-            <input type="number" min="0" max="8" value="{{model.DurationHours$::input}}" placeholder="DurationHours" />
-            <p>
-                <i>DurationHours</i>
-            </p>
+                <div class="content">
 
-            <input type="number" min="0" max="60" step="15" value="{{model.DurationMinutes$::input}}" placeholder="DurationMinutes" />
-            <p>
-                <i>DurationMinutes</i>
-            </p>
 
-            <input type="text" value="{{model.Title$::input}}" placeholder="Title" />
-            <p>
-                <i>Title</i>
-            </p>
+                    <input type="time" value="{{model.StartTime$::input}}" placeholder="StartTime" />
+                    <p>
+                        <i>StartTime</i>
+                    </p>
 
-            <button type="button" value="{{model.CreateBookingTrigger$::click}}" class="btn btn-sm btn-primary" onclick="++this.value">Create</button>
-            <button type="button" value="{{model.CloseTrigger$::click}}" class="btn btn-sm btn-default" onclick="++this.value">Close</button>
+                    <input type="date" value="{{model.BeginDay$::input}}" placeholder="BeginDay" />
+                    <p>
+                        <i>BeginDay</i>
+                    </p>
+
+                    <input type="number" min="0" max="8" value="{{model.DurationHours$::input}}" placeholder="DurationHours" />
+                    <p>
+                        <i>DurationHours</i>
+                    </p>
+
+                    <input type="number" min="0" max="60" step="15" value="{{model.DurationMinutes$::input}}" placeholder="DurationMinutes" />
+                    <p>
+                        <i>DurationMinutes</i>
+                    </p>
+
+                    <input type="text" value="{{model.Title$::input}}" placeholder="Title" />
+                    <p>
+                        <i>Title</i>
+                    </p>
+
+                    <button type="button" value="{{model.CreateBookingTrigger$::click}}" class="btn btn-sm btn-primary" onclick="++this.value">Create</button>
+                    <button type="button" value="{{model.CloseTrigger$::click}}" class="btn btn-sm btn-default" onclick="++this.value">Close</button>
+                    <!--<sgb-countdown-button length=20 tigger="{{model.CloseTrigger$}}">
+                        <button type="button" value="{{model.CloseTrigger$::click}}" class="btn btn-sm btn-default" onclick="++this.value">Close</button>
+                    </sgb-countdown-button>-->
+
+                </div>
+
+            </div>
+
         </div>
 
     </template>

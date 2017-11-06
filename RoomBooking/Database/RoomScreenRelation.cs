@@ -16,6 +16,23 @@ namespace RoomBooking
         public bool Enabled;
         public static void RegisterHooks()
         {
+
+            // Push updates to client sessions
+            Hook<RoomScreenRelation>.CommitUpdate += (sender, room) =>
+            {
+                Program.PushChanges();
+            };
+
+            Hook<RoomScreenRelation>.CommitInsert += (sender, room) =>
+            {
+                Program.PushChanges();
+            };
+
+            Hook<RoomScreenRelation>.CommitDelete += (sender, room) =>
+            {
+                Program.PushChanges();
+            };
+
         }
     }
 }

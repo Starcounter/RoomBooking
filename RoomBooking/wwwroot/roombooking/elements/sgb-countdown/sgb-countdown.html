@@ -1,0 +1,71 @@
+<dom-module id="sgb-countdown">
+
+    <template>
+        {{timeLeft}}
+    </template>
+
+    <script>
+        Polymer({
+            is: "sgb-countdown",
+            properties: {
+                endDate: {
+                    type: String,
+                    notify: true,
+                    observer: '_endDateChanged'
+                },
+                endTime: {
+                    type: Date,
+                    readOnly: true,
+                    notify: true
+                },
+                timeLeft: {
+                    type: String
+                }
+            },
+            _endDateChanged: function (newValue, oldValue) {
+                if (newValue) {
+                    this._setEndTime(newValue.substring(0, newValue.length - 1));
+                }
+            },
+            ready: function () {
+                this.timerCallback();
+                setInterval(this.timerCallback.bind(this), 1000);
+            },
+            timerCallback: function () {
+                var a = new Date(this.endTime).getTime();
+                var b = Date.now();
+
+                var result = (a - b) / 1000;
+                this.timeLeft = this.durationToStr(result);
+            },
+            durationToStr: function (sec) {
+
+                // TODO: Check output formats
+                // >=1h  "1h 20min""
+                // <1h 20min
+
+                var sec_num = parseInt(sec, 10);
+                var hours = Math.floor(sec_num / 3600);
+                var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+                var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+                if (hours < 1) {
+
+                    if (minutes < 1) {
+                        return seconds + "sec";
+
+                    }
+                    return minutes + "min";
+                }
+
+                if (minutes == 0) {
+                    return hours + "h";
+                }
+
+                return hours + "h " + minutes + "min";
+            }
+
+        });
+    </script>
+
+</dom-module>

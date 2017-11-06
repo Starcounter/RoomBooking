@@ -2,8 +2,8 @@
 
 <template>
     <template is="dom-bind">
-        <div style="border:1px solid red">
-     
+        <div class="pluginItems">
+
             <h5>Room Booking</h5>
 
             <div class="checkbox">
@@ -11,6 +11,8 @@
                     <input type="checkbox" checked="{{model.Enable$::change}}" placeholder="Enable">Enable
                 </label>
             </div>
+
+            <label>Connected to:</label>
 
             <juicy-select caption-text="Select room"
                           value="{{model.SelectedRoomId$}}"

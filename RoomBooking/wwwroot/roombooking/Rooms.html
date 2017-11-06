@@ -7,10 +7,22 @@
 
 
             <div>
-                <h1>Rooms</h1>
+                <p>Rooms</p>
             </div>
 
-            <table class="table table-striped table-condensed">
+
+
+            <template is="dom-repeat" items="{{model.Rooms}}">
+                <a class="roomItem" href="{{item.Url}}">
+                    <h5>
+                        {{item.Name}}
+                        <small class="text-muted">{{item.Description}}</small>
+                    </h5>
+                </a>
+            </template>
+
+
+            <!--<table class="table table-striped table-condensed">
                 <thead>
                     <tr>
                         <td>Name</td>
@@ -27,12 +39,12 @@
                         </tr>
                     </template>
                 </tbody>
-            </table>
+            </table>-->
 
-            <a href="/roombooking/addroom">Add Room</a>
+            <div style="margin-top:20px">
 
-
-        </div>
+                <a href="/roombooking/addroom">Add Room</a>
+            </div>
 
 
     </template>

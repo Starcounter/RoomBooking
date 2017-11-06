@@ -3,10 +3,10 @@
   "Rooms": [
     {
       "Name": "",
+      "Description": "",
       "TimeZone": "",
       "DaylightSavings": false,
-      "Url": "",
-      "DeleteTrigger$": 0
+      "Url": ""
     }
   ]
 }

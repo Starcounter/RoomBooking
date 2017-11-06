@@ -1,8 +1,7 @@
 using Starcounter;
-using RoomBooking.ViewModels.Screens;
-using Starcounter.Templates;
 using System;
 using Screens.Common;
+using System.Linq;
 
 namespace RoomBooking.ViewModels
 {
@@ -70,7 +69,7 @@ namespace RoomBooking.ViewModels
             {
                 // google user signed in
 
-                User user = Db.SQL<User>("SELECT o FROM Screens.Common.User o WHERE o.GoogleId = ?", this.Id).First;
+                User user = Db.SQL<User>("SELECT o FROM Screens.Common.User o WHERE o.GoogleId = ?", this.Id).FirstOrDefault();
 
                 if (user == null)
                 {

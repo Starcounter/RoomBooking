@@ -24,7 +24,9 @@ namespace RoomBooking
 
             Room.RegisterHooks();
             RoomBookingEvent.RegisterHooks();
+            RoomBookingEvent.RegisterTimer();
             UserRoomRelation.RegisterHooks();
+            RoomScreenRelation.RegisterHooks();
 
 
             Handle.GET("/RoomBooking", (Request request) =>
@@ -41,7 +43,7 @@ namespace RoomBooking
 
                 Room room = Program.AssureDefaultUserRoom(user);
                 MainContentPage mainContentPage = new MainContentPage();
-                mainContentPage.Init(room, room.TimeZoneInfo);// TODO: Fix args
+                mainContentPage.Init(room);
                 mainPage.Content = mainContentPage;
 
                 return mainPage;
@@ -52,12 +54,12 @@ namespace RoomBooking
 
                 Screen screen = Db.FromId(screenId) as Screen;
 
-                RoomScreenRelation roomScreenRelation = Db.SQL<RoomScreenRelation>("SELECT o FROM RoomBooking.RoomScreenRelation o WHERE o.Screen=?", screen).First;
+                RoomScreenRelation roomScreenRelation = Db.SQL<RoomScreenRelation>("SELECT o FROM RoomBooking.RoomScreenRelation o WHERE o.Screen=?", screen).FirstOrDefault();
 
                 if (roomScreenRelation != null && roomScreenRelation.Enabled)
                 {
                     MainContentPage mainContentPage = new MainContentPage();
-                    mainContentPage.Init(roomScreenRelation.Room, roomScreenRelation.Room.TimeZoneInfo);// TODO: Fix args
+                    mainContentPage.Init(roomScreenRelation.Room);
                     return mainContentPage;
                 }
                 else
@@ -146,7 +148,7 @@ namespace RoomBooking
                 }
 
 
-                Room room = Db.SQL<Room>("SELECT o FROM RoomBooking.Room o WHERE o.ObjectID=?", id).First;
+                Room room = Db.SQL<Room>("SELECT o FROM RoomBooking.Room o WHERE o.ObjectID=?", id).FirstOrDefault();
                 if (room == null)
                 {
                     MessageBox.Show("Not found", "Room not found"); // TODO: Show page error instead of popup
@@ -168,14 +170,15 @@ namespace RoomBooking
         }
 
 
+
         /// <summary>
         /// TODO
         /// </summary>
         /// <returns></returns>
-        public static Room AssureDefaultUserRoom(User user)
+        internal static Room AssureDefaultUserRoom(User user)
         {
 
-            Room room = Db.SQL<Room>("SELECT o.Room FROM RoomBooking.UserRoomRelation o WHERE o.User = ?", user).First;
+            Room room = Db.SQL<Room>("SELECT o.Room FROM RoomBooking.UserRoomRelation o WHERE o.User = ?", user).FirstOrDefault();
             if (room == null)
             {
                 Db.Transact(() =>
@@ -191,7 +194,7 @@ namespace RoomBooking
         }
 
 
-        public static MainPage GetMainPage()
+        internal static MainPage GetMainPage()
         {
             var session = Session.Ensure();
 
@@ -206,7 +209,7 @@ namespace RoomBooking
             return mainPage;
         }
 
-        public static MainContentPage GetMainContentPage()
+        internal static MainContentPage GetMainContentPage()
         {
 
             ContentPage contentPage = GetMainPage().Content as ContentPage;
@@ -217,6 +220,15 @@ namespace RoomBooking
 
             return null;
 
+        }
+
+
+        internal static void PushChanges()
+        {
+            Session.ForAll((s, sessionId) =>
+            {
+                s.CalculatePatchAndPushOnWebSocket();
+            });
         }
 
     }

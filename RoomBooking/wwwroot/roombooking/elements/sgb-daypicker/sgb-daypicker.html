@@ -1,6 +1,13 @@
+
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+
+
 <dom-module id="sgb-daypicker">
 
+
     <template>
+
+
         <style>
             /* CSS rules for your element */
 
@@ -8,11 +15,15 @@
                 display: flex;
                 flex-direction: row;
                 height: 100%;
+                font-size: 20px;
+                font-family: "Roboto";
             }
 
             .stepButton {
                 flex: 0 0 70px;
                 height: 70px;
+                font-size: 20px;
+                font-family: "Roboto";
             }
 
             .datePart {
@@ -20,10 +31,11 @@
                 height: 70px;
             }
 
-            h1 {
-                text-align:center;
+            .dateheading {
+                text-align: center;
                 font-size: 60px;
-                margin:0px;
+                margin: 0px;
+                font-family: "Roboto";
             }
 
             input {
@@ -32,6 +44,8 @@
                 border-right: 1px solid #E5E5E5;
                 background: #F2F2F2;
                 text-align: center;
+                font-size: 20px;
+                font-family: "Roboto";
             }
 
             button {
@@ -40,7 +54,7 @@
             }
         </style>
 
-        <h1>{{day}}</h1>
+        <div class="dateheading">{{day}}</div>
 
         <div class="holder">
             <button class="stepButton" on-tap="decreaseTrigger">&lt;</button>

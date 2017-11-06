@@ -12,6 +12,7 @@
       "Title": "",
       "$IsSelected": { "Bind": "IsSelectedFlag" },
       "IsSelected": false,
+      "IsActive": false,
       "SelectedTrigger$": 0
     }
   ],

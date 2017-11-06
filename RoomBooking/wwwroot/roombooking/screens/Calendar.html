@@ -2,33 +2,33 @@
 <link rel="import" href="/roombooking/elements/sgb-daypicker/sgb-daypicker.html" />
 <link rel="import" href="/roombooking/elements/sgb-calendar/sgb-calendar.html" />
 
-<template>
-    <style>
 
+<template>
+
+
+    <style>
         .holder {
             display: flex;
             flex-direction: column;
             height: 100%;
+            /*width: 100%;*/
         }
 
         .picker {
-            /*flex-grow: 0;
-            flex-shrink: 1;
-            flex-basis: auto;*/
+            flex-grow: 0;
+            flex-shrink: 0;
+            flex-basis: auto;
         }
-        .cal {
-            /*background-color: red;*/
 
+        .cal {
             flex-grow: 1;
             flex-shrink: 1;
             flex-basis: auto;
-
-            overflow-y: auto;
-            min-height: 0px;
+            max-height: 100%;
+            /*max-width: 100%;*/
+            overflow-y: scroll;
+            overflow-x: scroll;
         }
-
-  
-
     </style>
 
     <template is="dom-bind">
@@ -41,9 +41,7 @@
             </div>
 
             <div class="cal">
-
-
-                 <sgb-calendar selected-date="{{model.SelectedDate$}}" booking-Trigger="{{model.NewBooking.CreateTrigger$}}" events="{{model.Bookings}}" begin-date="{{model.NewBooking.BeginDate$}}" end-date="{{model.NewBooking.EndDate$}}"></sgb-calendar>
+                <sgb-calendar selected-date="{{model.SelectedDate$}}" booking-Trigger="{{model.NewBooking.CreateTrigger$}}" events="{{model.Bookings}}" begin-date="{{model.NewBooking.BeginDate$}}" end-date="{{model.NewBooking.EndDate$}}"></sgb-calendar>
 
             </div>
 

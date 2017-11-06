@@ -1,5 +1,6 @@
 using Starcounter;
 using System;
+using System.Linq;
 
 namespace RoomBooking.ViewModels.Screens
 {
@@ -13,33 +14,49 @@ namespace RoomBooking.ViewModels.Screens
             this.Room.Data = room;
         }
 
+
+        public DateTime NextEventDate => GetNextEventDate();
+
+
+        private DateTime GetNextEventDate()
+        {
+            Room room = this.Room.Data as Room;
+
+            RoomBookingEvent roomBookingEvent = Db.SQL<RoomBookingEvent>("SELECT o FROM RoomBooking.RoomBookingEvent o WHERE o.Room = ? AND o.BeginUtcDate >= ? ORDER BY o.BeginUtcDate", room, DateTime.UtcNow).FirstOrDefault();
+            if(roomBookingEvent != null)
+            {
+                return TimeZoneInfo.ConvertTimeFromUtc(roomBookingEvent.BeginUtcDate, room.TimeZoneInfo); ;
+            }
+
+            return DateTime.MaxValue;
+        }
+
+
         public string TimeUntilNextEventStr {
             get {
 
                 Room room = this.Room.Data as Room;
 
-                RoomBookingEvent roomBookingEvent = Db.SQL<RoomBookingEvent>("SELECT o FROM RoomBooking.RoomBookingEvent o WHERE o.Room = ? AND o.BeginUtcDate >= ? ORDER BY o.BeginUtcDate", room, DateTime.UtcNow).First;
-                if(roomBookingEvent == null)
+                RoomBookingEvent roomBookingEvent = Db.SQL<RoomBookingEvent>("SELECT o FROM RoomBooking.RoomBookingEvent o WHERE o.Room = ? AND o.BeginUtcDate >= ? ORDER BY o.BeginUtcDate", room, DateTime.UtcNow).FirstOrDefault();
+                if (roomBookingEvent == null)
                 {
-                    return "days"; // TODO: Maximum booking time (rest of the day)
+                    return "+days"; // TODO: Maximum booking time (rest of the day)
                 }
-
-                //                DateTime roomTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, room.TimeZoneInfo);
 
                 TimeSpan nextEvent = roomBookingEvent.BeginUtcDate - DateTime.UtcNow;
 
-                if( nextEvent.TotalDays > 1)
+                if (nextEvent.TotalDays > 1)
                 {
                     return string.Format("{0} days", nextEvent.TotalDays);
 
                 }
 
-                if( nextEvent.Hours == 0)
+                if (nextEvent.Hours == 0)
                 {
-                    return string.Format("{0}m", nextEvent.Minutes);
+                    return string.Format("{0}min", nextEvent.Minutes);
                 }
 
-                return string.Format("{0}h {1}m", nextEvent.Hours, nextEvent.Minutes);
+                return string.Format("{0}h {1}min", nextEvent.Hours, nextEvent.Minutes);
             }
         }
 

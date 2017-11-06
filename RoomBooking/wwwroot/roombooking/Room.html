@@ -5,7 +5,7 @@
 <template>
     <template is="dom-bind">
         
-        <div style="margin:40px">
+        <div class="formpanel">
 
             <div>
                 <h1>Room</h1>
@@ -43,14 +43,10 @@
 
 
 
-
-
-
-
             <button type="button" value="{{model.SaveTrigger$::click}}" class="btn btn-sm btn-primary" onclick="++this.value">Save</button>
             <button type="button" value="{{model.CloseTrigger$::click}}" class="btn btn-sm btn-default" onclick="++this.value">Close</button>
-
+            <button type="button" value="{{model.DeleteTrigger$::click}}" class="btn btn-sm btn-danger" onclick="++this.value">Delete</button>
             <link is="puppet-redirect" history url$="{{model.RedirectUrl}}" />
-            </div>
+        </div>
 </template>
 </template>

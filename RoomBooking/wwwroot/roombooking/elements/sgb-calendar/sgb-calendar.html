@@ -7,6 +7,29 @@
         <style>
             /* CSS rules for your element */
 
+            /*:host {
+                display: block;
+                border: 10px solid orange;
+                height: inherit;
+            }*/
+            /*html /deep/ {
+                :: -webkit-scrollbar-track
+
+            {
+                background: white;
+            }
+
+            ::-webkit-scrollbar {
+                width: 7.5px;
+            }
+
+            ::-webkit-scrollbar-thumb {
+                background-color: lightgrey;
+                //fallback background-color: rgba(26, 26, 26, 0.25);
+            }
+
+            }*/
+
             .startStopHolder {
                 display: flex;
                 /*background-color:red;*/
@@ -23,8 +46,6 @@
                 vertical-align: bottom;
                 padding-top: 4px;
             }
-     
-      
 
             .eventItem {
                 border-bottom: 1pt solid rgba(0, 0, 0, 0.08);
@@ -33,10 +54,18 @@
 
             .eventItemSelected {
                 color: white;
-                background-color: #A40D27;
-                border-bottom: 1pt solid rgba(0, 0, 0, 0.08);
+                background-color: #5d5d5d;
+                /*border-bottom: 1pt solid rgba(0, 0, 0, 0.08);*/
                 cursor: pointer;
             }
+
+            .eventItemActive {
+                color: white;
+                background-color: #A40D27;
+                /*border-bottom: 1pt solid rgba(0, 0, 0, 0.08);*/
+                cursor: pointer;
+            }
+
 
             .eventItem:hover {
                 background-color: rgba(0, 0, 0, 0.10);
@@ -46,11 +75,16 @@
                 border-collapse: collapse;
                 margin-top: 40px;
             }
+                table tr {
+                    border-bottom: 1pt solid rgba(0, 0, 0, 0.08);
+                }
+
         </style>
 
+        <div style="font-size:20px;font-family: 'Roboto'" >
 
-        <table style="width:100%;font-size:20px;font-family: 'Roboto'" border="0" cellspacing="0" cellpadding="0">
-            <!--<thead>
+            <table style="width:100%;font-size: 1.2vw;" border="0" cellspacing="0" cellpadding="0">
+                <!--<thead>
                 <tr>
                     <td>1</td>
                     <td>2</td>
@@ -58,48 +92,52 @@
                     <td>4</td>
                 </tr>
             </thead>-->
-            <tbody>
-                <template is="dom-repeat" items="[[timeSlotes]]">
+                <tbody>
+                    <template is="dom-repeat" items="[[timeSlotes]]">
 
-                    <template is="dom-if" if="{{item.Booking}}">
-                        <tr style="height:80px" class$="[[selectedStyle(item.Booking.IsSelected)]]" on-tap="selectEventTrigger">
+                        <template is="dom-if" if="{{item.Booking}}">
+                            <tr style="height:80px" class$="[[selectedClass(item.Booking.IsSelected,item.Booking.IsActive)]]" on-tap="selectEventTrigger">
 
-                            <td width="10px" bgcolor="#A40D27"></td>
+                                <td width="10px" bgcolor="#A40D27"></td>
 
-                            <td width="90px" style="height:inherit;padding-top:0px;padding-bottom:0px" >
-                                <div style="height:100%;margin-left:20px" class="startStopHolder">
-                                    <div class="booking1">{{item.beginTimeStr}}</div>
-                                    <div class="booking2">{{item.endTimeStr}}</div>
-                                </div>
-                            </td>
+                                <td width="90px" style="height:inherit;padding-top:0px;padding-bottom:0px">
+                                    <div style="height:100%;margin-left:20px" class="startStopHolder">
+                                        <div class="booking1">{{item.beginTimeStr}}</div>
+                                        <div class="booking2">{{item.endTimeStr}}</div>
+                                    </div>
+                                </td>
 
-                            <td style="vertical-align:top;padding-top: 4px;">
-                                {{item.Booking.Title}}
-                            </td>
+                                <td style="vertical-align:top;padding-top: 4px;">
+                                    {{item.Booking.Title}}
+                                    <!--IsActive:{{item.Booking.IsActive}}
+                                    IsSelected:{{item.Booking.IsSelected}}-->
+                                    
+                                </td>
 
-                            <td style="vertical-align:top;text-align: right;padding-right:30px;padding-top: 4px;">
-                                {{item.Duration}}
-                            </td>
-                        </tr>
+                                <td style="vertical-align:top;text-align: right;padding-right:30px;padding-top: 4px;">
+                                    {{item.Duration}}
+                                </td>
+                            </tr>
+                        </template>
+
+                        <template is="dom-if" if="{{!item.Booking}}">
+                            <tr style="height:40px" class="eventItem" on-tap="selectEventTrigger">
+                                <td width="10px"></td>
+                                <td style="height:inherit">
+                               
+                                    <div style="height:100%;margin-left:20px" class="startStopHolder">
+                                        <div class="booking1">{{item.beginTimeStr}}</div>
+                                    </div>
+
+                                </td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </template>
                     </template>
-
-                    <template is="dom-if" if="{{!item.Booking}}">
-                        <tr style="height:40px" class$="[[selectedStyle(item.Booking.IsSelected)]]" on-tap="selectEventTrigger">
-                            <td width="10px"></td>
-                            <td style="height:inherit">
-
-                                <div style="height:100%;margin-left:20px" class="startStopHolder">
-                                    <div class="booking1">{{item.beginTimeStr}}</div>
-                                </div>
-                 
-                            </td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </template>
-                </template>
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
 
 
 
@@ -229,6 +267,7 @@
                     e.model.item.Booking.SelectedTrigger$++
                 }
                 else {
+
                     this.beginDate = new Date(new Date(this.selectedDate).setMinutes(e.model.item.beginTime)).toJSON(); // "2017-10-25"
                     this.endDate = new Date(new Date(this.selectedDate).setMinutes(e.model.item.endTime)).toJSON(); // "2017-10-25"
                     this.bookingTrigger++
@@ -253,14 +292,21 @@
                 //                this.fillTimeSlots();
 
             },
-            selectedStyle: function (isSelected) {
-
-                if (isSelected) {
-                    return "eventItemSelected";
+            selectedClass: function (isSelected, isActive) {
+                var classStr = "";
+                if (isSelected == false && isActive == false) {
+                    return "eventItem";
                 }
 
-                return "eventItem";
+                if (isSelected) {
+                    classStr = "eventItemSelected ";
+                }
 
+                if (isActive) {
+                    classStr += "eventItemActive";
+                }
+
+                return classStr;
                 //return mobile ? 'mobile-styling' : '';
             },
             eventItemsChanged: function (changeRecord) {

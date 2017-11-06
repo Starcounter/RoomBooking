@@ -50,5 +50,28 @@ namespace RoomBooking.ViewModels
             this.Transaction.Rollback();
             this.RedirectUrl = "/roomBooking/rooms";
         }
+
+
+        public void Handle(Input.DeleteTrigger action)
+        {
+
+            MessageBoxButton deleteButton = new MessageBoxButton() { ID = (long)MessageBox.MessageBoxResult.Yes, Text = "Delete", CssClass = "btn btn-sm btn-danger" };
+            MessageBoxButton cancelButton = new MessageBoxButton() { ID = (long)MessageBox.MessageBoxResult.Cancel, Text = "Cancel" };
+
+            MessageBox.Show("Delete Room", "This Room will be deleted.", cancelButton, deleteButton, (result) =>
+            {
+
+                if (result == MessageBox.MessageBoxResult.Yes)
+                {
+                    Db.Transact(() =>
+                    {
+                        this.Data.Delete();
+                    });
+                }
+            });
+
+
+        }
+
     }
 }

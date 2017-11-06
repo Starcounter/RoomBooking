@@ -48,6 +48,22 @@ namespace RoomBooking
             {
                 Db.SQL("DELETE FROM RoomBooking.Room o WHERE o.User = ?", user);
             };
+
+            // Push updates to client sessions
+            Hook<Room>.CommitUpdate += (sender, room) =>
+            {
+                Program.PushChanges();
+            };
+
+            Hook<Room>.CommitInsert += (sender, room) =>
+            {
+                Program.PushChanges();
+            };
+
+            Hook<Room>.CommitDelete += (sender, room) =>
+            {
+                Program.PushChanges();
+            };
         }
 
     }

@@ -1,5 +1,6 @@
 {
   "Html": "/roombooking/screens/Free.html",
+  "NextEventDate" : "",
   "$TimeUntilNextEvent": { "Bind": "TimeUntilNextEventStr" },
   "TimeUntilNextEvent": "",
   "Room": {

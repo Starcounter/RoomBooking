@@ -18,6 +18,7 @@
   "dependencies": {
     "juicy-select": "juicy/juicy-select#^1.0.0",
     "fortune-cookie": "^2.0.3",
-    "iron-cookie": "wincinderith/iron-cookie#^2.0.2"
+    "iron-cookie": "wincinderith/iron-cookie#^2.0.2",
+    "moment": "^2.19.1"
   }
 }

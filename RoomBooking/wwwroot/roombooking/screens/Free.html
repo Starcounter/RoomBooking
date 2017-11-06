@@ -1,22 +1,82 @@
 ﻿<link rel="import" href="/sys/polymer/polymer.html">
+<link rel="import" href="/roombooking/elements/sgb-countdown/sgb-countdown.html" />
+
+
+<!--<script src="/sys/moment/moment.js"></script>-->
 
 <template>
+
+    <style>
+        .freeholder {
+            display: flex;
+            flex-direction: column;
+            background-color: #44A40D;
+            height: 100%;
+            color: white;
+            font-size: 4vw;
+        }
+
+
+        .freeitems:nth-child(1) {
+            /*border: 1px solid yellow;*/
+            flex: 1 1 auto;
+            align-self: center;
+            padding-top: 40px;
+        }
+
+            .freeitems:nth-child(1) button {
+                background-color: #357E0B;
+                font-size: 0.5em;
+            }
+
+        .freeitems:nth-child(2) {
+            flex: 0 0 auto;
+            /*border: 1px solid red;*/
+            color: rgba(255,255,255,0.3);
+            align-self: flex-end;
+            font-size: 0.4em;
+            margin-right: 20px;
+        }
+    </style>
+
     <template is="dom-bind">
 
-        <div style="background-color:#44A40D; height:100%">
 
-            <div style="color:white;font-size: 4vw;text-align:center">
-                <p style="font-size:2em;margin:0px;">Free</p>
-                <p style="font-size:1em;margin:0px;">{{model.TimeUntilNextEvent}}</p>
-                <button style="padding:20px" type="button" value="{{model.ClaimTrigger$::click}}" class="btn btn-sm btn-primary" onclick="++this.value">Claim</button>
+        <div class="freeholder">
+
+            <div class="freeitems">
+
+
+                <p style="font-size:2vw;margin:0px;line-height:64px;">Available for</p>
+                <sgb-countdown end-date="{{model.NextEventDate}}"></sgb-countdown>
+                <!--<p style="font-size:3vw;margin:0px;line-height:64px;">{{model.TimeUntilNextEvent}}</p>
+                <p style="font-size:3vw;margin:0px;line-height:64px;">{{model.NextEventDate}}</p>-->
+
+
+                <p style="font-size:4vw;margin:0px;line-height:64px;">CLAIM</p>
+                <p style="font-size:4vw;margin:0px;line-height:64px;">ROOM</p>
+                <p style="font-size:4vw;margin:0px;line-height:64px;">NOW!!!</p>
+
+
+
+
+                <button style="width:100%;padding:20px" type="button" value="{{model.ClaimTrigger$::click}}" class="btn btn-sm btn-primary" onclick="++this.value">PRESS HERE</button>
             </div>
 
-            <div class="pull-right" style="color:white;margin:40px">
-                {{model.Room.Name}}
 
-
+            <div class="freeitems">
+                <div>{{model.Room.Name}}</div>
+                <div class="clock">00:00:00</div>
             </div>
 
         </div>
     </template>
+
+
+ 
+
+
+
+
+
 </template>

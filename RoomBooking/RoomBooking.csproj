@@ -180,6 +180,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="wwwroot\roombooking\elements\sgb-calendar\sgb-calendar.html" />
+    <Content Include="wwwroot\roombooking\elements\sgb-countdown-button\sgb-countdown-button.html" />
+    <Content Include="wwwroot\roombooking\elements\sgb-countdown\sgb-countdown.html" />
     <Content Include="wwwroot\roombooking\elements\sgb-daypicker\sgb-daypicker.html" />
     <None Include="wwwroot\roombooking\Partials\ScreenPartial.html" />
     <None Include="wwwroot\roombooking\Content.html" />

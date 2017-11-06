@@ -13,8 +13,6 @@ namespace RoomBooking.ViewModels.Screens
         public DateTime SelectedUtcDate;
 
         public IEnumerable<RoomBookingEvent> Bookings => Db.SQL<RoomBookingEvent>("SELECT o FROM RoomBooking.RoomBookingEvent o WHERE o.BeginUtcDate >= ? AND o.BeginUtcDate < ? ORDER BY o.BeginUtcDate", SelectedUtcDate, SelectedUtcDate.AddDays(1));
- 
-
 
         public void Init(TimeZoneInfo timeZoneInfo)
         {
@@ -82,6 +80,17 @@ namespace RoomBooking.ViewModels.Screens
                 return false;// TODO:
             }
         }
+
+
+
+        public bool IsActive => GetIsActive();
+
+        public bool GetIsActive()
+        {
+            DateTime utcNow = DateTime.UtcNow;
+            return (utcNow >= this.Data.BeginUtcDate) && (utcNow < this.Data.EndUtcDate);
+        }
+
 
         public void Handle(Input.SelectedTrigger action)
         {

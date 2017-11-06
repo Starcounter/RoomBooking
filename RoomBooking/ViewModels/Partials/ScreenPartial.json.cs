@@ -1,5 +1,6 @@
 using Screens.Common;
 using Starcounter;
+using System.Linq;
 using System.Collections.Generic;
 namespace RoomBooking.ViewModels.Partials
 {
@@ -21,7 +22,7 @@ namespace RoomBooking.ViewModels.Partials
 
             if (this.Data != null)
             {
-                RoomScreenRelation roomScreenRelation = Db.SQL<RoomScreenRelation>("SELECT o FROM RoomBooking.RoomScreenRelation o WHERE o.Screen = ?", this.Data).First;
+                RoomScreenRelation roomScreenRelation = Db.SQL<RoomScreenRelation>("SELECT o FROM RoomBooking.RoomScreenRelation o WHERE o.Screen = ?", this.Data).FirstOrDefault();
                 if (roomScreenRelation != null)
                 {
                     this.SelectedRoomId = roomScreenRelation.Room.GetObjectID();
@@ -33,7 +34,7 @@ namespace RoomBooking.ViewModels.Partials
 
         public void Handle(Input.Enable action)
         {
-            RoomScreenRelation roomScreenRelation = Db.SQL<RoomScreenRelation>("SELECT o FROM RoomBooking.RoomScreenRelation o WHERE o.Screen = ?", this.Data).First;
+            RoomScreenRelation roomScreenRelation = Db.SQL<RoomScreenRelation>("SELECT o FROM RoomBooking.RoomScreenRelation o WHERE o.Screen = ?", this.Data).FirstOrDefault();
             if (roomScreenRelation != null) {
                 roomScreenRelation.Enabled = action.Value;
             }
@@ -49,7 +50,7 @@ namespace RoomBooking.ViewModels.Partials
                 if (oldRoom != null)
                 {
                     // Remove old room relation
-                    RoomScreenRelation oldRoomScreenRelation = Db.SQL<RoomScreenRelation>("SELECT o FROM RoomBooking.RoomScreenRelation o WHERE o.Screen = ? AND o.Room = ?", this.Data, oldRoom).First;
+                    RoomScreenRelation oldRoomScreenRelation = Db.SQL<RoomScreenRelation>("SELECT o FROM RoomBooking.RoomScreenRelation o WHERE o.Screen = ? AND o.Room = ?", this.Data, oldRoom).FirstOrDefault();
                     oldRoomScreenRelation.Delete();
                 }
             }
@@ -64,7 +65,7 @@ namespace RoomBooking.ViewModels.Partials
                 if (newRoom != null)
                 {
                     // Create old room relation
-                    RoomScreenRelation roomScreenRelation = Db.SQL<RoomScreenRelation>("SELECT o FROM RoomBooking.RoomScreenRelation o WHERE o.Screen = ? AND o.Room = ?", this.Data, newRoom).First;
+                    RoomScreenRelation roomScreenRelation = Db.SQL<RoomScreenRelation>("SELECT o FROM RoomBooking.RoomScreenRelation o WHERE o.Screen = ? AND o.Room = ?", this.Data, newRoom).FirstOrDefault();
                     if (roomScreenRelation == null)
                     {
                         roomScreenRelation = new RoomScreenRelation();

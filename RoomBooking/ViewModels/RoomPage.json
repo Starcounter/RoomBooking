@@ -2,6 +2,7 @@
   "Html": "/roombooking/Room.html",
   "RedirectUrl": "",
   "Name$": "",
+  "Description$": "",
   "TimeZones": [
     {
       "Id": "",
@@ -11,6 +12,6 @@
   "SelectedTimeZoneId$": "",
   "DaylightSavings$": false,
   "SaveTrigger$": 0,
-  "CloseTrigger$": 0
-
+  "CloseTrigger$": 0,
+  "DeleteTrigger$": 0
 }

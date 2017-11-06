@@ -1,5 +1,7 @@
 ﻿<link rel="import" href="/sys/polymer/polymer.html">
 <link rel="stylesheet" href="/RoomBooking/css/main.css" />
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+
 
 <template>
     <template is="dom-bind">
@@ -7,16 +9,19 @@
 
         <div class="mainPage">
 
-
-            <div class="mainContent">
-
+            <div>
                 <!-- Error MessageBox -->
                 <template is="imported-template" model="{{model.ErrorMessage}}" content$="{{model.ErrorMessage.Html}}">
                 </template>
                 <!-- MessageBox -->
                 <template is="imported-template" model="{{model.MessageBox}}" content$="{{model.MessageBox.Html}}">
                 </template>
+            </div>
 
+
+            <div class="mainContent">
+
+          
 
                 <template is="imported-template" model="{{model.Content}}" content$="{{model.Content.Html}}">
                 </template>
