@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
+using RoomBooking.ViewModels.Screens;
 
 namespace RoomBooking
 {
@@ -17,6 +18,7 @@ namespace RoomBooking
         public string Description;
 
         public Room Room;
+
 
         public static void RegisterHooks()
         {
@@ -41,9 +43,21 @@ namespace RoomBooking
             };
         }
 
+ 
+        public static RoomBookingEvent GetNextEvent(Room room)
+        {
+            return Db.SQL<RoomBookingEvent>("SELECT o FROM RoomBooking.RoomBookingEvent o WHERE o.Room = ? AND ? < o.BeginUtcDate ORDER BY o.BeginUtcDate", room, DateTime.UtcNow).FirstOrDefault();
+        }
+
+        public static RoomBookingEvent GetNextEvent()
+        {
+            return Db.SQL<RoomBookingEvent>("SELECT o FROM RoomBooking.RoomBookingEvent o WHERE ? < o.BeginUtcDate ORDER BY o.BeginUtcDate",  DateTime.UtcNow).FirstOrDefault();
+        }
+        
+
         public static void RegisterTimer()
         {
-            EventTimer = new Timer(timerCallback);
+            EventTimer = new Timer(TimerCallback);
             SetEventTimer();
         }
 
@@ -54,6 +68,8 @@ namespace RoomBooking
 
             DateTime utcNow = DateTime.UtcNow;
 
+            //EventTimer.Change(new TimeSpan(0,0,0,10,0), TimeSpan.FromTicks(-1));
+
             RoomBookingEvent firstEvent = Db.SQL<RoomBookingEvent>("SELECT o FROM RoomBooking.RoomBookingEvent o WHERE o.BeginUtcDate >= ? ORDER BY o.BeginUtcDate", utcNow).FirstOrDefault();
             if (firstEvent != null)
             {
@@ -62,17 +78,26 @@ namespace RoomBooking
             }
         }
 
-        public static void timerCallback(Object state)
+        public static void TimerCallback(Object state)
         {
-            Scheduling.ScheduleTask(() => {
-                // Set to next event
+            Scheduling.ScheduleTask(() =>
+            {
+                // Set timer to next event
                 SetEventTimer();
-                Program.PushChanges();
-            }, true);
 
+                Session.ForAll((session, sessionId) =>
+                {
+
+                    ScreenContentPage screenContentPage = session.Store[nameof(ScreenContentPage)] as ScreenContentPage;
+                    if(screenContentPage != null)
+                    {
+                        screenContentPage.OnActiveEvent();
+                    }
+
+                    session.CalculatePatchAndPushOnWebSocket();
+                });
+
+            }, false);
         }
-
-
-
     }
 }

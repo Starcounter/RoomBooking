@@ -59,12 +59,12 @@
                         <i>BeginDay</i>
                     </p>
 
-                    <input type="number" min="0" max="8" value="{{model.DurationHours$::input}}" placeholder="DurationHours" />
+                    <input type="number" min="0" max="8" value="{{model.DurationHours$::input}}"  />
                     <p>
                         <i>DurationHours</i>
                     </p>
 
-                    <input type="number" min="0" max="60" step="15" value="{{model.DurationMinutes$::input}}" placeholder="DurationMinutes" />
+                    <input type="number" min="0" max="59" step="15" value="{{model.DurationMinutes$::input}}"  />
                     <p>
                         <i>DurationMinutes</i>
                     </p>
@@ -79,6 +79,7 @@
                     <!--<sgb-countdown-button length=20 tigger="{{model.CloseTrigger$}}">
                         <button type="button" value="{{model.CloseTrigger$::click}}" class="btn btn-sm btn-default" onclick="++this.value">Close</button>
                     </sgb-countdown-button>-->
+                    <p class="text-danger">{{model.ValidationMessage}}</p>
 
                 </div>
 

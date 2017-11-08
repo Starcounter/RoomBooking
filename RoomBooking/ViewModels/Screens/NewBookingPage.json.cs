@@ -1,6 +1,8 @@
 using Starcounter;
 using System;
 using System.Globalization;
+using System.Linq;
+using Starcounter.Templates;
 
 namespace RoomBooking.ViewModels.Screens
 {
@@ -8,18 +10,86 @@ namespace RoomBooking.ViewModels.Screens
     {
         public Action OnClose = null;
 
+        protected override void HasChanged(TValue property)
+        {
+            base.HasChanged(property);
+            if (property.PropertyName != "ValidationMessage" &&
+                property.PropertyName != "CreateBookingTrigger" &&
+                property.PropertyName != "CloseTrigger")
+            {
+
+                if (IsBookedOrOverlappingOtherEvents())
+                {
+                    this.ValidationMessage = "You can not double book this room";
+                }
+                else
+                {
+                    this.ValidationMessage = "";
+                }
+            }
+        }
+
+        protected override void OnData()
+        {
+            base.OnData();
+            if (this.Data != null)
+            {
+                // Default values
+                this._DurationHours = (long)(this.Data.EndUtcDate - this.Data.BeginUtcDate).TotalHours;
+                this._DurationMinutes = (long)(this.Data.EndUtcDate - this.Data.BeginUtcDate).Minutes;
+            }
+
+        }
+
         public string BeginDay {
-            get => TimeZoneInfo.ConvertTimeFromUtc(this.Data.BeginUtcDate, this.Data.Room.TimeZoneInfo).ToString("yyyy-MM-dd");
-            set => this.UpdateDateTime(value, this.StartTime);
+
+
+            get {
+                return TimeZoneInfo.ConvertTimeFromUtc(this.Data.BeginUtcDate, this.Data.Room.TimeZoneInfo).ToString("yyyy-MM-dd");
+            }
+            set {
+                this.UpdateDateTime(value, this.StartTime);
+            }
+
+
         }
 
         public string StartTime {
-            get => TimeZoneInfo.ConvertTimeFromUtc(this.Data.BeginUtcDate, this.Data.Room.TimeZoneInfo).ToString("HH:mm");
-            set => this.UpdateDateTime(this.BeginDay, value);
+
+            get {
+                return TimeZoneInfo.ConvertTimeFromUtc(this.Data.BeginUtcDate, this.Data.Room.TimeZoneInfo).ToString("HH:mm");
+            }
+            set {
+                this.UpdateDateTime(this.BeginDay, value);
+            }
         }
 
-        public long DurationHours => (long)(this.Data.EndUtcDate - this.Data.BeginUtcDate).TotalHours;
-        public long DurationMinutes => (long)(this.Data.EndUtcDate - this.Data.BeginUtcDate).Minutes;
+        public long _DurationHours;
+        public long DurationHours {
+            get {
+                return _DurationHours;
+            }
+            set {
+                if (value < 0) return;
+                _DurationHours = value;
+                this.UpdateEndUtcDate();
+            }
+        }
+
+        public long _DurationMinutes;
+
+        public long DurationMinutes {
+
+            get {
+                return _DurationMinutes;
+            }
+            set {
+                if (value < 0) return;
+                _DurationMinutes = value;
+                this.UpdateEndUtcDate();
+            }
+        }
+
 
         /// <summary>
         /// 
@@ -34,13 +104,16 @@ namespace RoomBooking.ViewModels.Screens
             this.Data.BeginUtcDate = TimeZoneInfo.ConvertTimeToUtc(beginRoomLocalDate, this.Data.Room.TimeZoneInfo);
 
             // End date
+
+            UpdateEndUtcDate();
+            //            this.Data.EndUtcDate = this.Data.BeginUtcDate.AddHours((double)this.DurationHours).AddMinutes(this.DurationMinutes);
+        }
+
+        private void UpdateEndUtcDate()
+        {
             this.Data.EndUtcDate = this.Data.BeginUtcDate.AddHours((double)this.DurationHours).AddMinutes(this.DurationMinutes);
         }
 
-        //public void Init(Room room)
-        //{
-        //    this.Room = room;
-        //}
 
         /// <summary>
         /// Create booking event
@@ -49,9 +122,30 @@ namespace RoomBooking.ViewModels.Screens
         public void Handle(Input.CreateBookingTrigger action)
         {
 
+            if (IsBookedOrOverlappingOtherEvents())
+            {
+                this.ValidationMessage = "You can not double book this room";
+                return;
+            }
+
+            if (string.IsNullOrEmpty(this.Title))
+            {
+                this.ValidationMessage = "Please enter an title for this event";
+                return;
+            }
+
             // TODO: Validate
             this.Transaction.Commit();
             this.OnClose?.Invoke();
+        }
+
+        private bool IsBookedOrOverlappingOtherEvents()
+        {
+            //    bool overlap = a.start < b.end && b.start < a.end;
+
+            RoomBookingEvent roomBookingEvent = Db.SQL<RoomBookingEvent>("SELECT o FROM RoomBooking.RoomBookingEvent o WHERE o <> ? AND o.Room = ? AND o.BeginUtcDate < ? AND ? < o.EndUtcDate", this.Data, this.Data.Room, this.Data.EndUtcDate, this.Data.BeginUtcDate).FirstOrDefault();
+            return roomBookingEvent != null;
+
         }
 
         /// <summary>

@@ -1,0 +1,60 @@
+<dom-module id="sgb-clock">
+
+    <template>
+        <template is="dom-if" if="{{!diffOffset}}">
+            <span>{{roomTime}}</span>
+        </template>
+
+        <template is="dom-if" if="{{diffOffset}}">
+            <span>Screen: {{screenTime}}</span>
+            <span>Room: {{roomTime}}</span>
+        </template>
+
+    </template>
+
+    <script>
+        Polymer({
+            is: "sgb-clock",
+            properties: {
+                localOffset: Number,
+                localTime: String,
+                roomTime: String,
+                timeOffset: {
+                    type: Number,
+                    notify: true,
+                    observer: '_timeOffsetChanged'
+                },
+                diffOffset: {
+                    type: Boolean,
+                    value: false
+                }
+            },
+            _timeOffsetChanged: function (newValue, oldValue) {
+
+                this.localOffset = -new Date().getTimezoneOffset(); // Offset to be added to the local time
+                //                offset = -offset; // get offset to be added to UTC
+                console.log("Screen TimeOffset:" + this.localOffset);
+                console.log("Room TimeOffset  :" + this.timeOffset);   // Offset to be added to UTC time
+
+                this.diffOffset = this.localOffset != this.timeOffset;
+
+            },
+            ready: function () {
+
+                this.timerCallback();
+                setInterval(this.timerCallback.bind(this), 1000);
+            },
+            timerCallback: function () {
+
+                var nowDate = new Date();
+                this.roomTime = new Date(nowDate.setMinutes(nowDate.getMinutes() - this.localOffset)).toLocaleTimeString();
+
+                this.screenTime = new Date().toLocaleTimeString();
+
+            }
+
+
+        });
+    </script>
+
+</dom-module>

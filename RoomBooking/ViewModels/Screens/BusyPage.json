@@ -4,6 +4,7 @@
   "Booking": {
     "BeginUtcDate": "",
     "EndUtcDate": "",
+    "EndDate":  "",
     "Title": "",
     "Description": "",
     "Room": {
@@ -15,5 +16,5 @@
       "Name": ""
     }
   ],
-  "CloseTrigger$": 0
+  "ClaimTrigger$": 0
 }

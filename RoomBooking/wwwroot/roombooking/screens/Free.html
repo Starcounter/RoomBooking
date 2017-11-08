@@ -1,5 +1,6 @@
 ﻿<link rel="import" href="/sys/polymer/polymer.html">
 <link rel="import" href="/roombooking/elements/sgb-countdown/sgb-countdown.html" />
+<link rel="import" href="/roombooking/elements/sgb-clock/sgb-clock.html" />
 
 
 <!--<script src="/sys/moment/moment.js"></script>-->
@@ -49,8 +50,6 @@
 
                 <p style="font-size:2vw;margin:0px;line-height:64px;">Available for</p>
                 <sgb-countdown end-date="{{model.NextEventDate}}"></sgb-countdown>
-                <!--<p style="font-size:3vw;margin:0px;line-height:64px;">{{model.TimeUntilNextEvent}}</p>
-                <p style="font-size:3vw;margin:0px;line-height:64px;">{{model.NextEventDate}}</p>-->
 
 
                 <p style="font-size:4vw;margin:0px;line-height:64px;">CLAIM</p>
@@ -65,18 +64,9 @@
 
 
             <div class="freeitems">
-                <div>{{model.Room.Name}}</div>
-                <div class="clock">00:00:00</div>
+                <span>{{model.Room.Name}}</span>
+                <sgb-clock style="margin-left:10px;color:white" time-offset="{{model.Room.TimeOffset}}"></sgb-clock>
             </div>
-
         </div>
     </template>
-
-
- 
-
-
-
-
-
 </template>

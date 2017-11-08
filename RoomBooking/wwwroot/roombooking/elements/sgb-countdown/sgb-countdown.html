@@ -43,11 +43,15 @@
                 // TODO: Check output formats
                 // >=1h  "1h 20min""
                 // <1h 20min
-
+                //return sec;
                 var sec_num = parseInt(sec, 10);
                 var hours = Math.floor(sec_num / 3600);
                 var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
                 var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+                if (hours > 24) {
+                    return ">24h";
+                }
 
                 if (hours < 1) {
 

@@ -1,0 +1,16 @@
+{
+  "Html": "/RoomBooking/MessageBox.html",
+  "Visible": false,
+  "Title": "",
+  "Text": "",
+  "Buttons": [
+    {
+      "ID": 0,
+      "Text": "",
+      "Default": false,
+      "CssClass": "",
+      "Click$": 0
+    }
+  ],
+  "Close$": 0
+}

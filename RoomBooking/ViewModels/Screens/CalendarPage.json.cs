@@ -12,7 +12,7 @@ namespace RoomBooking.ViewModels.Screens
         public TimeZoneInfo TimeZoneInfo;
         public DateTime SelectedUtcDate;
 
-        public IEnumerable<RoomBookingEvent> Bookings => Db.SQL<RoomBookingEvent>("SELECT o FROM RoomBooking.RoomBookingEvent o WHERE o.BeginUtcDate >= ? AND o.BeginUtcDate < ? ORDER BY o.BeginUtcDate", SelectedUtcDate, SelectedUtcDate.AddDays(1));
+        public IEnumerable<RoomBookingEvent> Bookings => Db.SQL<RoomBookingEvent>("SELECT o FROM RoomBooking.RoomBookingEvent o WHERE o.BeginUtcDate >= ? AND o.BeginUtcDate < ? AND o.EndUtcDate >= o.BeginUtcDate ORDER BY o.BeginUtcDate", SelectedUtcDate, SelectedUtcDate.AddDays(1));
 
         public void Init(TimeZoneInfo timeZoneInfo)
         {
@@ -68,7 +68,7 @@ namespace RoomBooking.ViewModels.Screens
             get {
 
                 CalendarPage calendarPage = this.Parent.Parent as CalendarPage;
-                MainContentPage mainContentPage = calendarPage.Parent as MainContentPage;
+                ScreenContentPage mainContentPage = calendarPage.Parent as ScreenContentPage;
 
                 if (mainContentPage.ContentPartial != null)
                 {

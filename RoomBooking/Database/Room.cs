@@ -33,6 +33,16 @@ namespace RoomBooking
             }
         }
 
+
+        public double TimeOffset {
+
+            get {
+                return TimeZoneInfo.GetUtcOffset(DateTime.UtcNow).TotalMinutes;
+                 
+            }
+
+        }
+
         public static void RegisterHooks()
         {
 

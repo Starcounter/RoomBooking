@@ -1,5 +1,5 @@
 {
-  "Html": "/roombooking/main.html",
+  "Html": "/roombooking/mainpage.html",
   "RedirectUrl": "",
   "User": {
     "$SignedIn": { "Bind": "IsSignedInFlag" },

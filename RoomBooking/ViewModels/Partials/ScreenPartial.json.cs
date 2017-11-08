@@ -6,8 +6,6 @@ namespace RoomBooking.ViewModels.Partials
 {
     partial class ScreenPartial : Json, IBound<Screen>
     {
-//        public IEnumerable<Room> Rooms => Db.SQL<Room>("SELECT o FROM RoomBooking.Room o");
-//        public IEnumerable<Room> Rooms => Db.SQL<Room>("SELECT o.Room FROM RoomBooking.UserRoomRelation o WHERE o.User = ?", UserSession.GetSignedInUser());
         public IEnumerable<Room> Rooms => GetUserRooms(UserSession.GetSignedInUser());
 
         private IEnumerable<Room> GetUserRooms(User user)

@@ -69,8 +69,14 @@
     <Compile Include="Database\RoomBookingEvent.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\ContentPage.json.cs">
-      <DependentUpon>ContentPage.json</DependentUpon>
+    <Compile Include="ViewModels\Screens\ContentPartial.json.cs">
+      <DependentUpon>ContentPartial.json</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\Screens\ErrorMessageBox.json.cs">
+      <DependentUpon>ErrorMessageBox.json</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\Screens\MessageBox.json.cs">
+      <DependentUpon>MessageBox.json</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Partials\ScreenPartial.json.cs">
       <DependentUpon>ScreenPartial.json</DependentUpon>
@@ -78,8 +84,8 @@
     <Compile Include="ViewModels\Screens\EventPage.json.cs">
       <DependentUpon>EventPage.json</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\Screens\MainContentPage.json.cs">
-      <DependentUpon>MainContentPage.json</DependentUpon>
+    <Compile Include="ViewModels\Screens\ScreenContentPage.json.cs">
+      <DependentUpon>ScreenContentPage.json</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\MessageBox.json.cs">
       <DependentUpon>MessageBox.json</DependentUpon>
@@ -110,7 +116,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <TypedJSON Include="ViewModels\Screens\MainContentPage.json">
+    <TypedJSON Include="ViewModels\Screens\ScreenContentPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
     <TypedJSON Include="ViewModels\MessageBox.json">
@@ -146,10 +152,16 @@
     <TypedJSON Include="ViewModels\Partials\ScreenPartial.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
-    <TypedJSON Include="ViewModels\ContentPage.json">
+    <TypedJSON Include="ViewModels\Screens\MessageBox.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
-    <None Include="wwwroot\roombooking\Main.html" />
+    <TypedJSON Include="ViewModels\Screens\ErrorMessageBox.json">
+      <Generator>MsBuild:Compile</Generator>
+    </TypedJSON>
+    <TypedJSON Include="ViewModels\Screens\ContentPartial.json">
+      <Generator>MsBuild:Compile</Generator>
+    </TypedJSON>
+    <None Include="wwwroot\roombooking\MainPage.html" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\roombooking\screens\Calendar.html" />
@@ -176,18 +188,19 @@
     <None Include="wwwroot\roombooking\MessageBox.html" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="wwwroot\roombooking\screens\MainContent.html" />
+    <None Include="wwwroot\roombooking\screens\ScreenContentPage.html" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="wwwroot\roombooking\elements\sgb-calendar\sgb-calendar.html" />
     <Content Include="wwwroot\roombooking\elements\sgb-countdown-button\sgb-countdown-button.html" />
+    <Content Include="wwwroot\roombooking\elements\sgb-clock\sgb-clock.html" />
     <Content Include="wwwroot\roombooking\elements\sgb-countdown\sgb-countdown.html" />
     <Content Include="wwwroot\roombooking\elements\sgb-daypicker\sgb-daypicker.html" />
+    <None Include="wwwroot\roombooking\screens\ContentPartial.html" />
     <None Include="wwwroot\roombooking\Partials\ScreenPartial.html" />
-    <None Include="wwwroot\roombooking\Content.html" />
     <None Include="wwwroot\roombooking\screens\Event.html" />
     <Content Include="wwwroot\roombooking\css\main.css" />
-    <Content Include="wwwroot\roombooking\css\maincontentpage.css" />
+    <Content Include="wwwroot\roombooking\css\mainscreenpage.css" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Screens.Common\Screens.Common\Screens.Common.csproj">

@@ -1,0 +1,8 @@
+{
+  "Html": "/roombooking/screens/ScreenContentPage.html",
+  "MessageBox": { "$": { "Reuse": "RoomBooking.ViewModels.Screens.MessageBox" } },
+  "ErrorMessage": { "$": { "Reuse": "RoomBooking.ViewModels.Screens.ErrorMessageBox" } },
+  "Enabled": false,
+  "CalendarPartial": {},
+  "ContentPartial": {}
+}

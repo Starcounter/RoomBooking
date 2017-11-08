@@ -1,4 +1,10 @@
-﻿.maincontentContainer {
+﻿
+
+body {
+    background-color: white;
+}
+
+.maincontentContainer {
     display: flex;
     height: 100%;
 }

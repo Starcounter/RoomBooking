@@ -6,6 +6,7 @@
   "DurationMinutes$": 0,
   "Title$": "",
   "CreatedBy$": "",
+  "ValidationMessage" : "",
   "CreateBookingTrigger$": 0,
   "CloseTrigger$": 0
 }

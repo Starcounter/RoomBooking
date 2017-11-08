@@ -23,51 +23,70 @@ namespace RoomBooking
             Screens.Common.Utils.RegisterHooks();
 
             Room.RegisterHooks();
+
             RoomBookingEvent.RegisterHooks();
             RoomBookingEvent.RegisterTimer();
-            UserRoomRelation.RegisterHooks();
-            RoomScreenRelation.RegisterHooks();
 
+            UserRoomRelation.RegisterHooks();
+
+            RoomScreenRelation.RegisterHooks();
 
             Handle.GET("/RoomBooking", (Request request) =>
             {
-
                 MainPage mainPage = GetMainPage();
 
-                User user = UserSession.GetSignedInUser();
-                if (user == null)
+                try
                 {
-                    MessageBox.Show("Access Denied", "You need to be signed in");
-                    return mainPage;
-                }
+                    User user = UserSession.GetSignedInUser();
+                    if (user == null)
+                    {
+                        ViewModels.MessageBox.Show("Access Denied", "You need to be signed in");
+                        return mainPage;
+                    }
 
-                Room room = Program.AssureDefaultUserRoom(user);
-                MainContentPage mainContentPage = new MainContentPage();
-                mainContentPage.Init(room);
-                mainPage.Content = mainContentPage;
+                    UserRoomRelation userRoomRelation = Program.AssureDefaultUserRoom(user);
+
+                    RoomsPage roomsPage = new RoomsPage();
+                    mainPage.Content = roomsPage;
+                }
+                catch( Exception e)
+                {
+                    ViewModels.ErrorMessageBox.Show(e);
+                }
 
                 return mainPage;
             });
 
-            Handle.GET("/RoomBooking/screenContent/{?}", (string screenId) =>
+
+            RegisterScreenHandlers();
+            RegisterRoomHandlers();
+        }
+
+        internal static void RegisterScreenHandlers()
+        {
+
+            #region Screen (mapping)
+
+            Handle.GET("/RoomBooking/screenContent/{?}", (Func<string, Response>)((string screenId) =>
             {
-
-                Screen screen = Db.FromId(screenId) as Screen;
-
-                RoomScreenRelation roomScreenRelation = Db.SQL<RoomScreenRelation>("SELECT o FROM RoomBooking.RoomScreenRelation o WHERE o.Screen=?", screen).FirstOrDefault();
-
-                if (roomScreenRelation != null && roomScreenRelation.Enabled)
+                try
                 {
-                    MainContentPage mainContentPage = new MainContentPage();
-                    mainContentPage.Init(roomScreenRelation.Room);
-                    return mainContentPage;
+                    Screen screen = Db.FromId(screenId) as Screen;
+
+                    RoomScreenRelation roomScreenRelation = Db.SQL<RoomScreenRelation>("SELECT o FROM RoomBooking.RoomScreenRelation o WHERE o.Screen=?", screen).FirstOrDefault();
+                    return Db.Scope(() =>
+                    {
+                        ScreenContentPage mainScreenPage = Program.AssureScreenContentPage();
+                        mainScreenPage.Data = roomScreenRelation;
+                        return mainScreenPage;
+                    });
                 }
-                else
+                catch( Exception e)
                 {
-                    // No releation = nothing to show
-                    return new Json();
+                    ViewModels.Screens.ErrorMessageBox.Show(e);
+                    return Program.AssureScreenContentPage();
                 }
-            });
+            }));
 
             Blender.MapUri("/RoomBooking/screenContent/{?}", "screenContent");
 
@@ -91,16 +110,22 @@ namespace RoomBooking
 
             Blender.MapUri("/RoomBooking/partial/screen/{?}", "screen");
 
+            #endregion
+        }
+
+
+        internal static void RegisterRoomHandlers()
+        {
+
             #region Room
 
             Handle.GET("/roomBooking/rooms", (Request request) =>
             {
-
                 MainPage mainPage = GetMainPage();
                 User user = UserSession.GetSignedInUser();
                 if (user == null)
                 {
-                    MessageBox.Show("Access Denied", "You must be signed in");
+                    ViewModels.MessageBox.Show("Access Denied", "You must be signed in");
                     return mainPage;
                 }
 
@@ -111,13 +136,12 @@ namespace RoomBooking
 
             Handle.GET("/roomBooking/addroom", (Request request) =>
             {
-
                 MainPage mainPage = GetMainPage();
                 User user = UserSession.GetSignedInUser();
 
                 if (user == null)
                 {
-                    MessageBox.Show("Access Denied", "You must be signed in");
+                    ViewModels.MessageBox.Show("Access Denied", "You must be signed in");
                     return mainPage;
                 }
 
@@ -137,13 +161,12 @@ namespace RoomBooking
 
             Handle.GET("/roomBooking/rooms/{?}", (string id, Request request) =>
             {
-
                 MainPage mainPage = GetMainPage();
 
                 User user = UserSession.GetSignedInUser();
                 if (user == null)
                 {
-                    MessageBox.Show("Access Denied", "You must be signed in");
+                    ViewModels.MessageBox.Show("Access Denied", "You must be signed in");
                     return mainPage;
                 }
 
@@ -151,7 +174,7 @@ namespace RoomBooking
                 Room room = Db.SQL<Room>("SELECT o FROM RoomBooking.Room o WHERE o.ObjectID=?", id).FirstOrDefault();
                 if (room == null)
                 {
-                    MessageBox.Show("Not found", "Room not found"); // TODO: Show page error instead of popup
+                    ViewModels.MessageBox.Show("Not found", "Room not found"); // TODO: Show page error instead of popup
                     mainPage.Content = new RoomsPage();
                     return mainPage;
                 }
@@ -175,22 +198,21 @@ namespace RoomBooking
         /// TODO
         /// </summary>
         /// <returns></returns>
-        internal static Room AssureDefaultUserRoom(User user)
+        internal static UserRoomRelation AssureDefaultUserRoom(User user)
         {
 
-            Room room = Db.SQL<Room>("SELECT o.Room FROM RoomBooking.UserRoomRelation o WHERE o.User = ?", user).FirstOrDefault();
-            if (room == null)
+            UserRoomRelation userRoomRelation = Db.SQL<UserRoomRelation>("SELECT o FROM RoomBooking.UserRoomRelation o WHERE o.User = ?", user).FirstOrDefault();
+            if (userRoomRelation == null)
             {
                 Db.Transact(() =>
                 {
-                    room = new Room() { Name = "Default", Description = "This is your default room" };
-                    UserRoomRelation userRoomRelation = new UserRoomRelation();
+                    userRoomRelation = new UserRoomRelation();
                     userRoomRelation.User = user;
-                    userRoomRelation.Room = room;
+                    userRoomRelation.Room = new Room() { Name = "Default", Description = "This is your default room" };
                 });
             }
 
-            return room;
+            return userRoomRelation;
         }
 
 
@@ -209,17 +231,20 @@ namespace RoomBooking
             return mainPage;
         }
 
-        internal static MainContentPage GetMainContentPage()
+        internal static ScreenContentPage AssureScreenContentPage()
         {
 
-            ContentPage contentPage = GetMainPage().Content as ContentPage;
-            if (contentPage != null && contentPage.Content is MainContentPage)
+            var session = Session.Ensure();
+
+            ScreenContentPage mainPage = session.Store[nameof(ScreenContentPage)] as ScreenContentPage;
+
+            if (mainPage == null)
             {
-                return contentPage.Content as MainContentPage;
+                mainPage = new ScreenContentPage();
+                session.Store[nameof(ScreenContentPage)] = mainPage;
             }
 
-            return null;
-
+            return mainPage;
         }
 
 
