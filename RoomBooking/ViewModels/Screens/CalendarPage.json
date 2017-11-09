@@ -13,6 +13,7 @@
       "$IsSelected": { "Bind": "IsSelectedFlag" },
       "IsSelected": false,
       "IsActive": false,
+      "Overlapping": false,
       "SelectedTrigger$": 0
     }
   ],

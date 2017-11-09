@@ -103,13 +103,19 @@
                                 <td width="90px" style="height:inherit;padding-top:0px;padding-bottom:0px">
                                     <div style="height:100%;margin-left:20px" class="startStopHolder">
                                         <div class="booking1">{{item.beginTimeStr}}</div>
+                                        <template is="dom-if" if="{{item.Booking.Overlapping}}">
+                                            <div style="height: 20px; padding-left: 7px">
+                                                <img height="20" s_tyle="text-align:right;" title="Overlapping event" src="/roombooking/images/warning1.svg" />
+                                            </div>
+                                        </template>
                                         <div class="booking2">{{item.endTimeStr}}</div>
                                     </div>
                                 </td>
 
                                 <td style="vertical-align:top;padding-top: 4px;">
                                     {{item.Booking.Title}}
-                                    <!--IsActive:{{item.Booking.IsActive}}
+                                    <!--Overlapping:{{item.Booking.Overlapping}}
+                                    IsActive:{{item.Booking.IsActive}}
                                     IsSelected:{{item.Booking.IsSelected}}-->
                                     
                                 </td>

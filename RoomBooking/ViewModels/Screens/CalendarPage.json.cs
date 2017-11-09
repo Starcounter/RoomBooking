@@ -2,6 +2,7 @@ using Starcounter;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 
 namespace RoomBooking.ViewModels.Screens
 {
@@ -9,6 +10,7 @@ namespace RoomBooking.ViewModels.Screens
     {
         public Action<DateTime, DateTime> OnNewBooking;
         public Action<RoomBookingEvent> OnEventSelected;
+        public Action<DateTime> OnSelectedDate;
         public TimeZoneInfo TimeZoneInfo;
         public DateTime SelectedUtcDate;
 
@@ -30,11 +32,14 @@ namespace RoomBooking.ViewModels.Screens
             {
                 DateTime dateTime = DateTime.ParseExact(action.Value, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None);
                 this.SelectedUtcDate = TimeZoneInfo.ConvertTimeToUtc(dateTime, this.TimeZoneInfo);
+                this.OnSelectedDate?.Invoke(dateTime);
             }
             catch (Exception)
             {
                 this.SelectedUtcDate = DateTime.UtcNow.Date;
+                this.OnSelectedDate?.Invoke(DateTime.Now);
             }
+
         }
     }
 
@@ -81,6 +86,16 @@ namespace RoomBooking.ViewModels.Screens
             }
         }
 
+
+        public bool Overlapping {
+            get {
+
+                return Db.SQL<RoomBookingEvent>("SELECT o FROM RoomBooking.RoomBookingEvent o WHERE o <> ? AND o.Room = ? AND o.BeginUtcDate < ? AND ? < o.EndUtcDate", this.Data, this.Data.Room, this.Data.EndUtcDate, this.Data.BeginUtcDate).FirstOrDefault() != null;
+
+
+
+            }
+        }
 
 
         public bool IsActive => GetIsActive();

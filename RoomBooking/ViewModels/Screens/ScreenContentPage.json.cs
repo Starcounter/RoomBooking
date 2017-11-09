@@ -50,10 +50,23 @@ namespace RoomBooking.ViewModels.Screens
 
             calendarePage.OnEventSelected = (roomBookingEvent) =>
             {
+
+
+                if (this.ContentPartial is NewBookingPage && ((NewBookingPage)this.ContentPartial).Data.Equals(roomBookingEvent))
+                {
+                    return;
+                }
+
+                if (this.ContentPartial is EventPage && ((EventPage)this.ContentPartial).Data.Equals(roomBookingEvent))
+                {
+                    return;
+                }
+
                 if (calendarePage.Transaction != null)
                 {
                     calendarePage.Transaction.Rollback();
                 }
+
                 this.ContentPartial = CreateEventPage(roomBookingEvent);
             };
 
@@ -66,6 +79,34 @@ namespace RoomBooking.ViewModels.Screens
 
                 this.ContentPartial = this.CreateNewBookingPage(this.Data.Room, beginUtcDate, endUtcDate);
 
+            };
+
+            calendarePage.OnSelectedDate = (selectedDate) =>
+            {
+                // If there is a new booking page open, then change the date
+
+                if (this.ContentPartial is NewBookingPage)
+                {
+                    NewBookingPage newBookingPage = this.ContentPartial as NewBookingPage;
+
+                    // Change Date (year,month day)
+                    // Note: Do not touch the time
+
+                    // Get duration
+                    TimeSpan duration = newBookingPage.Data.EndUtcDate - newBookingPage.Data.BeginUtcDate;
+                    // 1 Get room time
+
+                    DateTime roomBeginTime = TimeZoneInfo.ConvertTimeFromUtc(newBookingPage.Data.BeginUtcDate, this.Data.Room.TimeZoneInfo);
+
+                    // 2. change year,month,day
+                    DateTime newRoomBeginTime = new DateTime(selectedDate.Year, selectedDate.Month, selectedDate.Day, roomBeginTime.Hour, roomBeginTime.Minute, roomBeginTime.Second, roomBeginTime.Millisecond, DateTimeKind.Unspecified);
+
+                    // 3. convert to UTC
+                    newBookingPage.Data.BeginUtcDate = TimeZoneInfo.ConvertTimeToUtc(newRoomBeginTime, this.Data.Room.TimeZoneInfo);
+                    newBookingPage.Data.EndUtcDate = newBookingPage.Data.BeginUtcDate + duration;
+
+
+                }
             };
 
             this.CalendarPartial = calendarePage;
