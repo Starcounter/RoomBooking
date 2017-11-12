@@ -3,10 +3,11 @@ using System;
 using System.Globalization;
 using System.Linq;
 using Starcounter.Templates;
+using CalendarSync.Database;
 
 namespace RoomBooking.ViewModels.Screens
 {
-    partial class NewBookingPage : Json, IBound<RoomBookingEvent>
+    partial class NewBookingPage : Json, IBound<SyncedEvent>
     {
         public Action OnClose = null;
 
@@ -45,7 +46,7 @@ namespace RoomBooking.ViewModels.Screens
 
 
             get {
-                return TimeZoneInfo.ConvertTimeFromUtc(this.Data.BeginUtcDate, this.Data.Room.TimeZoneInfo).ToString("yyyy-MM-dd");
+                return TimeZoneInfo.ConvertTimeFromUtc(this.Data.BeginUtcDate, this.Data.Calendar.TimeZoneInfo).ToString("yyyy-MM-dd");
             }
             set {
                 this.UpdateDateTime(value, this.StartTime);
@@ -57,12 +58,34 @@ namespace RoomBooking.ViewModels.Screens
         public string StartTime {
 
             get {
-                return TimeZoneInfo.ConvertTimeFromUtc(this.Data.BeginUtcDate, this.Data.Room.TimeZoneInfo).ToString("HH:mm");
+                return TimeZoneInfo.ConvertTimeFromUtc(this.Data.BeginUtcDate, this.Data.Calendar.TimeZoneInfo).ToString("HH:mm");
             }
             set {
                 this.UpdateDateTime(this.BeginDay, value);
             }
         }
+
+
+        public string DurationTime {
+
+            get {
+
+                TimeSpan timeSpan = this.Data.EndUtcDate - this.Data.BeginUtcDate;
+
+                return timeSpan.ToString("c").Substring(0,5); // TODO: What if it's over 24h
+
+                //return TimeZoneInfo.ConvertTimeFromUtc(this.Data.BeginUtcDate, this.Data.Room.TimeZoneInfo).ToString("HH:mm");
+            }
+            set {
+
+                // TODO: What if it's over 24h
+                TimeSpan timespan = TimeSpan.ParseExact(value, "hh\\:mm", CultureInfo.CurrentCulture);  // TODO: Is this safe?
+                this.Data.EndUtcDate = this.Data.BeginUtcDate.AddHours(timespan.Hours).AddMinutes(timespan.Minutes);
+
+                //this.UpdateDateTime(this.BeginDay, value);
+            }
+        }
+
 
         public long _DurationHours;
         public long DurationHours {
@@ -101,7 +124,7 @@ namespace RoomBooking.ViewModels.Screens
             // TODO: Validate
             string beginRoomLocalDateString = string.Format("{0}T{1}", date, time);  // 2017-10-17T00:00
             DateTime beginRoomLocalDate = DateTime.ParseExact(beginRoomLocalDateString, "yyyy-MM-ddTHH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None);
-            this.Data.BeginUtcDate = TimeZoneInfo.ConvertTimeToUtc(beginRoomLocalDate, this.Data.Room.TimeZoneInfo);
+            this.Data.BeginUtcDate = TimeZoneInfo.ConvertTimeToUtc(beginRoomLocalDate, this.Data.Calendar.TimeZoneInfo);
 
             // End date
 
@@ -128,9 +151,9 @@ namespace RoomBooking.ViewModels.Screens
                 return;
             }
 
-            if (string.IsNullOrEmpty(this.Title))
+            if (string.IsNullOrEmpty(this.Name))
             {
-                this.ValidationMessage = "Please enter an title for this event";
+                this.ValidationMessage = "Please enter an name for this event";
                 return;
             }
 
@@ -143,7 +166,7 @@ namespace RoomBooking.ViewModels.Screens
         {
             //    bool overlap = a.start < b.end && b.start < a.end;
 
-            RoomBookingEvent roomBookingEvent = Db.SQL<RoomBookingEvent>("SELECT o FROM RoomBooking.RoomBookingEvent o WHERE o <> ? AND o.Room = ? AND o.BeginUtcDate < ? AND ? < o.EndUtcDate", this.Data, this.Data.Room, this.Data.EndUtcDate, this.Data.BeginUtcDate).FirstOrDefault();
+            SyncedEvent roomBookingEvent = Db.SQL<SyncedEvent>($"SELECT o FROM CalendarSync.Database.\"{nameof(SyncedEvent)}\" o WHERE o <> ? AND o.{nameof(SyncedEvent.Calendar)} = ? AND o.{nameof(SyncedEvent.BeginUtcDate)} < ? AND ? < o.{nameof(SyncedEvent.EndUtcDate)}", this.Data, this.Data.Calendar, this.Data.EndUtcDate, this.Data.BeginUtcDate).FirstOrDefault();
             return roomBookingEvent != null;
 
         }

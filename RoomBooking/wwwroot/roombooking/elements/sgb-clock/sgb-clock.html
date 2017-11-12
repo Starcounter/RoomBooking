@@ -24,6 +24,9 @@
                     notify: true,
                     observer: '_timeOffsetChanged'
                 },
+                timerId: {
+                    type: String
+                },
                 diffOffset: {
                     type: Boolean,
                     value: false
@@ -39,10 +42,25 @@
                 this.diffOffset = this.localOffset != this.timeOffset;
 
             },
+            detached: function () {
+                if (this.timerId) {
+                    clearTimeout(this.timerId);
+                }
+            },
             ready: function () {
 
                 this.timerCallback();
-                setInterval(this.timerCallback.bind(this), 1000);
+                var ms = 1000 - new Date().getMilliseconds();
+                // Wait secUntilZero until we start our timer
+                this.timerId = setTimeout(this.syncedTimer.bind(this), 1000 - ms);
+
+            },
+            syncedTimer: function () {
+                if (this.timerId) {
+                    clearTimeout(this.timerId);
+                    this.timerId = undefined;
+                }
+                this.timerId = setInterval(this.timerCallback.bind(this), 1000);
             },
             timerCallback: function () {
 
@@ -50,9 +68,7 @@
                 this.roomTime = new Date(nowDate.setMinutes(nowDate.getMinutes() - this.localOffset)).toLocaleTimeString();
 
                 this.screenTime = new Date().toLocaleTimeString();
-
             }
-
 
         });
     </script>

@@ -1,42 +1,119 @@
 <dom-module id="sgb-countdown">
 
+    <link rel="import" href="/sys/s-circle-progress/s-circle-progress.html" />
+    <link rel="import" href="/sys/progress-bubble/progress-bubble.html" />
+
+
     <template>
-        {{timeLeft}}
+
+        <style is="custom-style">
+            progress-bubble {
+                --progress-bubble-stroke-color: #A40D27;
+                --progress-bubble-stroke-linecap: butt;
+                --progress-bubble-bg-stroke-color: White;
+                --progress-bubble-background: transparent;
+                --progress-bubble-reflection-display: none;
+                height: 100%;
+                width: 100%;
+                margin: 0px;
+            }
+
+            <!-- Does not work -->
+            #svgCircle {
+                stroke-width: 41;
+            }
+
+            .countdownHolder {
+                flex: 1 1 auto;
+                /*justify-content: center;
+                display: flex;
+                flex-direction: column;
+                align-items: center*/
+                /*background-color:orange;*/
+            }
+
+            progress-bubble p {
+                font-size: 2em;
+            }
+        </style>
+
+        <div class="countdownHolder">
+
+            <progress-bubble value="[[progress]]" max="100" stroke-width="40">
+                <p>{{timeLeft}}</p>
+            </progress-bubble>
+
+        </div>
+
+
     </template>
 
     <script>
         Polymer({
             is: "sgb-countdown",
             properties: {
+                beginDate: {
+                    type: String,
+                    notify: true,
+                    observer: '_beginDateChanged'
+                },
                 endDate: {
                     type: String,
                     notify: true,
                     observer: '_endDateChanged'
                 },
-                endTime: {
-                    type: Date,
-                    readOnly: true,
-                    notify: true
-                },
                 timeLeft: {
                     type: String
+                },
+                progress: {
+                    type: Number
+                },
+                timerId: {
+                    type: String
+                }
+            },
+            _beginDateChanged: function (newValue, oldValue) {
+                if (newValue) {
+                    this.timerCallback();
                 }
             },
             _endDateChanged: function (newValue, oldValue) {
                 if (newValue) {
-                    this._setEndTime(newValue.substring(0, newValue.length - 1));
+                    this.timerCallback();
                 }
             },
+            detached: function () {
+
+                if (this.timerId) {
+                    clearTimeout(this.timerId);
+                }
+            },
+
             ready: function () {
                 this.timerCallback();
-                setInterval(this.timerCallback.bind(this), 1000);
+                var ms = 1000 - new Date().getMilliseconds();
+                // Wait secUntilZero until we start our timer
+                this.timerId = setTimeout(this.syncedTimer.bind(this), 1000 - ms);
+            },
+            syncedTimer: function () {
+                if (this.timerId) {
+                    clearTimeout(this.timerId);
+                    this.timerId = undefined;
+                }
+                this.timerId = setInterval(this.timerCallback.bind(this), 1000);
             },
             timerCallback: function () {
-                var a = new Date(this.endTime).getTime();
-                var b = Date.now();
 
-                var result = (a - b) / 1000;
-                this.timeLeft = this.durationToStr(result);
+
+                if (!this.beginDate) return;
+
+                var eventTotalDuration = (new Date(this.endDate.substring(0, this.endDate.length - 1)).getTime() - new Date(this.beginDate.substring(0, this.beginDate.length - 1)).getTime()) / 1000;
+                var eventLeftDuration = (new Date(this.endDate.substring(0, this.endDate.length - 1)).getTime() - new Date().getTime()) / 1000;
+
+                this.timeLeft = this.durationToStr(eventLeftDuration);
+                this.progress = 100 - Math.floor((100 * eventLeftDuration) / eventTotalDuration);
+
+
             },
             durationToStr: function (sec) {
 
@@ -48,6 +125,18 @@
                 var hours = Math.floor(sec_num / 3600);
                 var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
                 var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+                if (hours < 1) {
+                    hours = 0;
+                }
+
+                if (minutes < 1) {
+                    minutes = 0;
+                }
+                return this.pad(hours, 2) + ":" + this.pad(minutes, 2) + ":" + this.pad(seconds, 2);
+
+                //                return hours + "h " + minutes + "min " + seconds + "sec";
+
 
                 if (hours > 24) {
                     return ">24h";
@@ -67,6 +156,11 @@
                 }
 
                 return hours + "h " + minutes + "min";
+            },
+            pad: function (n, width, z) {
+                z = z || '0';
+                n = n + '';
+                return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
             }
 
         });

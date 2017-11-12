@@ -1,11 +1,11 @@
 {
   "Html": "/roombooking/screens/Busy.html",
-  "Title": "",
   "Booking": {
     "BeginUtcDate": "",
+    "BeginDate": "",
     "EndUtcDate": "",
-    "EndDate":  "",
-    "Title": "",
+    "EndDate": "",
+    "Name": "",
     "Description": "",
     "Room": {
       "Name": ""

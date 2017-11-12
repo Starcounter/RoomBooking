@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Starcounter.Templates;
 using System.Threading;
+using CalendarSync.Database;
 
 namespace RoomBooking.ViewModels.Screens
 {
@@ -33,11 +34,11 @@ namespace RoomBooking.ViewModels.Screens
         }
 
 
-        public RoomBookingEvent ActiveEvent {
+        public SyncedEvent ActiveEvent {
             get {
                 if (this.Data == null) return null;
                 DateTime utcNow = DateTime.UtcNow;
-                RoomBookingEvent roomBookingEvent = Db.SQL<RoomBookingEvent>("SELECT o FROM RoomBooking.RoomBookingEvent o WHERE o.Room = ? AND ? >= o.BeginUtcDate AND ? < o.EndUtcDate AND o.EndUtcDate >= o.BeginUtcDate ORDER BY o.BeginUtcDate", this.Data.Room, utcNow, utcNow).FirstOrDefault();
+                SyncedEvent roomBookingEvent = Db.SQL<SyncedEvent>($"SELECT o FROM CalendarSync.Database.\"{nameof(SyncedEvent)}\" o WHERE o.{nameof(SyncedEvent.Calendar)} = ? AND ? >= o.{nameof(SyncedEvent.BeginUtcDate)} AND ? < o.{nameof(SyncedEvent.EndUtcDate)} AND o.{nameof(SyncedEvent.EndUtcDate)} >= o.{nameof(SyncedEvent.BeginUtcDate)} ORDER BY o.{nameof(SyncedEvent.BeginUtcDate)}", this.Data.Room, utcNow, utcNow).FirstOrDefault();
                 return roomBookingEvent;
             }
         }
@@ -133,11 +134,12 @@ namespace RoomBooking.ViewModels.Screens
             }
 
             // Get current event
-            RoomBookingEvent roomBookingEvent = this.ActiveEvent;
+            SyncedEvent roomBookingEvent = this.ActiveEvent;
             if (roomBookingEvent != null)
             {
                 if (this.ContentPartial is BusyPage)
                 {
+                    // TODO: Booking.Data was null
                     if (((BusyPage)this.ContentPartial).Booking.Data.Equals(roomBookingEvent))
                     {
                         return this.ContentPartial;
@@ -159,7 +161,7 @@ namespace RoomBooking.ViewModels.Screens
         /// </summary>
         /// <param name="roomBookingEvent"></param>
         /// <returns></returns>
-        private EventPage CreateEventPage(RoomBookingEvent roomBookingEvent)
+        private EventPage CreateEventPage(SyncedEvent roomBookingEvent)
         {
             EventPage eventPage = new EventPage() { Data = roomBookingEvent };
             eventPage.OnClose = () =>
@@ -176,7 +178,7 @@ namespace RoomBooking.ViewModels.Screens
         /// </summary>
         /// <param name="room"></param>
         /// <returns></returns>
-        private FreePage CreateFreePage(Room room)
+        private FreePage CreateFreePage(SyncedCalendar room)
         {
             FreePage freePage = new FreePage();
             freePage.Init(room);
@@ -190,14 +192,14 @@ namespace RoomBooking.ViewModels.Screens
         /// </summary>
         /// <param name="roomBookingEvent"></param>
         /// <returns></returns>
-        private BusyPage CreateBusyPage(RoomBookingEvent roomBookingEvent)
+        private BusyPage CreateBusyPage(SyncedEvent roomBookingEvent)
         {
             BusyPage busyPage = new BusyPage();
             busyPage.Booking.Data = roomBookingEvent;
             busyPage.OnClose = () => this.ContentPartial = GetDefaultPage();
             busyPage.OnClaim = () =>
             {
-                this.ContentPartial = CreateNewBookingPage(roomBookingEvent.Room, DateTime.UtcNow, DateTime.UtcNow.AddHours(1));
+                this.ContentPartial = CreateNewBookingPage(roomBookingEvent.Calendar, DateTime.UtcNow, DateTime.UtcNow.AddHours(1));
 
                 Db.Transact(() =>
                 {
@@ -215,14 +217,14 @@ namespace RoomBooking.ViewModels.Screens
         /// <param name="defaultBeginUtcDate"></param>
         /// <param name="defaultEndUtcDate"></param>
         /// <returns></returns>
-        private NewBookingPage CreateNewBookingPage(Room room, DateTime defaultBeginUtcDate, DateTime defaultEndUtcDate, string title = null)
+        private NewBookingPage CreateNewBookingPage(SyncedCalendar room, DateTime defaultBeginUtcDate, DateTime defaultEndUtcDate, string name = null)
         {
-            RoomBookingEvent roomBookingEvent = new RoomBookingEvent()
+            SyncedEvent roomBookingEvent = new SyncedEvent()
             {
                 BeginUtcDate = defaultBeginUtcDate,
                 EndUtcDate = defaultEndUtcDate,
-                Room = room,
-                Title = title
+                Calendar = room,
+                Name = name
             };
 
             NewBookingPage newBookingPage = new NewBookingPage() { Data = roomBookingEvent };

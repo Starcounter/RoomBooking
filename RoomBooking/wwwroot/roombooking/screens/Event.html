@@ -3,17 +3,49 @@
 <template>
     <template is="dom-bind">
 
-        <div style="background-color:#F9F9F9; height:100%">
+
+        <style>
+            .contentPageHolder {
+                background-color: #5d5d5d;
+            }
+
+            .contentTicker {
+                flex: 1 1 auto;
+                display: flex;
+                margin: 50px;
+            }
+        </style>
+
+
+        <div class="contentPageHolder">
+
+            <div class="contentPageHeader">
+                <p style="font-size:2em;margin:0px;">EVENT</p>
+                <p style="font-size:0.5em;margin:0px;">{{model.Name}}</p>
+            </div>
+
+            <div class="contentPageContent">
+                no content
+            </div>
+
+            <div class="contentPageOperationPanel">
+                <button type="button" value="{{model.CloseTrigger$::click}}" class="btn btn-sm btn-primary" onclick="++this.value">Close</button>
+                <button type="button" value="{{model.DeleteTrigger$::click}}" class="btn btn-sm btn-danger" onclick="++this.value">Delete</button>
+            </div>
+
+        </div>
+
+
+
+
+        <!--<div style="background-color:#F9F9F9; height:100%">
 
             <div style="font-size: 4vw;text-align:center">
                 <p style="font-size:2em;margin:0px;">Event</p>
-                <p style="font-size:1em;margin:0px;">{{model.Title}}</p>
-                <button type="button" value="{{model.CloseTrigger$::click}}" class="btn btn-sm btn-primary" onclick="++this.value">Close</button>
-
-                <button type="button" value="{{model.DeleteTrigger$::click}}" class="btn btn-sm btn-danger" onclick="++this.value">Delete</button>
+                <p style="font-size:1em;margin:0px;">{{model.Name}}</p>
 
             </div>
-        </div>
+        </div>-->
 
     </template>
 </template>

@@ -1,5 +1,5 @@
 ﻿<link rel="import" href="/sys/polymer/polymer.html">
-<!--<link rel="import" href="/roombooking/elements/sgb-countdown-button/sgb-countdown-button.html" />-->
+<link rel="import" href="/roombooking/elements/sgb-timepicker/sgb-timepicker.html" />
 
 <template>
 
@@ -9,15 +9,15 @@
             height: 100%;
             background-color: #44A40D;
         }
-
-
+        
         .newbooking {
+            display:flex;
+            flex-direction:column;
             box-shadow: 0px 1px 2px #cccccc;
             height: 100%;
-            background-color:white;
-            border-radius:5px;
+            background-color: white;
+            border-radius: 5px;
         }
-
 
         .newbooking .header {
             background-color: #606060;
@@ -28,12 +28,52 @@
             text-align: center;
             border-top-left-radius: 5px;
             border-top-right-radius: 5px;
+        }
+
+        .contentHolder {
+            flex: 1 1 auto;
+            display: flex;
+            padding: 30px;
+            font-family: Roboto;
+            flex-direction: column;
+        }
+
+
+        .startAndDuration {
+            display: flex;
+            width: 100%;
+        }
+
+        .starAndDurationItems {
+            flex: 1 1 auto;
+        }
+
+        .details {
+            display: flex;
+            flex-direction:column;
+            flex: 1 1 auto;
+            padding-top:20px;
+        }
+
+        .details input {
+            font-size: 30px;
+        }
+         .operations {
+            flex: 0 1 auto;
+            align-self: center;
+            /*background-color: gray;*/
+            display: flex;
+        }
+
+
+            .operations button {
+                min-height: 70px;
+                min-width: 170px;
+                font-size: 30px;
+                margin-left: 20px;
+                margin-right: 20px;
             }
 
-            .newbooking .content {
-                padding: 30px;
-                font-family: Roboto;
-            }
     </style>
 
 
@@ -46,41 +86,37 @@
                     <div>NEW BOOKING</div>
                 </div>
 
-                <div class="content">
+                <div class="contentHolder">
+
+                    <div class="startAndDuration">
+
+                        <div class="starAndDurationItems">
+                            <i>Start</i>
+                            <sgb-timepicker start-Time="{{model.StartTime$}}"></sgb-timepicker>
+                        </div>
+                        <div class="starAndDurationItems">
+
+                            <i>Duration</i>
+                            <sgb-timepicker start-Time="{{model.DurationTime$}}"></sgb-timepicker>
+                        </div>
+                    </div>
+
+                    <div class="details">
+                        
+                        <i>Name</i><p class="text-danger">{{model.ValidationMessage}}</p>
+                        <input type="text" value="{{model.Name$::input}}" placeholder="enter event name here"  />
+                    </div>
+
+                    <form class="operations">
 
 
-                    <input type="time" value="{{model.StartTime$::input}}" placeholder="StartTime" />
-                    <p>
-                        <i>StartTime</i>
-                    </p>
-
-                    <input type="date" value="{{model.BeginDay$::input}}" placeholder="BeginDay" />
-                    <p>
-                        <i>BeginDay</i>
-                    </p>
-
-                    <input type="number" min="0" max="8" value="{{model.DurationHours$::input}}"  />
-                    <p>
-                        <i>DurationHours</i>
-                    </p>
-
-                    <input type="number" min="0" max="59" step="15" value="{{model.DurationMinutes$::input}}"  />
-                    <p>
-                        <i>DurationMinutes</i>
-                    </p>
-
-                    <input type="text" value="{{model.Title$::input}}" placeholder="Title" />
-                    <p>
-                        <i>Title</i>
-                    </p>
-
-                    <button type="button" value="{{model.CreateBookingTrigger$::click}}" class="btn btn-sm btn-primary" onclick="++this.value">Create</button>
-                    <button type="button" value="{{model.CloseTrigger$::click}}" class="btn btn-sm btn-default" onclick="++this.value">Close</button>
-                    <!--<sgb-countdown-button length=20 tigger="{{model.CloseTrigger$}}">
+                        <button type="submit" value="{{model.CreateBookingTrigger$::click}}" class="btn btn-sm btn-primary" onclick="++this.value">Create</button>
                         <button type="button" value="{{model.CloseTrigger$::click}}" class="btn btn-sm btn-default" onclick="++this.value">Close</button>
-                    </sgb-countdown-button>-->
-                    <p class="text-danger">{{model.ValidationMessage}}</p>
-
+                        <!--<sgb-countdown-button length=20 tigger="{{model.CloseTrigger$}}">
+                            <button type="button" value="{{model.CloseTrigger$::click}}" class="btn btn-sm btn-default" onclick="++this.value">Close</button>
+                        </sgb-countdown-button>-->
+                
+                    </form>
                 </div>
 
             </div>

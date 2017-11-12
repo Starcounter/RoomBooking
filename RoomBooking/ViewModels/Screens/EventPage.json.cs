@@ -1,9 +1,10 @@
+using CalendarSync.Database;
 using Starcounter;
 using System;
 
 namespace RoomBooking.ViewModels.Screens
 {
-    partial class EventPage : Json, IBound<RoomBookingEvent>
+    partial class EventPage : Json, IBound<SyncedEvent>
     {
         public Action OnClose;
 

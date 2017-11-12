@@ -10,7 +10,14 @@
             <div class="buttons" style="background-color:#dbdbdb">
                 <template is="dom-repeat" items="{{model.Buttons}}">
 
-                    <button style="min-width:100px;margin-left:10px" autofocus$="{{item.Default}}" type="button" class$="{{item.CssClass}}" value="{{item.Click$::click}}" onmouseup="++this.value">{{item.Text}}</button>
+                    <template is="dom-if" if="{{item.Default}}">
+                        <button style="min-width:100px;margin-left:10px" autofocus$="{{item.Default}}" type="submit" class$="{{item.CssClass}}" value="{{item.Click$::click}}" onmouseup="++this.value">{{item.Text}}</button>
+                    </template>
+
+                    <template is="dom-if" if="{{!item.Default}}">
+                        <button style="min-width:100px;margin-left:10px" autofocus$="{{item.Default}}" type="button" class$="{{item.CssClass}}" value="{{item.Click$::click}}" onmouseup="++this.value">{{item.Text}}</button>
+                    </template>
+
                 </template>
             </div>
         </paper-dialog>

@@ -1,20 +1,39 @@
 ﻿<link rel="import" href="/sys/polymer/polymer.html">
 <link rel="import" href="/roombooking/elements/sgb-countdown/sgb-countdown.html" />
+<!--<link rel="stylesheet" href="/roombooking/css/mainscreenpage.css" />-->
+
+
 
 <template>
     <template is="dom-bind">
 
-        <div style="background-color:#A40D27; height:100%">
+        <style>
+            .contentPageHolder {
+                background-color: #A40D27;
+            }
 
-            <div style="color:white;font-size: 4vw;text-align:center">
-                <p style="font-size:2em;margin:0px;">Busy</p>
-                <p style="font-size:1em;margin:0px;">{{model.Title}}</p>
+            .contentTicker {
+                flex: 1 1 auto;
+                display: flex;
+                margin:50px;
+            }
 
-                <sgb-countdown end-date="{{model.Booking.EndDate}}"></sgb-countdown>
+        </style>
 
 
+        <div class="contentPageHolder">
+
+            <div class="contentPageHeader">
+                <p style="font-size:2em;margin:0px;">OCCUPIED</p>
+                <p style="font-size:0.5em;margin:0px;">{{model.Booking.Name}}</p>
+            </div>
+
+            <sgb-countdown class="contentTicker" begin-date="{{model.Booking.BeginDate}}" end-date="{{model.Booking.EndDate}}"></sgb-countdown>
+
+            <div class="contentPageOperationPanel">
                 <button type="button" value="{{model.ClaimTrigger$::click}}" class="btn btn-sm btn-primary" onclick="++this.value">Claim</button>
             </div>
+
         </div>
 
     </template>

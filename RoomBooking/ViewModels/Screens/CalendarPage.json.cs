@@ -1,3 +1,4 @@
+using CalendarSync.Database;
 using Starcounter;
 using System;
 using System.Collections.Generic;
@@ -9,12 +10,12 @@ namespace RoomBooking.ViewModels.Screens
     partial class CalendarPage : Json
     {
         public Action<DateTime, DateTime> OnNewBooking;
-        public Action<RoomBookingEvent> OnEventSelected;
+        public Action<SyncedEvent> OnEventSelected;
         public Action<DateTime> OnSelectedDate;
         public TimeZoneInfo TimeZoneInfo;
         public DateTime SelectedUtcDate;
 
-        public IEnumerable<RoomBookingEvent> Bookings => Db.SQL<RoomBookingEvent>("SELECT o FROM RoomBooking.RoomBookingEvent o WHERE o.BeginUtcDate >= ? AND o.BeginUtcDate < ? AND o.EndUtcDate >= o.BeginUtcDate ORDER BY o.BeginUtcDate", SelectedUtcDate, SelectedUtcDate.AddDays(1));
+        public IEnumerable<SyncedEvent> Bookings => Db.SQL<SyncedEvent>($"SELECT o FROM CalendarSync.Database.\"{nameof(SyncedEvent)}\" o WHERE o.{nameof(SyncedEvent.BeginUtcDate)} >= ? AND o.{nameof(SyncedEvent.BeginUtcDate)} < ? AND o.{nameof(SyncedEvent.EndUtcDate)} >= o.{nameof(SyncedEvent.BeginUtcDate)} ORDER BY o.{nameof(SyncedEvent.BeginUtcDate)}", SelectedUtcDate, SelectedUtcDate.AddDays(1));
 
         public void Init(TimeZoneInfo timeZoneInfo)
         {
@@ -27,7 +28,7 @@ namespace RoomBooking.ViewModels.Screens
 
         public void Handle(Input.SelectedDate action)
         {
-
+            // ValueType should be in the format of "yyyy-MM-dd"
             try
             {
                 DateTime dateTime = DateTime.ParseExact(action.Value, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None);
@@ -45,7 +46,7 @@ namespace RoomBooking.ViewModels.Screens
 
 
     [CalendarPage_json.Bookings]
-    partial class CalendarItem : Json, IBound<RoomBookingEvent>
+    partial class CalendarItem : Json, IBound<SyncedEvent>
     {
 
 
@@ -77,7 +78,7 @@ namespace RoomBooking.ViewModels.Screens
 
                 if (mainContentPage.ContentPartial != null)
                 {
-                    RoomBookingEvent roomBookingEvent = mainContentPage.ContentPartial.Data as RoomBookingEvent;
+                    SyncedEvent roomBookingEvent = mainContentPage.ContentPartial.Data as SyncedEvent;
                     return this.Data.Equals(roomBookingEvent);
                 }
 
@@ -90,10 +91,7 @@ namespace RoomBooking.ViewModels.Screens
         public bool Overlapping {
             get {
 
-                return Db.SQL<RoomBookingEvent>("SELECT o FROM RoomBooking.RoomBookingEvent o WHERE o <> ? AND o.Room = ? AND o.BeginUtcDate < ? AND ? < o.EndUtcDate", this.Data, this.Data.Room, this.Data.EndUtcDate, this.Data.BeginUtcDate).FirstOrDefault() != null;
-
-
-
+                return Db.SQL<SyncedEvent>($"SELECT o FROM CalendarSync.Database.\"{nameof(SyncedEvent)}\" o WHERE o <> ? AND o.{nameof(SyncedEvent.Calendar)} = ? AND o.{nameof(SyncedEvent.BeginUtcDate)} < ? AND ? < o.{nameof(SyncedEvent.EndUtcDate)}", this.Data, this.Data.Calendar, this.Data.EndUtcDate, this.Data.BeginUtcDate).FirstOrDefault() != null;
             }
         }
 

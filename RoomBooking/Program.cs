@@ -1,6 +1,8 @@
 ﻿// Google Client ID: 525016583199-77s56n08s4uuoir2oppc8gs1biv5t6q9.apps.googleusercontent.com
 // Google client secret: hTMyupyDfY8LFFCVnghhBPzK
 
+//public IEnumerable<Order> Orders => Db.SQL<Order>($"SELECT so FROM {nameof(Flexovital)}.\"{nameof(Flexovital.Order)}\" so WHERE so.Subscription.Customer = ?", this);
+
 using System;
 using Starcounter;
 using RoomBooking.ViewModels;
@@ -9,6 +11,8 @@ using RoomBooking.ViewModels.Screens;
 using System.Collections.Specialized;
 using Screens.Common;
 using RoomBooking.ViewModels.Partials;
+using CalendarSync.Database;
+using System.Threading;
 
 namespace RoomBooking
 {
@@ -22,10 +26,13 @@ namespace RoomBooking
 
             Screens.Common.Utils.RegisterHooks();
 
-            Room.RegisterHooks();
 
-            RoomBookingEvent.RegisterHooks();
-            RoomBookingEvent.RegisterTimer();
+            RegisterSyncedEventHooks();
+            RegisterSyncedCalendarHooks();
+            RegisterTimer();
+            //SyncedCalendar.RegisterHooks();
+            //            SyncedEvent.RegisterHooks();
+            //SyncedEvent.RegisterTimer();
 
             UserRoomRelation.RegisterHooks();
 
@@ -49,7 +56,7 @@ namespace RoomBooking
                     RoomsPage roomsPage = new RoomsPage();
                     mainPage.Content = roomsPage;
                 }
-                catch( Exception e)
+                catch (Exception e)
                 {
                     ViewModels.ErrorMessageBox.Show(e);
                 }
@@ -62,6 +69,123 @@ namespace RoomBooking
             RegisterRoomHandlers();
         }
 
+        #region SynvedEvent
+
+        internal static void RegisterSyncedEventHooks()
+        {
+
+
+
+            // Push updates to client sessions
+            Hook<SyncedEvent>.CommitUpdate += (sender, room) =>
+            {
+                SetEventTimer();
+                Program.PushChanges();
+            };
+
+            Hook<SyncedEvent>.CommitInsert += (sender, room) =>
+            {
+                SetEventTimer();
+                Program.PushChanges();
+            };
+
+            Hook<SyncedEvent>.CommitDelete += (sender, room) =>
+            {
+                SetEventTimer();
+                Program.PushChanges();
+            };
+
+
+
+
+        }
+
+
+        public static void RegisterTimer()
+        {
+            EventTimer = new Timer(TimerCallback);
+            SetEventTimer();
+        }
+
+        private static Timer EventTimer;
+
+        private static void SetEventTimer()
+        {
+
+            DateTime utcNow = DateTime.UtcNow;
+
+            //EventTimer.Change(new TimeSpan(0,0,0,10,0), TimeSpan.FromTicks(-1));
+
+            SyncedEvent firstEvent = Db.SQL<SyncedEvent>($"SELECT o FROM CalendarSync.Database.\"{nameof(SyncedEvent)}\" o WHERE o.{nameof(SyncedEvent.BeginUtcDate)} >= ? ORDER BY o.{nameof(SyncedEvent.BeginUtcDate)}", utcNow).FirstOrDefault();
+            if (firstEvent != null)
+            {
+                TimeSpan timeSpan = firstEvent.BeginUtcDate - utcNow;
+                EventTimer.Change(timeSpan, TimeSpan.FromTicks(-1));
+            }
+        }
+
+        public static void TimerCallback(Object state)
+        {
+            Scheduling.ScheduleTask(() =>
+            {
+                // Set timer to next event
+                SetEventTimer();
+
+                Session.ForAll((session, sessionId) =>
+                {
+
+                    ScreenContentPage screenContentPage = session.Store[nameof(ScreenContentPage)] as ScreenContentPage;
+                    if (screenContentPage != null)
+                    {
+                        screenContentPage.OnActiveEvent();
+                    }
+
+                    session.CalculatePatchAndPushOnWebSocket();
+                });
+
+            }, false);
+        }
+
+        #endregion
+
+        #region SyncedCalendar
+
+        public static void RegisterSyncedCalendarHooks()
+        {
+
+            // Cleanup
+            Hook<SyncedCalendar>.BeforeDelete += (sender, room) =>
+            {
+                Db.SQL($"DELETE FROM CalendarSync.Database.\"{nameof(SyncedEvent)} WHERE {nameof(SyncedEvent.Calendar)} = ?", room);
+                Db.SQL($"DELETE FROM {nameof(RoomBooking)}.\"{nameof(UserRoomRelation)} WHERE {nameof(UserRoomRelation.Room)} = ?", room);
+            };
+
+            // Cleanup
+            Hook<User>.BeforeDelete += (sender, user) =>
+            {
+                //                Db.SQL("DELETE FROM RoomBooking.Room o WHERE o.User = ?", user);
+            };
+
+            // Push updates to client sessions
+            Hook<SyncedCalendar>.CommitUpdate += (sender, room) =>
+            {
+                Program.PushChanges();
+            };
+
+            Hook<SyncedCalendar>.CommitInsert += (sender, room) =>
+            {
+                Program.PushChanges();
+            };
+
+            Hook<SyncedCalendar>.CommitDelete += (sender, room) =>
+            {
+                Program.PushChanges();
+            };
+        }
+
+
+        #endregion
+
         internal static void RegisterScreenHandlers()
         {
 
@@ -73,7 +197,7 @@ namespace RoomBooking
                 {
                     Screen screen = Db.FromId(screenId) as Screen;
 
-                    RoomScreenRelation roomScreenRelation = Db.SQL<RoomScreenRelation>("SELECT o FROM RoomBooking.RoomScreenRelation o WHERE o.Screen=?", screen).FirstOrDefault();
+                    RoomScreenRelation roomScreenRelation = Db.SQL<RoomScreenRelation>($"SELECT o FROM {nameof(RoomBooking)}.\"{nameof(RoomScreenRelation)}\" o WHERE o.\"{nameof(RoomScreenRelation.Screen)}\"=?", screen).FirstOrDefault();
                     return Db.Scope(() =>
                     {
                         ScreenContentPage mainScreenPage = Program.AssureScreenContentPage();
@@ -81,7 +205,7 @@ namespace RoomBooking
                         return mainScreenPage;
                     });
                 }
-                catch( Exception e)
+                catch (Exception e)
                 {
                     ViewModels.Screens.ErrorMessageBox.Show(e);
                     return Program.AssureScreenContentPage();
@@ -149,7 +273,7 @@ namespace RoomBooking
                 {
                     RoomPage roomPage = new RoomPage();
                     mainPage.Content = roomPage;
-                    roomPage.Data = new Room();
+                    roomPage.Data = new SyncedCalendar();
 
                     UserRoomRelation userRoomRelation = new UserRoomRelation();
                     userRoomRelation.Room = roomPage.Data;
@@ -170,8 +294,7 @@ namespace RoomBooking
                     return mainPage;
                 }
 
-
-                Room room = Db.SQL<Room>("SELECT o FROM RoomBooking.Room o WHERE o.ObjectID=?", id).FirstOrDefault();
+                SyncedCalendar room = Db.SQL<SyncedCalendar>($"SELECT o FROM CalendarSync.Database.\"{nameof(SyncedCalendar)}\" o WHERE o.ObjectID=?", id).FirstOrDefault();
                 if (room == null)
                 {
                     ViewModels.MessageBox.Show("Not found", "Room not found"); // TODO: Show page error instead of popup
@@ -201,14 +324,15 @@ namespace RoomBooking
         internal static UserRoomRelation AssureDefaultUserRoom(User user)
         {
 
-            UserRoomRelation userRoomRelation = Db.SQL<UserRoomRelation>("SELECT o FROM RoomBooking.UserRoomRelation o WHERE o.User = ?", user).FirstOrDefault();
+            //UserRoomRelation userRoomRelation = Db.SQL<UserRoomRelation>("SELECT o FROM RoomBooking.UserRoomRelation o WHERE o.User = ?", user).FirstOrDefault();
+            UserRoomRelation userRoomRelation = Db.SQL<UserRoomRelation>($"SELECT o FROM {nameof(RoomBooking)}.\"{nameof(UserRoomRelation)}\" o WHERE o.{nameof(UserRoomRelation.User)} = ?", user).FirstOrDefault();
             if (userRoomRelation == null)
             {
                 Db.Transact(() =>
                 {
                     userRoomRelation = new UserRoomRelation();
                     userRoomRelation.User = user;
-                    userRoomRelation.Room = new Room() { Name = "Default", Description = "This is your default room" };
+                    userRoomRelation.Room = new SyncedCalendar() { Name = "Default", Description = "This is your default room" };
                 });
             }
 

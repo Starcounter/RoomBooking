@@ -1,5 +1,5 @@
 ﻿<link rel="import" href="/sys/polymer/polymer.html">
-<link rel="import" href="/roombooking/elements/sgb-countdown/sgb-countdown.html" />
+<link rel="import" href="/roombooking/elements/sgb-availabletime/sgb-availabletime.html" />
 <link rel="import" href="/roombooking/elements/sgb-clock/sgb-clock.html" />
 
 
@@ -8,65 +8,103 @@
 <template>
 
     <style>
-        .freeholder {
+        .contentPageHolder {         
+            background-color: #44A40D;
+            color: white;
+        }
+
+        .contentPageContent {
             display: flex;
             flex-direction: column;
-            background-color: #44A40D;
-            height: 100%;
-            color: white;
+            align-items: center;
+            justify-content: center;
+
             font-size: 4vw;
         }
 
 
-        .freeitems:nth-child(1) {
-            /*border: 1px solid yellow;*/
-            flex: 1 1 auto;
-            align-self: center;
-            padding-top: 40px;
+        sgb-availabletime p{
+            color:red;
+            margin:0px;
+            padding:0px;
+        }
+        
+        
+        .contentPageContentItem:nth-child(1) {
+            font-size: 0.5em;
         }
 
-            .freeitems:nth-child(1) button {
-                background-color: #357E0B;
-                font-size: 0.5em;
-            }
+        .contentPageContentItem:nth-child(2) {
+            padding:0px;
+            margin:0px;
 
-        .freeitems:nth-child(2) {
-            flex: 0 0 auto;
-            /*border: 1px solid red;*/
-            color: rgba(255,255,255,0.3);
+            /*flex: 0 0 auto;*/
+            /*color: rgba(255,255,255,0.3);*/
+            /*align-self: flex-end;*/
+            /*font-size: 0.4em;*/
+            /*margin-right: 20px;*/
+        }
+
+        .contentPageContentItem:nth-child(6) {
+            /*flex: 0 0 auto;*/
+            background-color: #357E0B;
+            min-height: 70px;
+            min-width: 170px;
+            font-size: 30px;
+            margin:20px;
+            /*align-self: flex-end;*/
+            /*font-size: 0.4em;*/
+            /*margin-right: 20px;*/
+        }
+
+
+
+        .contentPageFooter {
             align-self: flex-end;
-            font-size: 0.4em;
             margin-right: 20px;
+            display: flex;
+            font-size: 30px;
         }
+
+        .contentPageFooterItem:first-child {
+            color: rgba(255,255,255,0.3);
+        }
+
+        .contentPageFooterItem:last-child {
+            color: rgba(255,255,255,0.3);
+            margin-left: 10px;
+            color: white;
+        }
+
     </style>
 
     <template is="dom-bind">
 
+        <div class="contentPageHolder">
 
-        <div class="freeholder">
-
-            <div class="freeitems">
-
-
-                <p style="font-size:2vw;margin:0px;line-height:64px;">Available for</p>
-                <sgb-countdown end-date="{{model.NextEventDate}}"></sgb-countdown>
-
-
-                <p style="font-size:4vw;margin:0px;line-height:64px;">CLAIM</p>
-                <p style="font-size:4vw;margin:0px;line-height:64px;">ROOM</p>
-                <p style="font-size:4vw;margin:0px;line-height:64px;">NOW!!!</p>
-
-
-
-
-                <button style="width:100%;padding:20px" type="button" value="{{model.ClaimTrigger$::click}}" class="btn btn-sm btn-primary" onclick="++this.value">PRESS HERE</button>
+            <div class="contentPageHeader">
             </div>
 
-
-            <div class="freeitems">
-                <span>{{model.Room.Name}}</span>
-                <sgb-clock style="margin-left:10px;color:white" time-offset="{{model.Room.TimeOffset}}"></sgb-clock>
+            <div class="contentPageContent">
+                <div class="contentPageContentItem">
+                    <p style="font-size:2vw;margin:0px;line-height:64px;">Available for</p>
+                </div>
+                <sgb-availabletime class="contentPageContentItem" end-date="{{model.NextEventDate}}"></sgb-availabletime>
+                <p class="contentPageContentItem" style="font-size:4vw;margin:0px;line-height:64px;">CLAIM</p>
+                <p class="contentPageContentItem" style="font-size:4vw;margin:0px;line-height:64px;">ROOM</p>
+                <p class="contentPageContentItem" style="font-size:4vw;margin:0px;line-height:64px;">NOW!!!</p>
+                <button  type="button" value="{{model.ClaimTrigger$::click}}" class="btn btn-sm btn-primary contentPageContentItem" onclick="++this.value">PRESS HERE</button>
             </div>
+
+            <div class="contentPageFooter">
+
+                <span class="contentPageFooterItem">{{model.Room.Name}}</span>
+                <sgb-clock class="contentPageFooterItem"  time-offset="{{model.Room.TimeOffset}}"></sgb-clock>
+
+            </div>
+
         </div>
+
+
     </template>
 </template>

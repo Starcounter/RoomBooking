@@ -1,0 +1,198 @@
+
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+
+
+<dom-module id="sgb-timepicker">
+
+
+    <template>
+
+        <style>
+            .holder2 {
+                display: flex;
+                flex-direction: row;
+                width: 100%;
+                font-size: 20px;
+                font-family: "Roboto";
+                user-select:none;
+            }
+
+            .hourHolder {
+                display: flex;
+                flex-direction: column;
+                flex: 0 1 auto;
+                align-items: stretch;
+            }
+
+            .colonHolder {
+                font-size: 20px;
+                font-family: "Roboto";
+                align-self: center;
+                margin:20px;
+            }
+
+            .minuteHolder {
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+                flex: 0 1 auto;
+            }
+
+            .stepButton {
+                height: 70px;
+                width: 70px;
+                border: none;
+                background: #F2F2F2;
+            }
+
+            .valuePart {
+                flex: 1 1 auto;
+                text-align: center;
+                font-size: 30px;
+                background: #F2F2F2;
+                border-top: 1px solid #E5E5E5;
+                border-bottom: 1px solid #E5E5E5;
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+
+            button img {
+                height: 20px;
+                width: 20px;
+            }
+
+    
+        </style>
+
+        <div class="holder2">
+            <div class="hourHolder">
+                <button class="stepButton" on-tap="hourIncreaseTrigger"><img src="/roombooking/images/up.svg" /></button>
+                <div class="valuePart">{{hourStr}}</div>
+                <button class="stepButton" on-tap="hourDecreaseTrigger"><img src="/roombooking/images/down.svg" /></button>
+            </div>
+
+            <div class="colonHolder">:</div>
+
+            <div class="minuteHolder">
+                <button class="stepButton" on-tap="minuteIncreaseTrigger"><img src="/roombooking/images/up.svg" /></button>
+                <div class="valuePart">{{minuteStr}}</div>
+                <button class="stepButton" on-tap="minuteDecreaseTrigger"><img src="/roombooking/images/down.svg" /></button>
+
+            </div>
+        </div>
+
+    </template>
+
+    <script>
+        Polymer({
+            is: "sgb-timepicker",
+            properties: {
+                startTime: {
+                    type: String,
+                    notify: true,
+                    observer: '_startTimeChanged',
+                },
+                hourStr: {
+                    type: String
+                },
+                minuteStr: {
+                    type: String
+                },
+                hour: {
+                    type: Number,
+                    notify: true,
+                    observer: '_hourChanged',
+                    value: 0
+                },
+                minute: {
+                    type: Number,
+                    notify: true,
+                    observer: '_minuteChanged',
+                    value: 0
+                },
+                isReady: {
+                    type: Boolean,
+                },
+                day: {
+                    type: String,
+                }
+            },
+            _startTimeChanged: function (newValue, oldValue) {
+                if (!newValue) return;
+                this.hour = parseInt(newValue.substring(0,2));
+                this.minute = parseInt(newValue.substring(3, 5));
+            },
+            _hourChanged: function (newValue, oldValue) {
+
+                this.hourStr = this.padStr(this.hour, 2);
+
+                if (this.isReady) {
+                    this.startTime = this.padStr(this.hour, 2) + ":" + this.padStr(this.minute, 2);
+                }
+
+            },
+            _minuteChanged: function (newValue, oldValue) {
+                this.minuteStr = this.padStr(this.minute, 2);
+                if (this.isReady) {
+                    this.startTime = this.padStr(this.hour, 2) + ":" + this.padStr(this.minute, 2);
+                }
+            },        
+            ready: function () {
+                this.isReady = true;
+            },
+            hourIncreaseTrigger: function () {
+
+                if (this.hour >= 22) {
+                    this.hour = 23;
+                }
+                else {
+                    this.hour++;
+                }
+            },
+            hourDecreaseTrigger: function () {
+
+                if (this.hour <= 0) {
+                    this.hour = 0;
+                }
+                else {
+                    this.hour--;
+                }
+
+
+            },
+            minuteIncreaseTrigger: function () {
+
+                if (this.minute >= 58) {
+                    this.minute = 59;
+                }
+                else {
+                    this.minute++;
+                }
+
+            },
+            minuteDecreaseTrigger: function () {
+
+
+
+                if (this.minute <= 0) {
+                    this.minute = 0;
+                }
+                else {
+                    this.minute--;
+
+                } 
+
+
+
+
+            },
+            padStr: function (n, width, z) {
+                z = z || '0';
+                n = n + '';
+                return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+            }
+        });
+    </script>
+
+</dom-module>

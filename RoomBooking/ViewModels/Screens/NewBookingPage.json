@@ -2,11 +2,12 @@
   "Html": "/roombooking/screens/NewBooking.html",
   "BeginDay$": "",
   "StartTime$": "",
+  "DurationTime$": "",
   "DurationHours$": 0,
   "DurationMinutes$": 0,
-  "Title$": "",
+  "Name$": "",
   "CreatedBy$": "",
-  "ValidationMessage" : "",
+  "ValidationMessage": "",
   "CreateBookingTrigger$": 0,
   "CloseTrigger$": 0
 }

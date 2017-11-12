@@ -9,7 +9,7 @@
       "BeginDate": "",
       "$EndDate": { "Bind": "EndDateStr" },
       "EndDate": "",
-      "Title": "",
+      "Name": "",
       "$IsSelected": { "Bind": "IsSelectedFlag" },
       "IsSelected": false,
       "IsActive": false,

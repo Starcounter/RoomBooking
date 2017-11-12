@@ -1,0 +1,104 @@
+<dom-module id="sgb-availabletime">
+
+
+
+    <template>
+        {{timeLeft}}
+    </template>
+
+    <script>
+        Polymer({
+            is: "sgb-availabletime",
+            properties: {
+                endDate: {
+                    type: String,
+                    notify: true,
+                    observer: '_endDateChanged'
+                },
+                timeLeft: {
+                    type: String
+                },
+                progress: {
+                    type: Number
+                },
+                timerId: {
+                    type: String
+                }
+            },
+            _endDateChanged: function (newValue, oldValue) {
+                if (newValue) {
+                    this.timerCallback();
+                }
+            },
+            detached: function () {
+
+                if (this.timerId) {
+                    clearTimeout(this.timerId);
+                }
+            },
+            ready: function () {
+                this.timerCallback();
+                var ms = 1000 - new Date().getMilliseconds();
+                // Wait secUntilZero until we start our timer
+                this.timerId = setTimeout(this.syncedTimer.bind(this), 1000 - ms);
+            },
+            syncedTimer: function () {
+                if (this.timerId) {
+                    clearTimeout(this.timerId);
+                    this.timerId = undefined;
+                }
+                this.timerId = setInterval(this.timerCallback.bind(this), 1000);
+            },
+            timerCallback: function () {
+                if (this.endDate) {
+                    var eventLeftDuration = (new Date(this.endDate.substring(0, this.endDate.length - 1)).getTime() - new Date().getTime()) / 1000;
+                    this.timeLeft = this.durationToStr(eventLeftDuration);
+                }
+            },
+            durationToStr: function (sec) {
+
+                var sec_num = parseInt(sec, 10);
+                var hours = Math.floor(sec_num / 3600);
+                var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+                var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+                //if (hours < 1) {
+                //    hours = 0;
+                //}
+
+                //if (minutes < 1) {
+                //    minutes = 0;
+                //}
+
+                //                return this.pad(hours, 2) + ":" + this.pad(minutes, 2) + ":" + this.pad(seconds, 2);
+
+
+                if (hours > 24) {
+                    return ">24h";
+                }
+
+                if (hours < 1) {
+
+                    if (minutes < 1) {
+                        return seconds + "sec";
+
+                    }
+                    return minutes + "min";
+                }
+
+                if (minutes == 0) {
+                    return hours + "h";
+                }
+
+                return hours + "h " + minutes + "min";
+            },
+            pad: function (n, width, z) {
+                z = z || '0';
+                n = n + '';
+                return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+            }
+
+        });
+    </script>
+
+</dom-module>

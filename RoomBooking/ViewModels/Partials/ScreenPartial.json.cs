@@ -2,15 +2,18 @@ using Screens.Common;
 using Starcounter;
 using System.Linq;
 using System.Collections.Generic;
+using CalendarSync.Database;
+
 namespace RoomBooking.ViewModels.Partials
 {
     partial class ScreenPartial : Json, IBound<Screen>
     {
-        public IEnumerable<Room> Rooms => GetUserRooms(UserSession.GetSignedInUser());
+        public IEnumerable<SyncedCalendar> Rooms => GetUserRooms(UserSession.GetSignedInUser());
 
-        private IEnumerable<Room> GetUserRooms(User user)
+        private IEnumerable<SyncedCalendar> GetUserRooms(User user)
         {
-            return Db.SQL<Room>("SELECT o.Room FROM RoomBooking.UserRoomRelation o WHERE o.User = ?", user);
+            return Db.SQL<SyncedCalendar>($"SELECT o.{nameof(UserRoomRelation.Room)} FROM {nameof(RoomBooking)}.\"{nameof(UserRoomRelation)}\" o WHERE o.{nameof(UserRoomRelation.User)} = ?", user);
+//            return Db.SQL<Room>("SELECT o.Room FROM RoomBooking.UserRoomRelation o WHERE o.User = ?", user);
         }
 
         protected override void OnData()
@@ -20,7 +23,7 @@ namespace RoomBooking.ViewModels.Partials
 
             if (this.Data != null)
             {
-                RoomScreenRelation roomScreenRelation = Db.SQL<RoomScreenRelation>("SELECT o FROM RoomBooking.RoomScreenRelation o WHERE o.Screen = ?", this.Data).FirstOrDefault();
+                RoomScreenRelation roomScreenRelation = Db.SQL<RoomScreenRelation>($"SELECT o FROM {nameof(RoomBooking)}.\"{nameof(RoomScreenRelation)}\" o WHERE o.{nameof(RoomScreenRelation.Screen)} = ?", this.Data).FirstOrDefault();
                 if (roomScreenRelation != null)
                 {
                     this.SelectedRoomId = roomScreenRelation.Room.GetObjectID();
@@ -32,7 +35,7 @@ namespace RoomBooking.ViewModels.Partials
 
         public void Handle(Input.Enable action)
         {
-            RoomScreenRelation roomScreenRelation = Db.SQL<RoomScreenRelation>("SELECT o FROM RoomBooking.RoomScreenRelation o WHERE o.Screen = ?", this.Data).FirstOrDefault();
+            RoomScreenRelation roomScreenRelation = Db.SQL<RoomScreenRelation>($"SELECT o FROM {nameof(RoomBooking)}.\"{nameof(RoomScreenRelation)}\" o WHERE o.{nameof(RoomScreenRelation.Screen)} = ?", this.Data).FirstOrDefault();
             if (roomScreenRelation != null) {
                 roomScreenRelation.Enabled = action.Value;
             }
@@ -43,12 +46,12 @@ namespace RoomBooking.ViewModels.Partials
 
             try
             {
-                Room oldRoom = Db.FromId(this.SelectedRoomId) as Room;
+                SyncedCalendar oldRoom = Db.FromId(this.SelectedRoomId) as SyncedCalendar;
 
                 if (oldRoom != null)
                 {
                     // Remove old room relation
-                    RoomScreenRelation oldRoomScreenRelation = Db.SQL<RoomScreenRelation>("SELECT o FROM RoomBooking.RoomScreenRelation o WHERE o.Screen = ? AND o.Room = ?", this.Data, oldRoom).FirstOrDefault();
+                    RoomScreenRelation oldRoomScreenRelation = Db.SQL<RoomScreenRelation>($"SELECT o FROM {nameof(RoomBooking)}.\"{nameof(RoomScreenRelation)}\" o WHERE o.{nameof(RoomScreenRelation.Screen)} = ? AND o.{nameof(RoomScreenRelation.Room)} = ?", this.Data, oldRoom).FirstOrDefault();
                     oldRoomScreenRelation.Delete();
                 }
             }
@@ -58,12 +61,12 @@ namespace RoomBooking.ViewModels.Partials
             }
             try
             {
-                Room newRoom = Db.FromId(action.Value) as Room;
+                SyncedCalendar newRoom = Db.FromId(action.Value) as SyncedCalendar;
 
                 if (newRoom != null)
                 {
                     // Create old room relation
-                    RoomScreenRelation roomScreenRelation = Db.SQL<RoomScreenRelation>("SELECT o FROM RoomBooking.RoomScreenRelation o WHERE o.Screen = ? AND o.Room = ?", this.Data, newRoom).FirstOrDefault();
+                    RoomScreenRelation roomScreenRelation = Db.SQL<RoomScreenRelation>($"SELECT o FROM {nameof(RoomBooking)}.\"{nameof(RoomScreenRelation)}\" o WHERE o.{nameof(RoomScreenRelation.Screen)}  = ? AND o.{nameof(RoomScreenRelation.Room)} = ?", this.Data, newRoom).FirstOrDefault();
                     if (roomScreenRelation == null)
                     {
                         roomScreenRelation = new RoomScreenRelation();
@@ -85,7 +88,7 @@ namespace RoomBooking.ViewModels.Partials
 
 
     [ScreenPartial_json.Rooms]
-    partial class ScreenPartialRoomItem : Json, IBound<Room>
+    partial class ScreenPartialRoomItem : Json, IBound<SyncedCalendar>
     {
 
         public string Id => this.Data?.GetObjectID();

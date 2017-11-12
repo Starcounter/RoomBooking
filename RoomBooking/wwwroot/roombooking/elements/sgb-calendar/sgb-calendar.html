@@ -2,45 +2,34 @@
 
     <template>
 
-        <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
-
         <style>
-            /* CSS rules for your element */
 
-            /*:host {
-                display: block;
-                border: 10px solid orange;
-                height: inherit;
-            }*/
-            /*html /deep/ {
-                :: -webkit-scrollbar-track
-
-            {
-                background: white;
+            :host {
+                overflow: auto;
             }
-
-            ::-webkit-scrollbar {
-                width: 7.5px;
-            }
-
-            ::-webkit-scrollbar-thumb {
-                background-color: lightgrey;
-                //fallback background-color: rgba(26, 26, 26, 0.25);
-            }
-
-            }*/
 
             .startStopHolder {
                 display: flex;
-                /*background-color:red;*/
-                height:100%;
-                flex-direction:column;
+                flex-direction: column;
+                /*height: 100%;*/
+                margin-left: 20px;
+            }
+
+            .timeTable {
+                width: 100%;
+                font-size: 2.2vw;
+            }
+
+            .eventNameColumn {
+                padding-left: 20px;
+                padding-right: 20px;
             }
 
             .booking1 {
                 flex: 1 1 100%;
-                padding-top:4px;
+                padding-top: 4px;
             }
+
             .booking2 {
                 flex: 1 1 auto;
                 vertical-align: bottom;
@@ -55,17 +44,14 @@
             .eventItemSelected {
                 color: white;
                 background-color: #5d5d5d;
-                /*border-bottom: 1pt solid rgba(0, 0, 0, 0.08);*/
                 cursor: pointer;
             }
 
             .eventItemActive {
                 color: white;
                 background-color: #A40D27;
-                /*border-bottom: 1pt solid rgba(0, 0, 0, 0.08);*/
                 cursor: pointer;
             }
-
 
             .eventItem:hover {
                 background-color: rgba(0, 0, 0, 0.10);
@@ -73,124 +59,63 @@
 
             table {
                 border-collapse: collapse;
-                margin-top: 40px;
+                /*overflow-y: scroll;
+                overflow-x: scroll;*/
             }
-                table tr {
-                    border-bottom: 1pt solid rgba(0, 0, 0, 0.08);
-                }
 
+            table tr {
+                border-bottom: 1pt solid rgba(0, 0, 0, 0.08);
+            }
         </style>
-
-        <div style="font-size:20px;font-family: 'Roboto'" >
-
-            <table style="width:100%;font-size: 1.2vw;" border="0" cellspacing="0" cellpadding="0">
-                <!--<thead>
-                <tr>
-                    <td>1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                </tr>
-            </thead>-->
-                <tbody>
-                    <template is="dom-repeat" items="[[timeSlotes]]">
-
-                        <template is="dom-if" if="{{item.Booking}}">
-                            <tr style="height:80px" class$="[[selectedClass(item.Booking.IsSelected,item.Booking.IsActive)]]" on-tap="selectEventTrigger">
-
-                                <td width="10px" bgcolor="#A40D27"></td>
-
-                                <td width="90px" style="height:inherit;padding-top:0px;padding-bottom:0px">
-                                    <div style="height:100%;margin-left:20px" class="startStopHolder">
-                                        <div class="booking1">{{item.beginTimeStr}}</div>
-                                        <template is="dom-if" if="{{item.Booking.Overlapping}}">
-                                            <div style="height: 20px; padding-left: 7px">
-                                                <img height="20" s_tyle="text-align:right;" title="Overlapping event" src="/roombooking/images/warning1.svg" />
-                                            </div>
-                                        </template>
-                                        <div class="booking2">{{item.endTimeStr}}</div>
-                                    </div>
-                                </td>
-
-                                <td style="vertical-align:top;padding-top: 4px;">
-                                    {{item.Booking.Title}}
-                                    <!--Overlapping:{{item.Booking.Overlapping}}
-                                    IsActive:{{item.Booking.IsActive}}
-                                    IsSelected:{{item.Booking.IsSelected}}-->
-                                    
-                                </td>
-
-                                <td style="vertical-align:top;text-align: right;padding-right:30px;padding-top: 4px;">
-                                    {{item.Duration}}
-                                </td>
-                            </tr>
-                        </template>
-
-                        <template is="dom-if" if="{{!item.Booking}}">
-                            <tr style="height:40px" class="eventItem" on-tap="selectEventTrigger">
-                                <td width="10px"></td>
-                                <td style="height:inherit">
-                               
-                                    <div style="height:100%;margin-left:20px" class="startStopHolder">
-                                        <div class="booking1">{{item.beginTimeStr}}</div>
-                                    </div>
-
-                                </td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                        </template>
-                    </template>
-                </tbody>
-            </table>
-        </div>
-
-
-
-        <!--<table class="table table-striped table-condensed">
-            <thead>
-                <tr>
-                    <td>BeginUtcDate</td>
-                    <td>EndUtcDate</td>
-                    <td>Title</td>
-                    <td>IsSelected</td>
-                </tr>
-            </thead>
+        
+        <table id="myElement" class="timeTable" border="0" cellspacing="0" cellpadding="0">
             <tbody>
-                <template is="dom-repeat" items="[[events]]">
+                <template is="dom-repeat" items="[[timeSlotes]]">
 
+                    <template is="dom-if" if="{{item.Booking}}">
+                        <tr class$="[[selectedClass(item.Booking.IsSelected,item.Booking.IsActive,item,index)]]" on-tap="selectEventTrigger">
 
-                    <tr class$="[[selectedStyle(item.IsSelected)]]" on-tap="selectEventTrigger">
-                        <td>{{item.BeginUtcDate}} - {{item.BeginDate}}</td>
-                        <td>{{item.EndUtcDate}} - {{item.EndDate}}</td>
-                        <td>{{item.Title}}</td>
-                        <td>{{item.IsSelected}}</td>
-                    </tr>
+                            <td width="10px" bgcolor="#A40D27"></td>
+
+                            <td width="90px" style="padding-top:0px;padding-bottom:0px">
+                                <div  class="startStopHolder">
+                                    <div class="booking1">{{item.beginTimeStr}}</div>
+                                    <template is="dom-if" if="{{item.Booking.Overlapping}}">
+                                        <div style="flex:0 0 auto; padding-left: 7px">
+                                            <img height="50" title="Overlapping event" src="/roombooking/images/warning1.svg" />
+                                        </div>
+                                    </template>
+                                    <div class="booking2">{{item.endTimeStr}}</div>
+                                </div>
+                            </td>
+
+                            <td class="eventNameColumn" style="vertical-align:top;padding-top: 4px;">
+                                {{item.Booking.Name}}
+                            </td>
+
+                            <td style="vertical-align:top;text-align: right;padding-right:30px;padding-top: 4px;">
+                                {{item.Duration}}
+                            </td>
+                        </tr>
+                    </template>
+
+                    <template is="dom-if" if="{{!item.Booking}}">
+                        <tr style="height:40px" class="eventItem" on-tap="selectEventTrigger">
+                            <td width="10px"></td>
+                            <td style="height:inherit">
+
+                                <div style="height:100%;margin-left:20px" class="startStopHolder">
+                                    <div class="booking1">{{item.beginTimeStr}}</div>
+                                </div>
+
+                            </td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </template>
                 </template>
             </tbody>
-        </table>-->
-
-
-        <!--<br />
-        <br />
-
-        <div style="border:1px solid green">
-
-            <p>
-                BeginDate
-            </p>
-            <input type="datetime-local" value="{{beginDate::input}}" placeholder="BeginDate" />
-            <p>
-                EndDate
-            </p>
-            <input type="datetime-local" value="{{endDate::input}}" placeholder="EndDate" />
-            <br />
-            <br />
-
-            <button type="button" on-tap="newBookingTrigger">Create</button>
-        </div>-->
-
-
+        </table>
 
 
     </template>
@@ -242,8 +167,6 @@
                 'eventsAddedOrRemoved(events.*)'
             ],
             eventsAddedOrRemoved: function (changeRecord) {
-//                console.log("event array changed");
-
 
                 if (changeRecord.path === 'items.splices') {
                     // handle added or removed items ...
@@ -268,7 +191,7 @@
             },
             selectEventTrigger: function (e) {
 
-
+    
                 if (e.model.item.Booking) {
                     e.model.item.Booking.SelectedTrigger$++
                 }
@@ -283,13 +206,13 @@
                 this.bookingTrigger++;
             },
             _beginDateChanged: function (newValue, oldValue) {
-              
+
             },
             _endDateChanged: function (newValue, oldValue) {
-                
+
             },
             _selectedDateChanged: function (newValue, oldValue) {
-//                                debugger;
+                //                                debugger;
                 //                this.fillTimeSlots();
             },
             _eventItemsChanged: function (changeRecord) {
@@ -298,7 +221,9 @@
                 //                this.fillTimeSlots();
 
             },
-            selectedClass: function (isSelected, isActive) {
+            selectedClass: function (isSelected, isActive, item, index) {
+
+
                 var classStr = "";
                 if (isSelected == false && isActive == false) {
                     return "eventItem";
@@ -310,7 +235,45 @@
 
                 if (isActive) {
                     classStr += "eventItemActive";
+
+                    // Scroll this into view
+
+
+                    // Polymer.dom(item)
+                    //elementToFocus.scrollIntoView();
+                    //                    this.$$('#myElement').scrollIntoView();
+                    var tableElement = this.$$('#myElement');
+                    var element = this.$$('#myElement').rows[index - 1];
+
+
+                    var tableHeight = this.offsetHeight;
+                    var elementHeight = element.offsetHeight;
+                    //element.scrollIntoView();
+                    //this.scrollTop += 100;
+                    //var posArray = element.positionedOffset();
+                    //this.scrollTop = posArray[1];
+                    //var topPos = element.offsetTop;
+                    //tableElement.scrollTop = topPos;
+                    //debugger;
+//                    element.scrollIntoView();
+                    var a = element.offsetTop;
+    //                console.log(a);
+  //                  console.log("event array changed");
+
+//                    this.scrollTo(0, 100);
+
+                    //this.scrollTop = 2000;
+                    //element.scrollTo();
+                   // this.$$('#myElement').scrollIntoView();
+
+                    //tableElement.scrollTop = 500;
+                    //element.scrollIntoView(false);
+                    //element.scrollIntoView({ block: "end" });
+                    //element.scrollIntoView({ behavior: "instant", block: "end", inline: "nearest" });
+
+
                 }
+
 
                 return classStr;
                 //return mobile ? 'mobile-styling' : '';
@@ -324,6 +287,7 @@
                 //        self.updateCalendarCallback();
                 //    }, 1);
                 //}
+
             },
             ready: function () {
                 //console.log('ready');
@@ -332,7 +296,24 @@
                 //}
 
                 //  this.fillTimeSlots();
+
+               // .scrollintoview();
+//                scrollIntoView
+
             },
+            scrollIntoView: function(element, container) {
+                var containerTop = $(container).scrollTop(); 
+                var containerBottom = containerTop + $(container).height(); 
+                var elemTop = element.offsetTop;
+                var elemBottom = elemTop + $(element).height(); 
+                if(elemTop < containerTop) {
+                    $(container).scrollTop(elemTop);
+                } else if (elemBottom > containerBottom) {
+                    $(container).scrollTop(elemBottom - $(container).height());
+                }
+            },
+
+
             fillTimeSlots: function () {
 
 
@@ -351,7 +332,7 @@
                     var eventBeginMin = (beginDate.getHours() * 60) + beginDate.getMinutes();
 
                     while (stepTimeMin < eventBeginMin) {
-                        this.push('timeSlotes', this.createTimeSlotData(stepTimeMin, stepTimeMin+step, null));
+                        this.push('timeSlotes', this.createTimeSlotData(stepTimeMin, stepTimeMin + step, null));
                         stepTimeMin = stepTimeMin + step;
                     }
 
@@ -372,7 +353,7 @@
 
                 while (stepTimeMin <= 1440) {
                     // Some minutes left
-                    this.push('timeSlotes', this.createTimeSlotData(stepTimeMin, stepTimeMin+step,null));
+                    this.push('timeSlotes', this.createTimeSlotData(stepTimeMin, stepTimeMin + step, null));
 
                     //this.push('timeSlotes', { Name: "LAST 23:59" });
                     stepTimeMin = stepTimeMin + step;

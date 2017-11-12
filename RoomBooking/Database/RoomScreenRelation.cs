@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Screens.Common;
+using CalendarSync.Database;
 
 namespace RoomBooking
 {
@@ -12,7 +13,7 @@ namespace RoomBooking
     public class RoomScreenRelation
     {
         public Screen Screen;
-        public Room Room;
+        public SyncedCalendar Room;
         public bool Enabled;
         public static void RegisterHooks()
         {

@@ -7,11 +7,13 @@
 
 
     <style>
+
+
+
         .holder {
             display: flex;
             flex-direction: column;
             height: 100%;
-            /*width: 100%;*/
         }
 
         .picker {
@@ -26,9 +28,8 @@
             flex-basis: auto;
             max-height: 100%;
             height: 100px;
-            /*max-width: 100%;*/
-            overflow-y: scroll;
-            overflow-x: scroll;
+            /*overflow-y: scroll;
+            overflow-x: scroll;*/
         }
     </style>
 
@@ -41,10 +42,10 @@
                 <sgb-daypicker date="{{model.SelectedDate$}}"></sgb-daypicker>
             </div>
 
-            <div class="cal">
-                <sgb-calendar selected-date="{{model.SelectedDate$}}" booking-Trigger="{{model.NewBooking.CreateTrigger$}}" events="{{model.Bookings}}" begin-date="{{model.NewBooking.BeginDate$}}" end-date="{{model.NewBooking.EndDate$}}"></sgb-calendar>
+<!--            <div class="cal">-->
+                <sgb-calendar class="cal"  selected-date="{{model.SelectedDate$}}" booking-Trigger="{{model.NewBooking.CreateTrigger$}}" events="{{model.Bookings}}" begin-date="{{model.NewBooking.BeginDate$}}" end-date="{{model.NewBooking.EndDate$}}"></sgb-calendar>
 
-            </div>
+    <!--  -->        </div>
 
         </div>
 

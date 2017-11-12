@@ -16,19 +16,33 @@
                 flex-direction: row;
                 height: 100%;
                 font-size: 20px;
-                font-family: "Roboto";
             }
 
-            .stepButton {
+            /*.stepButton {
                 flex: 0 0 70px;
                 height: 70px;
                 font-size: 20px;
                 font-family: "Roboto";
+            }*/
+
+            .stepButton {
+                height: 70px;
+                width: 70px;
+                border: none;
+                background: #F2F2F2;
+            }
+
+            button img {
+                height: 20px;
+                width: 20px;
+                margin-top:2px;
             }
 
             .datePart {
                 flex: 1 0 auto;
-                height: 70px;
+                text-align: center;
+                justify-content:center;
+                /*height: 70px;*/
             }
 
             .dateheading {
@@ -57,9 +71,9 @@
         <div class="dateheading">{{day}}</div>
 
         <div class="holder">
-            <button class="stepButton" on-tap="decreaseTrigger">&lt;</button>
+            <button class="stepButton" on-tap="decreaseTrigger"><img src="/roombooking/images/left.svg" /></button>
             <input class="datePart" type="date" value="{{date::input}}" />
-            <button class="stepButton" on-tap="increaseTrigger">&gt;</button>
+            <button class="stepButton" on-tap="increaseTrigger"><img src="/roombooking/images/right.svg" /></button>
         </div>
 
     </template>
@@ -69,7 +83,7 @@
             is: "sgb-daypicker",
             properties: {
                 date: {
-                    type: String,
+                    type: Date,
                     notify: true,
                     observer: '_dateChanged'
                 },
@@ -78,11 +92,7 @@
                 }
             },
             _dateChanged: function (newValue, oldValue) {
-//                this.day = new Date(this.date).getDay();
-
                 this.day = new Date(this.date).toLocaleString('en-us', { weekday: 'long' });
-
-
             },
             increaseTrigger: function () {
                 this.date = this.adjustDate(this.date, 1);
@@ -93,13 +103,7 @@
             adjustDate: function (date, adjustDays) {
                 var dateObj = new Date(date);
                 var num = dateObj.setDate(dateObj.getDate() + adjustDays);
-                return new Date(num).toLocaleDateString();
-            },
-            attached: function () {
-//                console.log('attached');
-
-                //this.day = new Date(this.date).getDay();
-
+                return new Date(num).toISOString().substr(0,10); // 2017-11-10T11:32:50.794Z
             }
         });
     </script>

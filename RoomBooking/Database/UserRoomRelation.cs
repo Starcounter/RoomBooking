@@ -5,14 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Screens.Common;
-
+using CalendarSync.Database;
 namespace RoomBooking
 {
     [Database]
     public class UserRoomRelation
     {
         public User User;
-        public Room Room;
+        public SyncedCalendar Room;
         public static void RegisterHooks()
         {
 

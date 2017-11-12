@@ -2,7 +2,7 @@
   "Html": "/roombooking/screens/Event.html",
   "BeginUtcDate": "",
   "EndUtcDate": "",
-  "Title": "",
+  "Name": "",
   "Description": "",
   "Room": {
     "Name": ""

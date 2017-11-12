@@ -18,3 +18,48 @@ body {
     flex: 1 55%;
     height: 100%
 }
+
+
+
+.contentPageHolder {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    font-family: Roboto;
+}
+
+.contentPageHeader {
+    flex: 0 0 auto;
+    color: white;
+    font-size: 4vw;
+    text-align: center;
+}
+
+.contentPageContent {
+    flex: 1 1 auto;
+}
+
+
+.contentPageOperationPanel {
+    flex: 0 1 auto;
+    display: flex;
+    align-self: center;
+    padding: 20px;
+}
+
+
+.contentPageOperationPanel button {
+    flex: 0 1 auto;
+    min-height: 70px;
+    min-width: 170px;
+    font-size: 30px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+
+.contentPageFooter {
+    flex: 0 1 auto;
+    display: flex;
+}
+
