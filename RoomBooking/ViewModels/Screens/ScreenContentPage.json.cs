@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Starcounter.Templates;
 using System.Threading;
-using CalendarSync.Database;
 
 namespace RoomBooking.ViewModels.Screens
 {
@@ -34,11 +33,11 @@ namespace RoomBooking.ViewModels.Screens
         }
 
 
-        public SyncedEvent ActiveEvent {
+        public RoomBookingEvent ActiveEvent {
             get {
                 if (this.Data == null) return null;
                 DateTime utcNow = DateTime.UtcNow;
-                SyncedEvent roomBookingEvent = Db.SQL<SyncedEvent>($"SELECT o FROM CalendarSync.Database.\"{nameof(SyncedEvent)}\" o WHERE o.{nameof(SyncedEvent.Calendar)} = ? AND ? >= o.{nameof(SyncedEvent.BeginUtcDate)} AND ? < o.{nameof(SyncedEvent.EndUtcDate)} AND o.{nameof(SyncedEvent.EndUtcDate)} >= o.{nameof(SyncedEvent.BeginUtcDate)} ORDER BY o.{nameof(SyncedEvent.BeginUtcDate)}", this.Data.Room, utcNow, utcNow).FirstOrDefault();
+                RoomBookingEvent roomBookingEvent = Db.SQL<RoomBookingEvent>($"SELECT o FROM {nameof(RoomBooking)}.\"{nameof(RoomBookingEvent)}\" o WHERE o.{nameof(RoomBookingEvent.Room)} = ? AND ? >= o.{nameof(RoomBookingEvent.BeginUtcDate)} AND ? < o.{nameof(RoomBookingEvent.EndUtcDate)} AND o.{nameof(RoomBookingEvent.EndUtcDate)} >= o.{nameof(RoomBookingEvent.BeginUtcDate)} ORDER BY o.{nameof(RoomBookingEvent.BeginUtcDate)}", this.Data.Room, utcNow, utcNow).FirstOrDefault();
                 return roomBookingEvent;
             }
         }
@@ -54,6 +53,10 @@ namespace RoomBooking.ViewModels.Screens
 
 
                 if (this.ContentPartial is NewBookingPage && ((NewBookingPage)this.ContentPartial).Data.Equals(roomBookingEvent))
+                {
+                    return;
+                }
+                if (this.ContentPartial is NewQuickBookingPage && ((NewQuickBookingPage)this.ContentPartial).Data.Equals(roomBookingEvent))
                 {
                     return;
                 }
@@ -105,9 +108,29 @@ namespace RoomBooking.ViewModels.Screens
                     // 3. convert to UTC
                     newBookingPage.Data.BeginUtcDate = TimeZoneInfo.ConvertTimeToUtc(newRoomBeginTime, this.Data.Room.TimeZoneInfo);
                     newBookingPage.Data.EndUtcDate = newBookingPage.Data.BeginUtcDate + duration;
-
-
                 }
+                else if (this.ContentPartial is NewQuickBookingPage)
+                {
+                    NewQuickBookingPage newQuickBookingPage = this.ContentPartial as NewQuickBookingPage;
+
+                    // Change Date (year,month day)
+                    // Note: Do not touch the time
+
+                    // Get duration
+                    TimeSpan duration = newQuickBookingPage.Data.EndUtcDate - newQuickBookingPage.Data.BeginUtcDate;
+                    // 1 Get room time
+
+                    DateTime roomBeginTime = TimeZoneInfo.ConvertTimeFromUtc(newQuickBookingPage.Data.BeginUtcDate, this.Data.Room.TimeZoneInfo);
+
+                    // 2. change year,month,day
+                    DateTime newRoomBeginTime = new DateTime(selectedDate.Year, selectedDate.Month, selectedDate.Day, roomBeginTime.Hour, roomBeginTime.Minute, roomBeginTime.Second, roomBeginTime.Millisecond, DateTimeKind.Unspecified);
+
+                    // 3. convert to UTC
+                    newQuickBookingPage.Data.BeginUtcDate = TimeZoneInfo.ConvertTimeToUtc(newRoomBeginTime, this.Data.Room.TimeZoneInfo);
+                    newQuickBookingPage.Data.EndUtcDate = newQuickBookingPage.Data.BeginUtcDate + duration;
+                }
+
+
             };
 
             this.CalendarPartial = calendarePage;
@@ -134,7 +157,7 @@ namespace RoomBooking.ViewModels.Screens
             }
 
             // Get current event
-            SyncedEvent roomBookingEvent = this.ActiveEvent;
+            RoomBookingEvent roomBookingEvent = this.ActiveEvent;
             if (roomBookingEvent != null)
             {
                 if (this.ContentPartial is BusyPage)
@@ -161,7 +184,7 @@ namespace RoomBooking.ViewModels.Screens
         /// </summary>
         /// <param name="roomBookingEvent"></param>
         /// <returns></returns>
-        private EventPage CreateEventPage(SyncedEvent roomBookingEvent)
+        private EventPage CreateEventPage(RoomBookingEvent roomBookingEvent)
         {
             EventPage eventPage = new EventPage() { Data = roomBookingEvent };
             eventPage.OnClose = () =>
@@ -178,11 +201,11 @@ namespace RoomBooking.ViewModels.Screens
         /// </summary>
         /// <param name="room"></param>
         /// <returns></returns>
-        private FreePage CreateFreePage(SyncedCalendar room)
+        private FreePage CreateFreePage(Room room)
         {
             FreePage freePage = new FreePage();
             freePage.Init(room);
-            freePage.OnNewBooking = () => this.ContentPartial = CreateNewBookingPage(room, DateTime.UtcNow, DateTime.UtcNow.AddHours(1), "Quick booking");   // TODO:
+            freePage.OnNewBooking = () => this.ContentPartial = CreateNewQuickBookingPage(room, DateTime.UtcNow, DateTime.UtcNow.AddHours(1), "Booked from screen");   // TODO:
 
             return freePage;
         }
@@ -192,14 +215,14 @@ namespace RoomBooking.ViewModels.Screens
         /// </summary>
         /// <param name="roomBookingEvent"></param>
         /// <returns></returns>
-        private BusyPage CreateBusyPage(SyncedEvent roomBookingEvent)
+        private BusyPage CreateBusyPage(RoomBookingEvent roomBookingEvent)
         {
             BusyPage busyPage = new BusyPage();
             busyPage.Booking.Data = roomBookingEvent;
             busyPage.OnClose = () => this.ContentPartial = GetDefaultPage();
             busyPage.OnClaim = () =>
             {
-                this.ContentPartial = CreateNewBookingPage(roomBookingEvent.Calendar, DateTime.UtcNow, DateTime.UtcNow.AddHours(1));
+                this.ContentPartial = CreateNewBookingPage(roomBookingEvent.Room, DateTime.UtcNow, DateTime.UtcNow.AddHours(1));
 
                 Db.Transact(() =>
                 {
@@ -210,6 +233,29 @@ namespace RoomBooking.ViewModels.Screens
             return busyPage;
         }
 
+
+        /// <summary>
+        /// Create New quick booking page
+        /// </summary>
+        /// <param name="room"></param>
+        /// <param name="defaultBeginUtcDate"></param>
+        /// <param name="defaultEndUtcDate"></param>
+        /// <returns></returns>
+        private NewQuickBookingPage CreateNewQuickBookingPage(Room room, DateTime defaultBeginUtcDate, DateTime defaultEndUtcDate, string name = null)
+        {
+            RoomBookingEvent roomBookingEvent = new RoomBookingEvent()
+            {
+                BeginUtcDate = defaultBeginUtcDate,
+                EndUtcDate = defaultEndUtcDate,
+                Room = room,
+                Name = name
+            };
+
+            NewQuickBookingPage newQuickBookingPage = new NewQuickBookingPage() { Data = roomBookingEvent };
+            newQuickBookingPage.OnClose = () => this.ContentPartial = GetDefaultPage();
+
+            return newQuickBookingPage;
+        }
         /// <summary>
         /// Create New booking page
         /// </summary>
@@ -217,13 +263,13 @@ namespace RoomBooking.ViewModels.Screens
         /// <param name="defaultBeginUtcDate"></param>
         /// <param name="defaultEndUtcDate"></param>
         /// <returns></returns>
-        private NewBookingPage CreateNewBookingPage(SyncedCalendar room, DateTime defaultBeginUtcDate, DateTime defaultEndUtcDate, string name = null)
+        private NewBookingPage CreateNewBookingPage(Room room, DateTime defaultBeginUtcDate, DateTime defaultEndUtcDate, string name = null)
         {
-            SyncedEvent roomBookingEvent = new SyncedEvent()
+            RoomBookingEvent roomBookingEvent = new RoomBookingEvent()
             {
                 BeginUtcDate = defaultBeginUtcDate,
                 EndUtcDate = defaultEndUtcDate,
-                Calendar = room,
+                Room = room,
                 Name = name
             };
 

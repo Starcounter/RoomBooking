@@ -6,7 +6,7 @@ using Starcounter.Templates;
 
 namespace RoomBooking.ViewModels.Screens
 {
-    partial class NewBookingPage : Json, IBound<RoomBookingEvent>
+    partial class NewQuickBookingPage : Json, IBound<RoomBookingEvent>
     {
         public Action OnClose = null;
 

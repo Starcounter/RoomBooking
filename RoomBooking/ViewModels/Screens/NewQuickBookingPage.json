@@ -1,0 +1,13 @@
+{
+  "Html": "/roombooking/screens/NewQuickBooking.html",
+  "BeginDay$": "",
+  "StartTime$": "",
+  "DurationTime$": "",
+  "DurationHours$": 0,
+  "DurationMinutes$": 0,
+  "Name$": "",
+  "CreatedBy$": "",
+  "ValidationMessage": "",
+  "CreateBookingTrigger$": 0,
+  "CloseTrigger$": 0
+}

@@ -68,9 +68,8 @@
   <ItemGroup>
     <Compile Include="Database\RoomScreenRelation.cs" />
     <Compile Include="Database\UserRoomRelation.cs" />
-    <Compile Include="Database\SyncedCalendar.cs" />
-    <Compile Include="Database\SyncedEvent.cs" />
-    <Compile Include="Database\CalendarSync.cs" />
+    <Compile Include="Database\RoomBookingEvent.cs" />
+    <Compile Include="Database\Room.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\Screens\ContentPartial.json.cs">
@@ -87,6 +86,9 @@
     </Compile>
     <Compile Include="ViewModels\Screens\EventPage.json.cs">
       <DependentUpon>EventPage.json</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\Screens\NewQuickBookingPage.json.cs">
+      <DependentUpon>NewQuickBookingPage.json</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Screens\ScreenContentPage.json.cs">
       <DependentUpon>ScreenContentPage.json</DependentUpon>
@@ -165,6 +167,9 @@
     <TypedJSON Include="ViewModels\Screens\ContentPartial.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
+    <TypedJSON Include="ViewModels\Screens\NewQuickBookingPage.json">
+      <Generator>MsBuild:Compile</Generator>
+    </TypedJSON>
     <None Include="wwwroot\roombooking\MainPage.html" />
   </ItemGroup>
   <ItemGroup>
@@ -202,6 +207,7 @@
     <Content Include="wwwroot\roombooking\elements\sgb-countdown\sgb-countdown.html" />
     <Content Include="wwwroot\roombooking\elements\sgb-timepicker\sgb-timepicker.html" />
     <Content Include="wwwroot\roombooking\elements\sgb-daypicker\sgb-daypicker.html" />
+    <None Include="wwwroot\roombooking\screens\NewQuickBooking.html" />
     <None Include="wwwroot\roombooking\screens\ContentPartial.html" />
     <None Include="wwwroot\roombooking\Partials\ScreenPartial.html" />
     <None Include="wwwroot\roombooking\screens\Event.html" />

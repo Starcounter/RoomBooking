@@ -117,9 +117,7 @@
             </tbody>
         </table>
 
-
     </template>
-
 
 
     <script>
@@ -152,10 +150,6 @@
                     type: Number,
                     notify: true
                 },
-                //startdate: {
-                //    type: Date,
-                //    notify: true,
-                //},
                 events: {
                     type: Array,
                     value: function () { return []; },
@@ -199,6 +193,7 @@
 
                     this.beginDate = new Date(new Date(this.selectedDate).setMinutes(e.model.item.beginTime)).toJSON(); // "2017-10-25"
                     this.endDate = new Date(new Date(this.selectedDate).setMinutes(e.model.item.endTime)).toJSON(); // "2017-10-25"
+
                     this.bookingTrigger++
                 }
             },
@@ -327,8 +322,9 @@
                     //console.log(this.events[i]);
 
                     // WORKAROND Remove 'Z'
-                    var beginDateStr = this.events[i].BeginDate.substring(0, this.events[i].BeginDate.length - 1);
-                    var beginDate = new Date(beginDateStr);
+                    //var beginDateStr = this.events[i].BeginDate.substring(0, this.events[i].BeginDate.length - 1);
+                    //var beginDate = new Date(beginDateStr);
+                    var beginDate = this.utcDateStringToLocalDate(this.events[i].BeginDate);
                     var eventBeginMin = (beginDate.getHours() * 60) + beginDate.getMinutes();
 
                     while (stepTimeMin < eventBeginMin) {
@@ -339,8 +335,11 @@
                     // Prepare next stepTime
                     // Event end time plus nearest step
 
-                    var endDateStr = this.events[i].EndDate.substring(0, this.events[i].EndDate.length - 1);
-                    var endDate = new Date(endDateStr);
+//                    var endDateStr = this.events[i].EndDate.substring(0, this.events[i].EndDate.length - 1);
+//                    var endDate = new Date(endDateStr);
+                    var endDate = this.utcDateStringToLocalDate(this.events[i].EndDate);
+
+
                     var eventEndMin = (endDate.getHours() * 60) + endDate.getMinutes();
 
                     var duration = eventEndMin - eventBeginMin;
@@ -369,34 +368,34 @@
                     beginTimeStr: this.minToStr(beginTimeMin),
                     endTime: endTimeMin,
                     endTimeStr: this.minToStr(endTimeMin),
-                    Duration: this.durationToStr(endTimeMin - beginTimeMin),
+                    Duration: this.userFrindlyDuration((endTimeMin - beginTimeMin)*60, false),
                     Booking: booking
                 };
 
             },
-            durationToStr: function (min) {
+            //durationToStr: function (min) {
 
-                // >=1h  "1h 20min""
-                // <1h 20min
+            //    // >=1h  "1h 20min""
+            //    // <1h 20min
 
-                var sec_num = parseInt(min * 60, 10);
-                var hours = Math.floor(sec_num / 3600);
-                var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-                var seconds = sec_num - (hours * 3600) - (minutes * 60);
+            //    var sec_num = parseInt(min * 60, 10);
+            //    var hours = Math.floor(sec_num / 3600);
+            //    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+            //    var seconds = sec_num - (hours * 3600) - (minutes * 60);
 
-                if (hours < 1) {
-                    return minutes + "min";
-                }
+            //    if (hours < 1) {
+            //        return minutes + "min";
+            //    }
 
-                if (minutes == 0) {
-                    return hours + "h";
-                }
+            //    if (minutes == 0) {
+            //        return hours + "h";
+            //    }
 
-                return hours + "h " + minutes + "min";
+            //    return hours + "h " + minutes + "min";
 
 
 
-            },
+            //},
             minToStr: function (min) {
 
                 var sec_num = parseInt(min * 60, 10);
@@ -410,7 +409,66 @@
                 return hours + ':' + minutes;
                 //                return hours + ':' + minutes + ':' + seconds;
 
-            }
+            },
+            userFrindlyDuration: function (totalSeconds, showSeconds) {
+
+                var days = Math.floor(totalSeconds / 3600 / 60);
+                var hours = Math.floor(totalSeconds / 3600);
+                var minutes = Math.floor((totalSeconds - (hours * 3600)) / 60);
+                var totalMinutes = Math.floor(totalSeconds / 60);
+                var seconds = Math.floor(totalSeconds - (hours * 3600) - (minutes * 60));
+
+                if (totalMinutes < 120) {
+                    if (showSeconds) {
+                        return totalMinutes + "min " + seconds + "sec";
+                    }
+                    return totalMinutes + "min";
+                }
+
+                if (hours >= 24) {
+                    return "+24h";
+                }
+
+                return hours + "h " + minutes + "min";
+
+
+                //if (minutes < 120) {
+                //    return minutes + "min";
+                //}
+
+                //var hours = Math.floor(minutes / 60);
+                //minutes = minutes - (hours * 60);
+                //return hours + "h " + minutes + "min";
+            },
+            utcDateStringToLocalDate: function (dateStr) {
+                
+
+                var fixedDateStr = this.fixDateFormat(dateStr);
+                var yy = parseInt(fixedDateStr.substr(0, 4));
+                var mm = parseInt(fixedDateStr.substr(5, 2)) - 1;
+                var dd = parseInt(fixedDateStr.substr(8, 2));
+
+                var hh = parseInt(fixedDateStr.substr(11, 2));
+                var MM = parseInt(fixedDateStr.substr(14, 2));
+                var ss = parseInt(fixedDateStr.substr(17, 2));
+
+                return new Date(yy, mm, dd, hh, MM, ss);
+            },
+            fixDateFormat: function (dateStr) {
+
+                // Add missing 'T'
+                if (dateStr.charAt(10) == " ") {
+                    dateStr = dateStr.substr(0, 10) + "T" + dateStr.substr(11);
+                }
+
+                // Remove trailing 'Z'
+                if (dateStr.charAt(dateStr.length - 1) != "Z") {
+                    dateStr = dateStr + "Z";
+                    //dateStr = dateStr.substring(0, dateStr.length - 1); // 2015-03-25T12:00:00Z
+                }
+
+                return dateStr;
+            },
 
 
         });

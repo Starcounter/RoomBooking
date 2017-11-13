@@ -11,7 +11,6 @@ using RoomBooking.ViewModels.Screens;
 using System.Collections.Specialized;
 using Screens.Common;
 using RoomBooking.ViewModels.Partials;
-using CalendarSync.Database;
 using System.Threading;
 
 namespace RoomBooking
@@ -77,19 +76,19 @@ namespace RoomBooking
 
 
             // Push updates to client sessions
-            Hook<SyncedEvent>.CommitUpdate += (sender, room) =>
+            Hook<RoomBookingEvent>.CommitUpdate += (sender, room) =>
             {
                 SetEventTimer();
                 Program.PushChanges();
             };
 
-            Hook<SyncedEvent>.CommitInsert += (sender, room) =>
+            Hook<RoomBookingEvent>.CommitInsert += (sender, room) =>
             {
                 SetEventTimer();
                 Program.PushChanges();
             };
 
-            Hook<SyncedEvent>.CommitDelete += (sender, room) =>
+            Hook<RoomBookingEvent>.CommitDelete += (sender, room) =>
             {
                 SetEventTimer();
                 Program.PushChanges();
@@ -116,7 +115,7 @@ namespace RoomBooking
 
             //EventTimer.Change(new TimeSpan(0,0,0,10,0), TimeSpan.FromTicks(-1));
 
-            SyncedEvent firstEvent = Db.SQL<SyncedEvent>($"SELECT o FROM CalendarSync.Database.\"{nameof(SyncedEvent)}\" o WHERE o.{nameof(SyncedEvent.BeginUtcDate)} >= ? ORDER BY o.{nameof(SyncedEvent.BeginUtcDate)}", utcNow).FirstOrDefault();
+            RoomBookingEvent firstEvent = Db.SQL<RoomBookingEvent>($"SELECT o FROM {nameof(RoomBooking)}.\"{nameof(RoomBookingEvent)}\" o WHERE o.{nameof(RoomBookingEvent.BeginUtcDate)} >= ? ORDER BY o.{nameof(RoomBookingEvent.BeginUtcDate)}", utcNow).FirstOrDefault();
             if (firstEvent != null)
             {
                 TimeSpan timeSpan = firstEvent.BeginUtcDate - utcNow;
@@ -154,9 +153,9 @@ namespace RoomBooking
         {
 
             // Cleanup
-            Hook<SyncedCalendar>.BeforeDelete += (sender, room) =>
+            Hook<Room>.BeforeDelete += (sender, room) =>
             {
-                Db.SQL($"DELETE FROM CalendarSync.Database.\"{nameof(SyncedEvent)} WHERE {nameof(SyncedEvent.Calendar)} = ?", room);
+                Db.SQL($"DELETE FROM {nameof(RoomBooking)}.\"{nameof(RoomBookingEvent)} WHERE {nameof(RoomBookingEvent.Room)} = ?", room);
                 Db.SQL($"DELETE FROM {nameof(RoomBooking)}.\"{nameof(UserRoomRelation)} WHERE {nameof(UserRoomRelation.Room)} = ?", room);
             };
 
@@ -167,17 +166,17 @@ namespace RoomBooking
             };
 
             // Push updates to client sessions
-            Hook<SyncedCalendar>.CommitUpdate += (sender, room) =>
+            Hook<Room>.CommitUpdate += (sender, room) =>
             {
                 Program.PushChanges();
             };
 
-            Hook<SyncedCalendar>.CommitInsert += (sender, room) =>
+            Hook<Room>.CommitInsert += (sender, room) =>
             {
                 Program.PushChanges();
             };
 
-            Hook<SyncedCalendar>.CommitDelete += (sender, room) =>
+            Hook<Room>.CommitDelete += (sender, room) =>
             {
                 Program.PushChanges();
             };
@@ -273,7 +272,7 @@ namespace RoomBooking
                 {
                     RoomPage roomPage = new RoomPage();
                     mainPage.Content = roomPage;
-                    roomPage.Data = new SyncedCalendar();
+                    roomPage.Data = new Room();
 
                     UserRoomRelation userRoomRelation = new UserRoomRelation();
                     userRoomRelation.Room = roomPage.Data;
@@ -294,7 +293,7 @@ namespace RoomBooking
                     return mainPage;
                 }
 
-                SyncedCalendar room = Db.SQL<SyncedCalendar>($"SELECT o FROM CalendarSync.Database.\"{nameof(SyncedCalendar)}\" o WHERE o.ObjectID=?", id).FirstOrDefault();
+                Room room = Db.SQL<Room>($"SELECT o FROM {nameof(RoomBooking)}.\"{nameof(Room)}\" o WHERE o.ObjectID=?", id).FirstOrDefault();
                 if (room == null)
                 {
                     ViewModels.MessageBox.Show("Not found", "Room not found"); // TODO: Show page error instead of popup
@@ -332,7 +331,7 @@ namespace RoomBooking
                 {
                     userRoomRelation = new UserRoomRelation();
                     userRoomRelation.User = user;
-                    userRoomRelation.Room = new SyncedCalendar() { Name = "Default", Description = "This is your default room" };
+                    userRoomRelation.Room = new Room() { Name = "Default", Description = "This is your default room" };
                 });
             }
 

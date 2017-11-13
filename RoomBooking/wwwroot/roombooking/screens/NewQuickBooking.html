@@ -1,0 +1,85 @@
+﻿<link rel="import" href="/sys/polymer/polymer.html">
+<link rel="import" href="/roombooking/elements/sgb-timepicker/sgb-timepicker.html" />
+
+<template>
+
+
+    <style>
+        .contentPageHolder {
+            background-color: #5d5d5d;
+        }
+
+        .contentPageContent {
+            flex: 1 1 auto;
+            display: flex;
+            padding: 30px;
+            font-family: Roboto;
+            flex-direction: column;
+        }
+
+        .startAndDuration {
+            display: flex;
+            width: 100%;
+        }
+
+        .starAndDurationItems {
+            flex: 1 1 auto;
+        }
+
+        .details {
+            display: flex;
+            flex-direction: column;
+            flex: 1 1 auto;
+            padding-top: 20px;
+        }
+
+        .details input {
+            font-size: 30px;
+        }
+
+    </style>
+
+
+
+
+    <template is="dom-bind">
+
+        <div class="contentPageHolder">
+
+            <div class="contentPageHeader">
+                <p style="font-size:1em;margin:0px;">NEW QUICK BOOKING</p>
+            </div>
+
+            <div class="contentPageContent">
+
+                <div class="startAndDuration">
+
+                    <div class="starAndDurationItems">
+                        <i>Start</i>
+                        <sgb-timepicker start-Time="{{model.StartTime$}}"></sgb-timepicker>
+                    </div>
+                    <div class="starAndDurationItems">
+
+                        <i>Duration</i>
+                        <sgb-timepicker start-Time="{{model.DurationTime$}}"></sgb-timepicker>
+                    </div>
+                </div>
+
+                <div class="details">
+
+                    <i>Name</i><p class="text-danger">{{model.ValidationMessage}}</p>
+                    <input type="text" value="{{model.Name$::input}}" placeholder="enter event name here" />
+                </div>
+
+            </div>
+
+            <form class="contentPageOperationPanel">
+                <button type="submit" value="{{model.CreateBookingTrigger$::click}}" class="btn btn-sm btn-primary" onclick="++this.value">Create</button>
+                <button type="button" value="{{model.CloseTrigger$::click}}" class="btn btn-sm btn-default" onclick="++this.value">Close</button>
+
+            </form>
+
+        </div>
+
+    </template>
+</template>

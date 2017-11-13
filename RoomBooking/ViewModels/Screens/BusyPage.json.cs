@@ -1,4 +1,3 @@
-using CalendarSync.Database;
 using Starcounter;
 using System;
 using System.Threading;
@@ -30,7 +29,7 @@ namespace RoomBooking.ViewModels.Screens
     }
 
     [BusyPage_json.Booking]
-    partial class BusyPageBooking : Json, IBound<SyncedEvent>
+    partial class BusyPageBooking : Json, IBound<RoomBookingEvent>
     {
         private Timer EventTimer = null;
 
@@ -40,7 +39,7 @@ namespace RoomBooking.ViewModels.Screens
                 if (this.Data != null)
                 {
                     SetEventTimer();
-                    return TimeZoneInfo.ConvertTimeFromUtc(this.Data.BeginUtcDate, this.Data.Calendar.TimeZoneInfo);
+                    return TimeZoneInfo.ConvertTimeFromUtc(this.Data.BeginUtcDate, this.Data.Room.TimeZoneInfo);
                 }
 
                 return DateTime.MaxValue;
@@ -53,7 +52,7 @@ namespace RoomBooking.ViewModels.Screens
                 if (this.Data != null)
                 {
                     SetEventTimer();
-                    return TimeZoneInfo.ConvertTimeFromUtc(this.Data.EndUtcDate, this.Data.Calendar.TimeZoneInfo);
+                    return TimeZoneInfo.ConvertTimeFromUtc(this.Data.EndUtcDate, this.Data.Room.TimeZoneInfo);
                 }
 
                 return DateTime.MaxValue;

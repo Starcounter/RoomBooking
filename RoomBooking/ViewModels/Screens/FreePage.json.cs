@@ -1,4 +1,3 @@
-using CalendarSync.Database;
 using Starcounter;
 using System;
 using System.Linq;
@@ -10,7 +9,7 @@ namespace RoomBooking.ViewModels.Screens
 
         public Action OnNewBooking = null;
 
-        public void Init(SyncedCalendar room)
+        public void Init(Room room)
         {
             this.Room.Data = room;
         }
@@ -21,9 +20,9 @@ namespace RoomBooking.ViewModels.Screens
 
         private DateTime GetNextEventDate()
         {
-            SyncedCalendar room = this.Room.Data as SyncedCalendar;
+            Room room = this.Room.Data as Room;
 
-            SyncedEvent roomBookingEvent = Db.SQL<SyncedEvent>($"SELECT o FROM CalendarSync.Database.\"{nameof(SyncedEvent)}\" o WHERE o.{nameof(SyncedEvent.Calendar)} = ? AND o.{nameof(SyncedEvent.BeginUtcDate)} >= ? ORDER BY o.{nameof(SyncedEvent.BeginUtcDate)}", room, DateTime.UtcNow).FirstOrDefault();
+            RoomBookingEvent roomBookingEvent = Db.SQL<RoomBookingEvent>($"SELECT o FROM {nameof(RoomBooking)}.\"{nameof(RoomBookingEvent)}\" o WHERE o.{nameof(RoomBookingEvent.Room)} = ? AND o.{nameof(RoomBookingEvent.BeginUtcDate)} >= ? ORDER BY o.{nameof(RoomBookingEvent.BeginUtcDate)}", room, DateTime.UtcNow).FirstOrDefault();
             if (roomBookingEvent != null)
             {
                 return TimeZoneInfo.ConvertTimeFromUtc(roomBookingEvent.BeginUtcDate, room.TimeZoneInfo); ;

@@ -1,11 +1,10 @@
-using CalendarSync.Database;
 using Starcounter;
 using System;
 using System.Collections.Generic;
 
 namespace RoomBooking.ViewModels
 {
-    partial class RoomPage : Json, IBound<SyncedCalendar>
+    partial class RoomPage : Json, IBound<Room>
     {
 
         protected override void OnData()

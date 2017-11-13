@@ -2,17 +2,16 @@ using Screens.Common;
 using Starcounter;
 using System.Linq;
 using System.Collections.Generic;
-using CalendarSync.Database;
 
 namespace RoomBooking.ViewModels.Partials
 {
     partial class ScreenPartial : Json, IBound<Screen>
     {
-        public IEnumerable<SyncedCalendar> Rooms => GetUserRooms(UserSession.GetSignedInUser());
+        public IEnumerable<Room> Rooms => GetUserRooms(UserSession.GetSignedInUser());
 
-        private IEnumerable<SyncedCalendar> GetUserRooms(User user)
+        private IEnumerable<Room> GetUserRooms(User user)
         {
-            return Db.SQL<SyncedCalendar>($"SELECT o.{nameof(UserRoomRelation.Room)} FROM {nameof(RoomBooking)}.\"{nameof(UserRoomRelation)}\" o WHERE o.{nameof(UserRoomRelation.User)} = ?", user);
+            return Db.SQL<Room>($"SELECT o.{nameof(UserRoomRelation.Room)} FROM {nameof(RoomBooking)}.\"{nameof(UserRoomRelation)}\" o WHERE o.{nameof(UserRoomRelation.User)} = ?", user);
 //            return Db.SQL<Room>("SELECT o.Room FROM RoomBooking.UserRoomRelation o WHERE o.User = ?", user);
         }
 
@@ -46,7 +45,7 @@ namespace RoomBooking.ViewModels.Partials
 
             try
             {
-                SyncedCalendar oldRoom = Db.FromId(this.SelectedRoomId) as SyncedCalendar;
+                Room oldRoom = Db.FromId(this.SelectedRoomId) as Room;
 
                 if (oldRoom != null)
                 {
@@ -61,7 +60,7 @@ namespace RoomBooking.ViewModels.Partials
             }
             try
             {
-                SyncedCalendar newRoom = Db.FromId(action.Value) as SyncedCalendar;
+                Room newRoom = Db.FromId(action.Value) as Room;
 
                 if (newRoom != null)
                 {
@@ -88,7 +87,7 @@ namespace RoomBooking.ViewModels.Partials
 
 
     [ScreenPartial_json.Rooms]
-    partial class ScreenPartialRoomItem : Json, IBound<SyncedCalendar>
+    partial class ScreenPartialRoomItem : Json, IBound<Room>
     {
 
         public string Id => this.Data?.GetObjectID();

@@ -92,8 +92,60 @@
                 }
             },
             _dateChanged: function (newValue, oldValue) {
+
                 this.day = new Date(this.date).toLocaleString('en-us', { weekday: 'long' });
             },
+            utcDateStringToLocalDate: function (dateStr) {
+                // 2015-03-25T12:00:00Z
+
+                var fixedDateStr = this.fixDateFormat(dateStr);
+                var yy = parseInt(fixedDateStr.substr(0, 4));
+                var mm = parseInt(fixedDateStr.substr(5, 2)) - 1;
+                var dd = parseInt(fixedDateStr.substr(8, 2));
+
+                var hh = parseInt(fixedDateStr.substr(11, 2));
+                var MM = parseInt(fixedDateStr.substr(14, 2));
+                var ss = parseInt(fixedDateStr.substr(17, 2));
+
+                return new Date(yy, mm, dd, hh, MM, ss);
+            },
+            fixDateFormat: function (dateStr) {
+
+                // Add missing 'T'
+                if (dateStr.charAt(10) == " ") {
+                    dateStr = dateStr.substr(0, 10) + "T" + dateStr.substr(11);
+                }
+
+                // Remove trailing 'Z'
+                if (dateStr.charAt(dateStr.length - 1) != "Z") {
+                    dateStr = dateStr + "Z";
+                    //dateStr = dateStr.substring(0, dateStr.length - 1); // 2015-03-25T12:00:00Z
+                }
+
+                return dateStr;
+            },
+            userFrindlyDuration: function (totalSeconds, showSeconds) {
+
+                var days = Math.floor(totalSeconds / 3600 / 60);
+                var hours = Math.floor(totalSeconds / 3600);
+                var minutes = Math.floor((totalSeconds - (hours * 3600)) / 60);
+                var totalMinutes = Math.floor(totalSeconds / 60);
+                var seconds = Math.floor(totalSeconds - (hours * 3600) - (minutes * 60));
+
+                if (totalMinutes < 120) {
+                    if (showSeconds) {
+                        return totalMinutes + "min " + seconds + "sec";
+                    }
+                    return totalMinutes + "min";
+                }
+
+                if (hours >= 24) {
+                    return "+24h";
+                }
+
+                return hours + "h " + minutes + "min";
+            },
+
             increaseTrigger: function () {
                 this.date = this.adjustDate(this.date, 1);
             },
