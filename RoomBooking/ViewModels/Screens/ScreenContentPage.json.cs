@@ -17,6 +17,8 @@ namespace RoomBooking.ViewModels.Screens
 
 
 
+
+
         protected override void OnData()
         {
             base.OnData();
@@ -39,6 +41,18 @@ namespace RoomBooking.ViewModels.Screens
                 DateTime utcNow = DateTime.UtcNow;
                 RoomBookingEvent roomBookingEvent = Db.SQL<RoomBookingEvent>($"SELECT o FROM {nameof(RoomBooking)}.\"{nameof(RoomBookingEvent)}\" o WHERE o.{nameof(RoomBookingEvent.Room)} = ? AND ? >= o.{nameof(RoomBookingEvent.BeginUtcDate)} AND ? < o.{nameof(RoomBookingEvent.EndUtcDate)} AND o.{nameof(RoomBookingEvent.EndUtcDate)} >= o.{nameof(RoomBookingEvent.BeginUtcDate)} ORDER BY o.{nameof(RoomBookingEvent.BeginUtcDate)}", this.Data.Room, utcNow, utcNow).FirstOrDefault();
                 return roomBookingEvent;
+            }
+        }
+
+        public bool DefaultPageTrigger {
+            get {
+                // TODO: Fix this Dirty way to refresh content!!!
+                //var tempJson = this.ContentPartial;
+                //this.ContentPartial = new Json();
+                //this.ContentPartial = tempJson;
+                ////                this.ContentPartial = GetDefaultPage();
+
+                return true;
             }
         }
 
@@ -136,7 +150,6 @@ namespace RoomBooking.ViewModels.Screens
             this.CalendarPartial = calendarePage;
             this.ContentPartial = GetDefaultPage();
 
-            // this.RegisterTimer();
         }
 
 
@@ -175,6 +188,12 @@ namespace RoomBooking.ViewModels.Screens
             {
                 return this.ContentPartial;
             }
+
+            //if( this.ContentPartial is NewBookingPage)  // TODO:
+            //{
+            //    return this.ContentPartial;
+            //}
+
             return CreateFreePage(this.Data.Room);
         }
 
@@ -219,7 +238,11 @@ namespace RoomBooking.ViewModels.Screens
         {
             BusyPage busyPage = new BusyPage();
             busyPage.Booking.Data = roomBookingEvent;
-            busyPage.OnClose = () => this.ContentPartial = GetDefaultPage();
+            busyPage.OnClose = () =>
+            {
+                this.ContentPartial = GetDefaultPage();
+
+            };
             busyPage.OnClaim = () =>
             {
                 this.ContentPartial = CreateNewBookingPage(roomBookingEvent.Room, DateTime.UtcNow, DateTime.UtcNow.AddHours(1));
@@ -235,13 +258,13 @@ namespace RoomBooking.ViewModels.Screens
 
 
         /// <summary>
-        /// Create New quick booking page
+        /// Create New quick booking page (todo)
         /// </summary>
         /// <param name="room"></param>
         /// <param name="defaultBeginUtcDate"></param>
         /// <param name="defaultEndUtcDate"></param>
         /// <returns></returns>
-        private NewQuickBookingPage CreateNewQuickBookingPage(Room room, DateTime defaultBeginUtcDate, DateTime defaultEndUtcDate, string name = null)
+        private NewBookingPage CreateNewQuickBookingPage(Room room, DateTime defaultBeginUtcDate, DateTime defaultEndUtcDate, string name = null)
         {
             RoomBookingEvent roomBookingEvent = new RoomBookingEvent()
             {
@@ -251,8 +274,13 @@ namespace RoomBooking.ViewModels.Screens
                 Name = name
             };
 
-            NewQuickBookingPage newQuickBookingPage = new NewQuickBookingPage() { Data = roomBookingEvent };
-            newQuickBookingPage.OnClose = () => this.ContentPartial = GetDefaultPage();
+            //NewQuickBookingPage newQuickBookingPage = new NewQuickBookingPage() { Data = roomBookingEvent };
+            NewBookingPage newQuickBookingPage = new NewBookingPage() { Data = roomBookingEvent };
+            newQuickBookingPage.OnClose = () =>
+            {
+
+                this.ContentPartial = GetDefaultPage();
+            };
 
             return newQuickBookingPage;
         }
@@ -274,7 +302,11 @@ namespace RoomBooking.ViewModels.Screens
             };
 
             NewBookingPage newBookingPage = new NewBookingPage() { Data = roomBookingEvent };
-            newBookingPage.OnClose = () => this.ContentPartial = GetDefaultPage();
+            newBookingPage.OnClose = () =>
+            {
+
+                this.ContentPartial = GetDefaultPage();
+            };
 
             return newBookingPage;
         }

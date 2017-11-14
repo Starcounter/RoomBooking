@@ -3,6 +3,7 @@
   "MessageBox": { "$": { "Reuse": "RoomBooking.ViewModels.Screens.MessageBox" } },
   "ErrorMessage": { "$": { "Reuse": "RoomBooking.ViewModels.Screens.ErrorMessageBox" } },
   "Enabled": false,
+  "DefaultPageTrigger": false,
   "CalendarPartial": {},
   "ContentPartial": {}
 }

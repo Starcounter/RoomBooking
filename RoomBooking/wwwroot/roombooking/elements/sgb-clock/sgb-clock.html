@@ -19,7 +19,7 @@
                 localOffset: Number,    // Offset to be added to UTC time
                 localTime: String, 
                 roomTime: String,
-                timeOffset: {
+                timeOffset: {   // Offset from the UTC time
                     type: Number,
                     notify: true,
                     observer: '_timeOffsetChanged'
@@ -34,33 +34,12 @@
             },
             _timeOffsetChanged: function (newValue, oldValue) {
 
-                // Date.UTC(year, month[, day[, hour[, minute[, second[, millisecond]]]]])
-
-//                var utcTime = new Date().getTime();
 
                 this.localOffset = -new Date().getTimezoneOffset(); // Offset to be added to the local time
 
-                console.log("Screen TimeOffset:" + this.localOffset);
-                console.log("Room TimeOffset  :" + this.timeOffset);   // Offset to be added to UTC time
+//                console.log("Screen TimeOffset:" + this.localOffset);
+//                console.log("Room TimeOffset  :" + this.timeOffset);   // Offset to be added to UTC time
 
-
-
-                //console.log("roomTimeStr:" + roomtime.toLocaleString());
-
-                //var roomtime = new Date(new Date().getTime() + (this.timeOffset * 1000));
-                //var hour = roomtime.getHours();
-                //var minutes = roomtime.getMinutes();
-                //var seconds = roomtime.getSeconds();
-
-                //var roomTimeStr = hour + ":" + minutes + ":" + seconds
-                //console.log("roomTimeStr:" + roomTimeStr);
-
-//                console.log("Date:"+new Date());
-//                console.log("LocalDate:"+new Date().toLocaleTimeString());
-
-//                var roomtime = new Date(new Date().getTime() + (this.localOffset*1000));
-                //var roomtime = new Date(new Date().setMinutes(new Date().getMinutes() - this.localOffset));
-                //console.log("roomtime:" + roomtime.toTimeString());
 
 
                 this.diffOffset = this.localOffset != this.timeOffset;
@@ -93,18 +72,21 @@
 
                 var d = new Date();
                 var utc = d.getTime() + (d.getTimezoneOffset() * 60000);
-                var roomtime = new Date(utc + (3600000 * this.timeOffset));
+                // 3600000
+                var roomtime = new Date(utc - (60 * 1000 * -this.timeOffset));
 
-//                var hour = roomtime.getHours();
-//                var minutes = roomtime.getMinutes();
-  //              var seconds = roomtime.getSeconds();
+                //console.log("utc:" + utc);
+
+
+                //var hour = roomtime.getHours();
+                //var minutes = roomtime.getMinutes();
+                //var seconds = roomtime.getSeconds();
                 //var roomTimeStr = hour + ":" + minutes + ":" + seconds
                 this.roomTime = roomtime.toLocaleTimeString();
                 this.screenTime = new Date().toLocaleTimeString();
 
-                console.log("RoomTime:" + this.roomTime);
-                console.log("ScreenTime:" + this.screenTime);
-
+//                console.log("RoomTime:" + this.roomTime);
+//                console.log("ScreenTime:" + this.screenTime);
             }
 
         });

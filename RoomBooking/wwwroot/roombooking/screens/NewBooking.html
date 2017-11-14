@@ -38,22 +38,24 @@
             flex-direction: column;
         }
 
+        .details {
+            display: flex;
+            flex-direction: column;
+            flex: 0 1 auto;
+            padding-bottom: 20px;
+        }
 
-        .startAndDuration {
+        .durationInput {
             display: flex;
             width: 100%;
+            flex: 1 1 auto;
         }
 
         .starAndDurationItems {
             flex: 1 1 auto;
         }
 
-        .details {
-            display: flex;
-            flex-direction:column;
-            flex: 1 1 auto;
-            padding-top:20px;
-        }
+
 
         .details input {
             font-size: 30px;
@@ -82,13 +84,19 @@
         <div class="modalbackdrop">
 
             <div class="newbooking">
+
                 <div class="header">
                     <div>NEW BOOKING</div>
                 </div>
 
                 <div class="contentHolder">
 
-                    <div class="startAndDuration">
+                    <div class="details">
+                        <i>Name</i><p class="text-danger">{{model.ValidationMessage}}</p>
+                        <input type="text" value="{{model.Name$::input}}" placeholder="enter event name here" />
+                    </div>
+
+                    <div class="durationInput">
 
                         <div class="starAndDurationItems">
                             <i>Start</i>
@@ -101,15 +109,7 @@
                         </div>
                     </div>
 
-                    <div class="details">
-                        
-                        <i>Name</i><p class="text-danger">{{model.ValidationMessage}}</p>
-                        <input type="text" value="{{model.Name$::input}}" placeholder="enter event name here"  />
-                    </div>
-
                     <form class="operations">
-
-
                         <button type="submit" value="{{model.CreateBookingTrigger$::click}}" class="btn btn-sm btn-primary" onclick="++this.value">Create</button>
                         <button type="button" value="{{model.CloseTrigger$::click}}" class="btn btn-sm btn-default" onclick="++this.value">Close</button>
                         <!--<sgb-countdown-button length=20 tigger="{{model.CloseTrigger$}}">

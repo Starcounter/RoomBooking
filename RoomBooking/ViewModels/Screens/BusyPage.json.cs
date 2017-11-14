@@ -21,7 +21,7 @@ namespace RoomBooking.ViewModels.Screens
             {
                 if (result == MessageBox.MessageBoxResult.Yes)
                 {
-                       this.OnClaim?.Invoke();
+                    this.OnClaim?.Invoke();
                 }
             });
         }
@@ -60,8 +60,6 @@ namespace RoomBooking.ViewModels.Screens
         }
 
 
-
-
         protected override void OnData()
         {
             base.OnData();
@@ -75,6 +73,22 @@ namespace RoomBooking.ViewModels.Screens
                 {
                     this.EventTimer.Dispose();
                 }
+
+
+                BusyPage busyPage = this.Parent as BusyPage;
+                busyPage.OnClose?.Invoke();
+
+                //// TODO: Why do i need to this special thing?!
+                //Scheduling.ScheduleTask(() =>
+                //{
+                //    BusyPage busyPage = this.Parent as BusyPage;
+                //    busyPage.OnClose?.Invoke();
+
+                //    Session.ForAll((s, sessionId) =>
+                //    {
+                //        s.CalculatePatchAndPushOnWebSocket();
+                //    });
+                //}, false);
             }
         }
 

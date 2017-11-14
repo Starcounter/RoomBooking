@@ -3,7 +3,6 @@
     <template>
 
         <style>
-
             :host {
                 overflow: auto;
             }
@@ -63,11 +62,11 @@
                 overflow-x: scroll;*/
             }
 
-            table tr {
-                border-bottom: 1pt solid rgba(0, 0, 0, 0.08);
-            }
+                table tr {
+                    border-bottom: 1pt solid rgba(0, 0, 0, 0.08);
+                }
         </style>
-        
+
         <table id="myElement" class="timeTable" border="0" cellspacing="0" cellpadding="0">
             <tbody>
                 <template is="dom-repeat" items="[[timeSlotes]]">
@@ -78,7 +77,7 @@
                             <td width="10px" bgcolor="#A40D27"></td>
 
                             <td width="90px" style="padding-top:0px;padding-bottom:0px">
-                                <div  class="startStopHolder">
+                                <div class="startStopHolder">
                                     <div class="booking1">{{item.beginTimeStr}}</div>
                                     <template is="dom-if" if="{{item.Booking.Overlapping}}">
                                         <div style="flex:0 0 auto; padding-left: 7px">
@@ -100,6 +99,7 @@
                     </template>
 
                     <template is="dom-if" if="{{!item.Booking}}">
+
                         <tr style="height:40px" class="eventItem" on-tap="selectEventTrigger">
                             <td width="10px"></td>
                             <td style="height:inherit">
@@ -169,7 +169,7 @@
                 }
 
                 this.fillTimeSlots();
-
+                this.scrollActiveIntoView();
                 //if (changeRecord) {
                 //    changeRecord.indexSplices.forEach(function (s) {
                 //        s.removed.forEach(function (item) {
@@ -185,7 +185,7 @@
             },
             selectEventTrigger: function (e) {
 
-    
+
                 if (e.model.item.Booking) {
                     e.model.item.Booking.SelectedTrigger$++
                 }
@@ -218,6 +218,7 @@
             },
             selectedClass: function (isSelected, isActive, item, index) {
 
+                this.scrollActiveIntoView();
 
                 var classStr = "";
                 if (isSelected == false && isActive == false) {
@@ -237,29 +238,33 @@
                     // Polymer.dom(item)
                     //elementToFocus.scrollIntoView();
                     //                    this.$$('#myElement').scrollIntoView();
-                    var tableElement = this.$$('#myElement');
-                    var element = this.$$('#myElement').rows[index - 1];
+                    //var tableElement = this.$$('#myElement');
+                    //var element = this.$$('#myElement').rows[index - 1];
 
 
-                    var tableHeight = this.offsetHeight;
-                    var elementHeight = element.offsetHeight;
+                    //var tableHeight = this.offsetHeight;
+                    //var elementHeight = element.offsetHeight;
+                    //console.log(elementHeight);
                     //element.scrollIntoView();
-                    //this.scrollTop += 100;
+
+
+
+
                     //var posArray = element.positionedOffset();
                     //this.scrollTop = posArray[1];
                     //var topPos = element.offsetTop;
                     //tableElement.scrollTop = topPos;
                     //debugger;
-//                    element.scrollIntoView();
-                    var a = element.offsetTop;
-    //                console.log(a);
-  //                  console.log("event array changed");
+                    //                    element.scrollIntoView();
+                    //var a = element.offsetTop;
+                    //                console.log(a);
+                    //                  console.log("event array changed");
 
-//                    this.scrollTo(0, 100);
+                    //                    this.scrollTo(0, 100);
 
                     //this.scrollTop = 2000;
                     //element.scrollTo();
-                   // this.$$('#myElement').scrollIntoView();
+                    // this.$$('#myElement').scrollIntoView();
 
                     //tableElement.scrollTop = 500;
                     //element.scrollIntoView(false);
@@ -268,7 +273,6 @@
 
 
                 }
-
 
                 return classStr;
                 //return mobile ? 'mobile-styling' : '';
@@ -284,6 +288,27 @@
                 //}
 
             },
+            scrollActiveIntoView: function () {
+
+                var tableElement = this.$$('#myElement');
+                for (var i = 0; i < this.timeSlotes.length; i++) {
+                    if (this.timeSlotes[i].Booking && this.timeSlotes[i].Booking.IsActive) {
+
+                        var element = tableElement.rows[i];
+                        if (element) {
+
+                            //var tableHeight = this.offsetHeight;
+
+                            element.scrollIntoView();
+
+
+
+                            //debugger;
+                        }
+
+                    }
+                }
+            },
             ready: function () {
                 //console.log('ready');
                 //for (var i = 0; i < this.events.length; i++) {
@@ -292,38 +317,38 @@
 
                 //  this.fillTimeSlots();
 
-               // .scrollintoview();
-//                scrollIntoView
+                // .scrollintoview();
+                //                scrollIntoView
+
+                setTimeout(this.scrollIntoViewDelay.bind(this), 100);
 
             },
-            scrollIntoView: function(element, container) {
-                var containerTop = $(container).scrollTop(); 
-                var containerBottom = containerTop + $(container).height(); 
-                var elemTop = element.offsetTop;
-                var elemBottom = elemTop + $(element).height(); 
-                if(elemTop < containerTop) {
-                    $(container).scrollTop(elemTop);
-                } else if (elemBottom > containerBottom) {
-                    $(container).scrollTop(elemBottom - $(container).height());
-                }
+            scrollIntoViewDelay: function () {
+                this.scrollActiveIntoView();
+
+
             },
-
-
+            //scrollIntoView: function (element, container) {
+            //    var containerTop = $(container).scrollTop();
+            //    var containerBottom = containerTop + $(container).height();
+            //    var elemTop = element.offsetTop;
+            //    var elemBottom = elemTop + $(element).height();
+            //    if (elemTop < containerTop) {
+            //        $(container).scrollTop(elemTop);
+            //    } else if (elemBottom > containerBottom) {
+            //        $(container).scrollTop(elemBottom - $(container).height());
+            //    }
+            //},
             fillTimeSlots: function () {
-
 
                 this.set('timeSlotes', []);
 
                 if (!this.events) return;
 
-                var stepTimeMin = 0; // Midnatt (this.startdate.getHours() * 60) + this.startdate.getMinutes();
+                var stepTimeMin = 0; 
                 var step = 60; // min
                 for (var i = 0; i < this.events.length; i++) {
-                    //console.log(this.events[i]);
 
-                    // WORKAROND Remove 'Z'
-                    //var beginDateStr = this.events[i].BeginDate.substring(0, this.events[i].BeginDate.length - 1);
-                    //var beginDate = new Date(beginDateStr);
                     var beginDate = this.utcDateStringToLocalDate(this.events[i].BeginDate);
                     var eventBeginMin = (beginDate.getHours() * 60) + beginDate.getMinutes();
 
@@ -332,34 +357,45 @@
                         stepTimeMin = stepTimeMin + step;
                     }
 
-                    // Prepare next stepTime
-                    // Event end time plus nearest step
-
-//                    var endDateStr = this.events[i].EndDate.substring(0, this.events[i].EndDate.length - 1);
-//                    var endDate = new Date(endDateStr);
                     var endDate = this.utcDateStringToLocalDate(this.events[i].EndDate);
 
-
+                    var durationMin = (endDate - beginDate) / 1000 / 60;
                     var eventEndMin = (endDate.getHours() * 60) + endDate.getMinutes();
-
-                    var duration = eventEndMin - eventBeginMin;
+                    var eventBeginMin = (beginDate.getHours() * 60) + beginDate.getMinutes();
+                    var eventEndMin = eventBeginMin + durationMin;
+                    
+                    //if (eventEndMin == 0) {
+                    //    debugger;
+                    //}
+                    //var duration = eventEndMin - eventBeginMin;
                     // Write event slot
+
+
+                    //if (stepTimeMin == 1440) {
+                    //    // LAST 23:59
+                    //    this.push('timeSlotes', this.createTimeSlotData(stepTimeMin - 1, stepTimeMin + step - 1, null));
+                    //    break;
+                    //}
+                  
 
                     this.push('timeSlotes', this.createTimeSlotData(eventBeginMin, eventEndMin, this.events[i]));
                     stepTimeMin = (Math.ceil(eventEndMin / step) * step);
+//                    stepTimeMin = (Math.ceil(eventEndMin / step) * step);
                 }
 
 
-                while (stepTimeMin <= 1440) {
+                while (stepTimeMin <= (1440-step)) {
                     // Some minutes left
-                    this.push('timeSlotes', this.createTimeSlotData(stepTimeMin, stepTimeMin + step, null));
 
-                    //this.push('timeSlotes', { Name: "LAST 23:59" });
+                    //if (stepTimeMin == 1440) {
+                    //    // LAST 23:59
+                    //    this.push('timeSlotes', this.createTimeSlotData(stepTimeMin-1, stepTimeMin + step-1, null));
+                    //    break;
+                    //}
+
+                    this.push('timeSlotes', this.createTimeSlotData(stepTimeMin, stepTimeMin + step, null));
                     stepTimeMin = stepTimeMin + step;
                 }
-
-                //                this.notifyPath('timeSlotes');
-
             },
             createTimeSlotData: function (beginTimeMin, endTimeMin, booking) {
 
@@ -368,34 +404,11 @@
                     beginTimeStr: this.minToStr(beginTimeMin),
                     endTime: endTimeMin,
                     endTimeStr: this.minToStr(endTimeMin),
-                    Duration: this.userFrindlyDuration((endTimeMin - beginTimeMin)*60, false),
+                    Duration: this.userFrindlyDuration((endTimeMin - beginTimeMin) * 60, false),
                     Booking: booking
                 };
 
             },
-            //durationToStr: function (min) {
-
-            //    // >=1h  "1h 20min""
-            //    // <1h 20min
-
-            //    var sec_num = parseInt(min * 60, 10);
-            //    var hours = Math.floor(sec_num / 3600);
-            //    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-            //    var seconds = sec_num - (hours * 3600) - (minutes * 60);
-
-            //    if (hours < 1) {
-            //        return minutes + "min";
-            //    }
-
-            //    if (minutes == 0) {
-            //        return hours + "h";
-            //    }
-
-            //    return hours + "h " + minutes + "min";
-
-
-
-            //},
             minToStr: function (min) {
 
                 var sec_num = parseInt(min * 60, 10);
@@ -407,8 +420,6 @@
                 if (minutes < 10) { minutes = "0" + minutes; }
                 if (seconds < 10) { seconds = "0" + seconds; }
                 return hours + ':' + minutes;
-                //                return hours + ':' + minutes + ':' + seconds;
-
             },
             userFrindlyDuration: function (totalSeconds, showSeconds) {
 
@@ -441,7 +452,7 @@
                 //return hours + "h " + minutes + "min";
             },
             utcDateStringToLocalDate: function (dateStr) {
-                
+
 
                 var fixedDateStr = this.fixDateFormat(dateStr);
                 var yy = parseInt(fixedDateStr.substr(0, 4));

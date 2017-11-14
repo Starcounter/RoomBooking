@@ -178,6 +178,9 @@ namespace RoomBooking
 
             Hook<Room>.CommitDelete += (sender, room) =>
             {
+
+
+
                 Program.PushChanges();
             };
         }
@@ -373,6 +376,15 @@ namespace RoomBooking
 
         internal static void PushChanges()
         {
+
+            //Scheduling.ScheduleTask(() =>
+            //{
+            //    Session.ForAll((s, sessionId) =>
+            //    {
+            //        s.CalculatePatchAndPushOnWebSocket();
+            //    });
+            //}, false);
+
             Session.ForAll((s, sessionId) =>
             {
                 s.CalculatePatchAndPushOnWebSocket();
