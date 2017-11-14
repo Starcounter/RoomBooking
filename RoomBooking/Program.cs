@@ -17,6 +17,7 @@ namespace RoomBooking
 {
     class Program
     {
+        static private Object thisLock = new Object();
         static void Main()
         {
 
@@ -29,9 +30,6 @@ namespace RoomBooking
             RegisterSyncedEventHooks();
             RegisterSyncedCalendarHooks();
             RegisterTimer();
-            //SyncedCalendar.RegisterHooks();
-            //            SyncedEvent.RegisterHooks();
-            //SyncedEvent.RegisterTimer();
 
             UserRoomRelation.RegisterHooks();
 
@@ -376,19 +374,15 @@ namespace RoomBooking
 
         internal static void PushChanges()
         {
-
-            //Scheduling.ScheduleTask(() =>
-            //{
-            //    Session.ForAll((s, sessionId) =>
-            //    {
-            //        s.CalculatePatchAndPushOnWebSocket();
-            //    });
-            //}, false);
-
-            Session.ForAll((s, sessionId) =>
+            lock (Program.thisLock)
             {
-                s.CalculatePatchAndPushOnWebSocket();
-            });
+
+                Session.ForAll((s, sessionId) =>
+                {
+                    s.CalculatePatchAndPushOnWebSocket();
+                });
+            }
+
         }
 
     }
