@@ -12,7 +12,6 @@ namespace RoomBooking.ViewModels.Partials
         private IEnumerable<Room> GetUserRooms(User user)
         {
             return Db.SQL<Room>($"SELECT o.{nameof(UserRoomRelation.Room)} FROM {nameof(RoomBooking)}.\"{nameof(UserRoomRelation)}\" o WHERE o.{nameof(UserRoomRelation.User)} = ?", user);
-//            return Db.SQL<Room>("SELECT o.Room FROM RoomBooking.UserRoomRelation o WHERE o.User = ?", user);
         }
 
         protected override void OnData()
@@ -35,7 +34,25 @@ namespace RoomBooking.ViewModels.Partials
         public void Handle(Input.Enable action)
         {
             RoomScreenRelation roomScreenRelation = Db.SQL<RoomScreenRelation>($"SELECT o FROM {nameof(RoomBooking)}.\"{nameof(RoomScreenRelation)}\" o WHERE o.{nameof(RoomScreenRelation.Screen)} = ?", this.Data).FirstOrDefault();
-            if (roomScreenRelation != null) {
+
+            if (roomScreenRelation == null)
+            {
+
+                Room room = this.Rooms.FirstOrDefault();
+                if (room != null)
+                {
+                    roomScreenRelation = new RoomScreenRelation();
+                    roomScreenRelation.Screen = this.Data;
+                    roomScreenRelation.Room = room;
+                    this.SelectedRoomId = roomScreenRelation.Room.GetObjectID();
+                }
+
+            }
+
+
+
+            if (roomScreenRelation != null)
+            {
                 roomScreenRelation.Enabled = action.Value;
             }
         }
