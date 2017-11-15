@@ -12,7 +12,6 @@ namespace RoomBooking.ViewModels.Screens
 
         public void OnActiveEvent()
         {
-            //    this.ContentPartial = GetDefaultPage();
         }
 
 
@@ -46,24 +45,12 @@ namespace RoomBooking.ViewModels.Screens
 
         public bool DefaultPageTrigger {
             get {
-                // TODO: Fix this Dirty way to refresh content!!!
-                //var tempJson = this.ContentPartial;
-                //this.ContentPartial = new Json();
-                //this.ContentPartial = tempJson;
-                ////                this.ContentPartial = GetDefaultPage();
-
-
-
                 Json page = GetDefaultPage();
-
                 if (page == this.ContentPartial)
                 {
                     return true;
                 }
-
                 this.ContentPartial = page;
-
-
                 return true;
             }
         }
@@ -160,55 +147,11 @@ namespace RoomBooking.ViewModels.Screens
             };
 
             this.CalendarPartial = calendarePage;
-            //            this.ContentPartial = GetDefaultPage();
 
         }
 
 
         #region Pages
-
-        /// <summary>
-        /// Show default page
-        /// Free, Busy or Event
-        /// </summary>
-        private Json GetDefaultPage_OLD()
-        {
-            if (this.Data == null) return new Json();
-
-            // If user is viewing an event do not switch the view
-            if (this.ContentPartial is EventPage)
-            {
-                return this.ContentPartial;
-            }
-
-            // Get current event
-            RoomBookingEvent roomBookingEvent = this.ActiveEvent;
-            if (roomBookingEvent != null)
-            {
-                if (this.ContentPartial is BusyPage)
-                {
-                    // TODO: Booking.Data was null
-                    if (((BusyPage)this.ContentPartial).Booking.Data.Equals(roomBookingEvent))
-                    {
-                        return this.ContentPartial;
-                    }
-                }
-                return CreateBusyPage(roomBookingEvent);
-            }
-
-            if (this.ContentPartial is FreePage)
-            {
-                return this.ContentPartial;
-            }
-
-            //if( this.ContentPartial is NewBookingPage)  // TODO:
-            //{
-            //    return this.ContentPartial;
-            //}
-
-            return CreateFreePage(this.Data.Room);
-        }
-
 
         private Json GetDefaultPage()
         {
@@ -262,8 +205,7 @@ namespace RoomBooking.ViewModels.Screens
             EventPage eventPage = new EventPage() { Data = roomBookingEvent };
             eventPage.OnClose = () =>
             {
-                this.ContentPartial = new Json();   // Workaround
-                                                    //                this.ContentPartial = GetDefaultPage();
+                this.ContentPartial = new Json();
             };
 
             return eventPage;
@@ -278,7 +220,10 @@ namespace RoomBooking.ViewModels.Screens
         {
             FreePage freePage = new FreePage();
             freePage.Init(room);
-            freePage.OnNewBooking = () => this.ContentPartial = CreateNewBookingPage(room, DateTime.UtcNow, DateTime.UtcNow.AddHours(1), "Booked from screen");   // TODO:
+            freePage.OnNewBooking = () =>
+            {
+                this.ContentPartial = CreateNewBookingPage(room, DateTime.UtcNow, DateTime.UtcNow.AddHours(1), "Booked from screen");
+            };
 
             return freePage;
         }
@@ -294,7 +239,6 @@ namespace RoomBooking.ViewModels.Screens
             busyPage.Booking.Data = roomBookingEvent;
             busyPage.OnClose = () =>
             {
-                //                this.ContentPartial = GetDefaultPage();
                 this.ContentPartial = new Json();   // Workaround
 
             };
@@ -312,33 +256,6 @@ namespace RoomBooking.ViewModels.Screens
         }
 
 
-        /// <summary>
-        /// Create New quick booking page (todo)
-        /// </summary>
-        /// <param name="room"></param>
-        /// <param name="defaultBeginUtcDate"></param>
-        /// <param name="defaultEndUtcDate"></param>
-        /// <returns></returns>
-        //private NewBookingPage CreateNewQuickBookingPage(Room room, DateTime defaultBeginUtcDate, DateTime defaultEndUtcDate, string name = null)
-        //{
-        //    RoomBookingEvent roomBookingEvent = new RoomBookingEvent()
-        //    {
-        //        BeginUtcDate = defaultBeginUtcDate,
-        //        EndUtcDate = defaultEndUtcDate,
-        //        Room = room,
-        //        Name = name
-        //    };
-
-        //    //NewQuickBookingPage newQuickBookingPage = new NewQuickBookingPage() { Data = roomBookingEvent };
-        //    NewBookingPage newQuickBookingPage = new NewBookingPage() { Data = roomBookingEvent };
-        //    newQuickBookingPage.OnClose = () =>
-        //    {
-
-        //        this.ContentPartial = GetDefaultPage();
-        //    };
-
-        //    return newQuickBookingPage;
-        //}
         /// <summary>
         /// Create New booking page
         /// </summary>
@@ -359,16 +276,13 @@ namespace RoomBooking.ViewModels.Screens
             NewBookingPage newBookingPage = new NewBookingPage() { Data = roomBookingEvent };
             newBookingPage.OnClose = () =>
             {
-                this.ContentPartial = new Json();   // Workaround
-
-                //                this.ContentPartial = GetDefaultPage();
+                this.ContentPartial = new Json();
             };
 
             return newBookingPage;
         }
 
         #endregion
-
 
     }
 }
