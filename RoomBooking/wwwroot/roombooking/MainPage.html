@@ -19,9 +19,15 @@
             </div>
 
 
+            <template is="dom-if" if="{{!model.HideMenu}}">
+                <div class="mainHeader">
+                    <!--<a style="margin:10px" href="/RoomBooking">Home</a>-->
+                    <a style="margin:10px" href="/RoomBooking/rooms">Rooms</a>
+                </div>
+            </template>
+
             <div class="mainContent">
 
-          
 
                 <template is="imported-template" model="{{model.Content}}" content$="{{model.Content.Html}}">
                 </template>
@@ -31,10 +37,6 @@
 
         <link is="puppet-redirect" history url$="{{model.RedirectUrl}}" />
 
-
-
     </template>
-
-
 
 </template>

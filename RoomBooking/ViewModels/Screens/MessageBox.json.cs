@@ -39,7 +39,7 @@ namespace RoomBooking.ViewModels.Screens
         public static void Show(string title, string text, IList<MessageBoxButton> buttons, Action<MessageBoxResult> callback = null)
         {
 
-            ScreenContentPage holderPage = Program.AssureScreenContentPage();
+            ScreenContentPage holderPage = Utils.AssureScreenContentPage();
             if (holderPage == null)
             {
                 // TODO: Show error

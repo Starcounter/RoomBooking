@@ -16,10 +16,6 @@ namespace RoomBooking.ViewModels
             }
         }
 
-
-
-
-
         public string SelectedTimeZoneId {
             get {
 
@@ -35,7 +31,6 @@ namespace RoomBooking.ViewModels
             }
         }
 
-
         public IEnumerable<TimeZoneInfo> TimeZones => TimeZoneInfo.GetSystemTimeZones();
 
 
@@ -50,7 +45,6 @@ namespace RoomBooking.ViewModels
             this.Transaction.Rollback();
             this.RedirectUrl = "/roomBooking/rooms";
         }
-
 
         public void Handle(Input.DeleteTrigger action)
         {
@@ -69,9 +63,6 @@ namespace RoomBooking.ViewModels
                     });
                 }
             });
-
-
         }
-
     }
 }

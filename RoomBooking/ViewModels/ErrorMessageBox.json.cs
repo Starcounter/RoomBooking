@@ -80,7 +80,7 @@ namespace RoomBooking.ViewModels
         public static void Show(string title, string text, string stackTrace, string helpLink, ushort statusCode, Action callback = null)
         {
 
-            MainPage holderPage = Program.GetMainPage();
+            MainPage holderPage = Utils.GetMainPage();
             if (holderPage == null)
             {
                 // TODO: Show error

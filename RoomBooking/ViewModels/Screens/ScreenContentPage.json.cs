@@ -10,9 +10,6 @@ namespace RoomBooking.ViewModels.Screens
     partial class ScreenContentPage : Json, IBound<RoomScreenRelation>
     {
 
-        public void OnActiveEvent()
-        {
-        }
 
 
 

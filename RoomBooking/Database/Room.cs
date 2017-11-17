@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Starcounter;
-using Simplified.Ring3;
 
 namespace RoomBooking
 {
@@ -13,14 +12,11 @@ namespace RoomBooking
     public class Room
     {
         public string Name { get; set; }
-
         public string Description;
         public string TimeZoneId;
-        public bool DaylightSavings;
 
         public TimeZoneInfo TimeZoneInfo {
             get {
-
                 try
                 {
                     return TimeZoneInfo.FindSystemTimeZoneById(this.TimeZoneId);
@@ -36,10 +32,8 @@ namespace RoomBooking
 
             get {
                 return TimeZoneInfo.GetUtcOffset(DateTime.UtcNow).TotalMinutes;
-
             }
         }
     }
-
-  
+ 
 }

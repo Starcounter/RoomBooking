@@ -1,10 +1,5 @@
-﻿using System;
-using Starcounter;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Screens.Common;
+﻿using Starcounter;
+
 namespace RoomBooking
 {
     [Database]
@@ -14,22 +9,16 @@ namespace RoomBooking
         public Room Room;
         public static void RegisterHooks()
         {
-
-            // Push updates to client sessions
-            Hook<UserRoomRelation>.CommitUpdate += (sender, room) =>
+            Hook<Room>.BeforeDelete += (sender, room) =>
             {
-                Program.PushChanges();
+                Db.SQL($"DELETE FROM {typeof(UserRoomRelation)} WHERE {nameof(UserRoomRelation.Room)} = ?", room);
             };
 
-            Hook<UserRoomRelation>.CommitInsert += (sender, room) =>
+            Hook<User>.BeforeDelete += (sender, user) =>
             {
-                Program.PushChanges();
+                Db.SQL($"DELETE FROM {typeof(UserRoomRelation)} WHERE {nameof(UserRoomRelation.User)} = ?", user);
             };
 
-            Hook<UserRoomRelation>.CommitDelete += (sender, room) =>
-            {
-                Program.PushChanges();
-            };
         }
     }
 }

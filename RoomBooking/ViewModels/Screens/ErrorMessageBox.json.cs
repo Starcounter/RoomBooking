@@ -80,7 +80,7 @@ namespace RoomBooking.ViewModels.Screens
         public static void Show(string title, string text, string stackTrace, string helpLink, ushort statusCode, Action callback = null)
         {
 
-            ScreenContentPage holderPage = Program.AssureScreenContentPage();
+            ScreenContentPage holderPage = Utils.AssureScreenContentPage();
             if (holderPage == null)
             {
                 // TODO: Show error

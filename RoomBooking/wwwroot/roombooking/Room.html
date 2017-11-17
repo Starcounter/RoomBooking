@@ -17,34 +17,10 @@
             </p>
 
 
-            <!--<select  value="{{model.SelectedTimeZoneId$::change}}">
-            <template is="dom-repeat" items="{{model.TimeZones}}">
-                <option value="{{item.Id}}">{{item.DisplayName}}</option>
-            </template>
-        </select>-->
-
             <juicy-select caption-text="" value="{{model.SelectedTimeZoneId$}}" options="{{model.TimeZones}}" text-property="DisplayName" value-property="Id"></juicy-select>
             <p>
                 <i>Timezoon</i>
             </p>
-
-            <!--<div slot="kitchensink/dropdown-objects-select-label">
-            <template is="dom-if" if="{{model.SelectedProduct.Name}}">
-                <p class="kitchensink-test-juicy-select-label">You have selected: <strong>{{model.SelectedProduct.Name}}</strong></p>
-            </template>
-        </div>-->
-
-
-
-
-            <!--<div class="checkbox">
-                <label>
-                    <input type="checkbox" checked="{{model.DaylightSavings$::change}}" placeholder="Private">DaylightSavings
-                </label>
-
-            </div>-->
-
-
 
             <button type="button" value="{{model.SaveTrigger$::click}}" class="btn btn-sm btn-primary" onclick="++this.value">Save</button>
             <button type="button" value="{{model.CloseTrigger$::click}}" class="btn btn-sm btn-default" onclick="++this.value">Close</button>

@@ -1,4 +1,3 @@
-using Screens.Common;
 using Starcounter;
 using System.Collections.Generic;
 
@@ -6,7 +5,7 @@ namespace RoomBooking.ViewModels
 {
     partial class RoomsPage : Json
     {
-        public IEnumerable<Room> Rooms => Db.SQL<Room>("SELECT o.Room FROM RoomBooking.UserRoomRelation o WHERE o.User = ? ORDER BY o.Room.Name", UserSession.GetSignedInUser());
+        public IEnumerable<Room> Rooms => Db.SQL<Room>($"SELECT o.{nameof(UserRoomRelation.Room)} FROM {typeof(UserRoomRelation)} o WHERE o.{nameof(UserRoomRelation.User)} = ? ORDER BY o.{nameof(UserRoomRelation.Room)}.{nameof(Room.Name)}", UserSession.GetSignedInUser());
     }
 
     [RoomsPage_json.Rooms]

@@ -134,10 +134,12 @@ namespace RoomBooking.ViewModels.Screens
                 BusyPage busyPage = this.Parent as BusyPage;
                 busyPage.OnClose?.Invoke();
 
-                Session.ForAll((session, sessionId) =>
-                {
-                    session.CalculatePatchAndPushOnWebSocket();
-                });
+                Utils.PushChanges();
+
+                //Session.ForAll((session, sessionId) =>
+                //{
+                //    session.CalculatePatchAndPushOnWebSocket();
+                //});
 
             }, false);
         }

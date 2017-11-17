@@ -1,8 +1,6 @@
 {
   "Html": "/roombooking/mainpage.html",
-  "RedirectUrl": "",
   "User": {
-    "$SignedIn": { "Bind": "IsSignedInFlag" },
     "SignedIn": false,
     "Email": "",
     "FirstName": "",
@@ -15,17 +13,9 @@
     "FirstName$": "",
     "LastName$": ""
   },
+  "HideMenu": false,
+  "RedirectUrl": "",
   "MessageBox": { "$": { "Reuse": "RoomBooking.ViewModels.MessageBox" } },
   "ErrorMessage": { "$": { "Reuse": "RoomBooking.ViewModels.ErrorMessageBox" } },
-  "MenuOptions": [
-    {
-      "Title": "",
-      "Icon": "",
-      "SelectedTrigger$": 0
-    }
-  ],
-  "Content": {},
-  "TestErrorMessageBoxTrigger$": 0,
-  "TestMessageBoxTrigger$": 0
-  
+  "Content": {}
 }

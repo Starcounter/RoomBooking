@@ -5,7 +5,7 @@
     <template is="dom-bind">
 
         <template is="dom-if" if="{{model.Enabled}}">
-            <!--<starcounter-include partial="{{model.Partial}}"></starcounter-include>-->
+
             <div class="maincontentContainer">
 
                 <!-- Error MessageBox -->
@@ -26,10 +26,22 @@
                     <template is="imported-template" model="{{model.ContentPartial}}" content$="{{model.ContentPartial.Html}}">
                     </template>
                 </div>
-
             </div>
 
         </template>
 
-        </template>
+    </template>
+
+    <script>
+
+        var head = document.getElementsByTagName('head')[0];
+
+        // Prevent user to be able to zoom
+        var viewport = document.createElement('meta');
+        viewport.name = "viewport";
+        viewport.content = "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no";
+        head.appendChild(viewport);
+
+    </script>
+
 </template>

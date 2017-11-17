@@ -39,7 +39,7 @@ namespace RoomBooking.ViewModels
         public static void Show(string title, string text, IList<MessageBoxButton> buttons, Action<MessageBoxResult> callback = null)
         {
 
-            MainPage holderPage = Program.GetMainPage();
+            MainPage holderPage = Utils.GetMainPage();
             if (holderPage == null)
             {
                 // TODO: Show error

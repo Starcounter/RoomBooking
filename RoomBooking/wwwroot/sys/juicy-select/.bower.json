@@ -34,6 +34,5 @@
   },
   "_source": "https://github.com/juicy/juicy-select.git",
   "_target": "^1.0.0",
-  "_originalSource": "juicy/juicy-select",
-  "_direct": true
+  "_originalSource": "juicy/juicy-select"
 }

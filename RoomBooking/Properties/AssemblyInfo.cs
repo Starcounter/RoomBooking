@@ -7,7 +7,7 @@ using Starcounter.Internal;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("RoomBooking")]
-[assembly: AssemblyDescription("RoomBooking used with Screen System App")]
+[assembly: AssemblyDescription("RoomBooking App")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Smörgåsbord")]
 [assembly: AssemblyProduct("RoomBooking")]
@@ -33,8 +33,8 @@ using Starcounter.Internal;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.11.0")]
-[assembly: AssemblyFileVersion("1.0.11.0")]
+[assembly: AssemblyVersion("1.0.13.0")]
+[assembly: AssemblyFileVersion("1.0.13.0")]
 
 // Assures the current assembly has a reference to the Starcounter
 // assembly. A reference to Starcounter is currently required for
