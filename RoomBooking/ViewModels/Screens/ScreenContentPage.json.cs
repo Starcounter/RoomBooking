@@ -293,12 +293,12 @@ namespace RoomBooking.ViewModels.Screens
 
         private void TimerCallback(Object state)
         {
-            Scheduling.ScheduleTask(() =>
+            Scheduling.RunTask(() =>
             {
                 // Set timer to next event
                 SetEventTimer();
                 Utils.PushChanges();
-            }, false);
+            });
         }
 
 

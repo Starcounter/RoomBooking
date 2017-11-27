@@ -59,3 +59,16 @@ paper-dialog .buttons {
     .roomItem:link {
         text-decoration: none;
     }
+
+
+.formpanel {
+    margin: 40px;
+    background-color: white;
+    padding: 40px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.25);
+}
+
+
+.btn-sm {
+    min-width: 80px;
+}

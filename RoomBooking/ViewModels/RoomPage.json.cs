@@ -9,6 +9,16 @@ namespace RoomBooking.ViewModels
 
         protected override void OnData()
         {
+
+            // This "workaround" is needed see github issue
+            // https://github.com/Starcounter/Home/issues/316
+
+            if (this.Data == null && !string.IsNullOrEmpty(this.RedirectUrl))
+            {
+                this.RedirectUrl = this.RedirectUrl;
+            }
+
+
             base.OnData();
             if (this.Data != null)
             {

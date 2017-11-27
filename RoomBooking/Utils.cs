@@ -19,7 +19,7 @@ namespace RoomBooking
         {
             lock (Utils.thisLock)
             {
-                Session.ForAll((s, sessionId) =>
+                Session.RunTaskForAll((s, sessionId) =>
                 {
                     s.CalculatePatchAndPushOnWebSocket();
                 });

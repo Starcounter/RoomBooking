@@ -81,12 +81,18 @@ namespace RoomBooking
 
         private static void TimerCallback(Object state)
         {
-            Scheduling.ScheduleTask(() =>
-            {
-                // Set timer to next event
+
+            Scheduling.RunTask(() => {
                 SetEventTimer();
                 Utils.PushChanges();
-            }, false);
+            });
+
+            //Scheduling.ScheduleTask(() =>
+            //{
+            //    // Set timer to next event
+            //    SetEventTimer();
+            //    Utils.PushChanges();
+            //}, false);
         }
 
 

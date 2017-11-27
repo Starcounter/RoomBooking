@@ -129,19 +129,12 @@ namespace RoomBooking.ViewModels.Screens
         }
         public void TimerCallback(Object state)
         {
-            Scheduling.ScheduleTask(() =>
+            Scheduling.RunTask(() =>
             {
                 BusyPage busyPage = this.Parent as BusyPage;
                 busyPage.OnClose?.Invoke();
-
                 Utils.PushChanges();
-
-                //Session.ForAll((session, sessionId) =>
-                //{
-                //    session.CalculatePatchAndPushOnWebSocket();
-                //});
-
-            }, false);
+            });
         }
 
 
