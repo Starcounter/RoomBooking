@@ -7,13 +7,9 @@ namespace RoomBooking.ViewModels
 
         public void Init()
         {
-            //var item = this.Items.Add();
-            //item.Name = "RoomBooking";
-            //item.Url = "/RoomBooking";
-            var item2 = this.Items.Add();
-            item2.Name = "Rooms";
-            item2.Url = "/RoomBooking/Rooms";
-
+            var item = this.Items.Add();
+            item.Name = "Rooms";
+            item.Url = "/RoomBooking/Rooms";
         }
 
     }

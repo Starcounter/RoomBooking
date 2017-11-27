@@ -1,18 +1,5 @@
 {
   "Html": "/roombooking/mainpage.html",
-  "User": {
-    "SignedIn": false,
-    "Email": "",
-    "FirstName": "",
-    "LastName": ""
-  },
-  "GoogleUser": {
-    "SignedIn$": false,
-    "Id$": "",
-    "Email$": "",
-    "FirstName$": "",
-    "LastName$": ""
-  },
   "HideMenu": false,
   "RedirectUrl": "",
   "MessageBox": { "$": { "Reuse": "RoomBooking.ViewModels.MessageBox" } },

@@ -1,24 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Starcounter;
-using RoomBooking.ViewModels.Partials;
-using System.Threading;
-using RoomBooking.ViewModels.Screens;
 using RoomBooking.ViewModels;
 
-namespace RoomBooking
+namespace RoomBooking.Handlers
 {
     public class RoomHandlers
     {
 
         public static void RegisterHandlers()
         {
-
-            #region Room
-
             Handle.GET("/roomBooking/rooms", (Request request) =>
             {
                 MainPage mainPage = Utils.GetMainPage();
@@ -38,7 +28,6 @@ namespace RoomBooking
             {
                 MainPage mainPage = Utils.GetMainPage();
                 User user = UserSession.GetSignedInUser();
-
                 if (user == null)
                 {
                     ViewModels.MessageBox.Show("Access Denied", "You must be signed in");
@@ -62,7 +51,6 @@ namespace RoomBooking
             Handle.GET("/roomBooking/rooms/{?}", (string id, Request request) =>
             {
                 MainPage mainPage = Utils.GetMainPage();
-
                 User user = UserSession.GetSignedInUser();
                 if (user == null)
                 {
@@ -87,9 +75,6 @@ namespace RoomBooking
                 });
 
             });
-
-            #endregion
-
         }
     }
 }

@@ -27,8 +27,6 @@ namespace RoomBooking.ViewModels.Partials
             }
         }
 
-
-
         public void Handle(Input.Enable action)
         {
             RoomScreenRelation roomScreenRelation = Db.SQL<RoomScreenRelation>($"SELECT o FROM {typeof(RoomScreenRelation)} o WHERE o.{nameof(RoomScreenRelation.ScreenId)} = ?", this.ScreenId).FirstOrDefault();
@@ -68,7 +66,7 @@ namespace RoomBooking.ViewModels.Partials
             }
             catch
             {
-
+                // TODO:
             }
             try
             {
@@ -90,45 +88,12 @@ namespace RoomBooking.ViewModels.Partials
             {
                 // TODO:
             }
-
-
         }
     }
-
 
     [ScreenPartial_json.Rooms]
     partial class ScreenPartialRoomItem : Json, IBound<Room>
     {
-
         public string Id => this.Data?.GetObjectID();
-
-        public string UrlString {
-            get {
-                return string.Format("/roomBooking/rooms/{0}", this.Data?.GetObjectID());
-            }
-        }
-        public void Handle(Input.SelectTrigger action)
-        {
-
-            //MessageBoxButton deleteButton = new MessageBoxButton() { ID = (long)MessageBox.MessageBoxResult.Yes, Text = "Delete", CssClass = "btn btn-sm btn-danger" };
-            //MessageBoxButton cancelButton = new MessageBoxButton() { ID = (long)MessageBox.MessageBoxResult.Cancel, Text = "Cancel" };
-
-            //MessageBox.Show("Delete Room", "This Room will be deleted.", cancelButton, deleteButton, (result) =>
-            //{
-
-            //    if (result == MessageBox.MessageBoxResult.Yes)
-            //    {
-            //        Db.Transact(() =>
-            //        {
-            //            this.Data.Delete();
-            //        });
-            //    }
-            //});
-
-
-        }
-
-
     }
-
 }

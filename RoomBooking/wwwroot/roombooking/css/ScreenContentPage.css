@@ -1,6 +1,4 @@
-﻿
-
-body {
+﻿body {
     background-color: white;
 }
 
@@ -11,7 +9,7 @@ body {
 
 .calendarContainer {
     flex: 1 45%;
-    height: 100%
+    height: 100%;
 }
 
 .contentContainer {

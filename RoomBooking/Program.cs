@@ -1,16 +1,7 @@
-﻿// Google Client ID: 525016583199-77s56n08s4uuoir2oppc8gs1biv5t6q9.apps.googleusercontent.com
-// Google client secret: hTMyupyDfY8LFFCVnghhBPzK
-
-//public IEnumerable<Order> Orders => Db.SQL<Order>($"SELECT so FROM {nameof(Flexovital)}.\"{nameof(Flexovital.Order)}\" so WHERE so.Subscription.Customer = ?", this);
-
-using System;
+﻿using System;
 using Starcounter;
 using RoomBooking.ViewModels;
-using System.Linq;
-using RoomBooking.ViewModels.Screens;
-using System.Collections.Specialized;
-using RoomBooking.ViewModels.Partials;
-using System.Threading;
+using RoomBooking.Handlers;
 
 namespace RoomBooking
 {
@@ -21,26 +12,28 @@ namespace RoomBooking
             Application.Current.Use(new HtmlFromJsonProvider());
             Application.Current.Use(new PartialToStandaloneHtmlProvider());
 
-            UpdateGuiHooks.Register();
-
+            // Hooks
             UserSession.RegisterHooks();
             UserRoomRelation.RegisterHooks();
             RoomScreenRelation.RegisterHooks();
             RoomBookingEvent.RegisterHooks();
 
-          
+            UpdateGuiHooks.Register();
 
-        
-
-
+            // Handlers
             ScreenSettingHandlers.RegisterHandlers();
             ScreenContentHandlers.RegisterHandlers();
             RoomHandlers.RegisterHandlers();
+            RegisterHandlers();
 
+            // Blending
+            RegisterBlending();
+        }
 
+        private static void RegisterHandlers()
+        {
             Handle.GET("/RoomBooking", (Request request) =>
             {
-
                 MainPage mainPage = Utils.GetMainPage();
                 try
                 {
@@ -62,18 +55,18 @@ namespace RoomBooking
                     ViewModels.ErrorMessageBox.Show(e);
                 }
                 return mainPage;
-
-
             });
+        }
 
-            Handle.GET("/RoomBooking/menumapping", () => {
-
+        private static void RegisterBlending()
+        {
+            Handle.GET("/RoomBooking/menumapping", () =>
+            {
                 Menu menu = new Menu();
                 menu.Init();
                 return menu;
             });
             Blender.MapUri("/RoomBooking/menumapping", "menu");
-
 
         }
     }

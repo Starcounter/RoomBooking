@@ -1,5 +1,5 @@
 ﻿<link rel="import" href="/sys/polymer/polymer.html">
-<link rel="stylesheet" href="/roombooking/css/mainscreenpage.css" />
+<link rel="stylesheet" href="/roombooking/css/ScreenContentPage.css" />
 
 <template>
     <template is="dom-bind">
@@ -9,27 +9,24 @@
             <div class="maincontentContainer">
 
                 <!-- Error MessageBox -->
-                <template is="imported-template" model="{{model.ErrorMessage}}" content$="{{model.ErrorMessage.Html}}">
+                <template is="imported-template" model="{{model.ErrorMessage}}" href="{{model.ErrorMessage.Html}}">
                 </template>
                 <!-- MessageBox -->
-                <template is="imported-template" model="{{model.MessageBox}}" content$="{{model.MessageBox.Html}}">
+                <template is="imported-template" model="{{model.MessageBox}}" href="{{model.MessageBox.Html}}">
                 </template>
 
 
                 <div class="calendarContainer">
-                    <template is="imported-template" model="{{model.CalendarPartial}}" content$="{{model.CalendarPartial.Html}}">
+                    <template is="imported-template" model="{{model.CalendarPartial}}" href="{{model.CalendarPartial.Html}}">
                     </template>
                 </div>
 
                 <div class="contentContainer">
-
-                    <template is="imported-template" model="{{model.ContentPartial}}" content$="{{model.ContentPartial.Html}}">
+                    <template is="imported-template" model="{{model.ContentPartial}}" href="{{model.ContentPartial.Html}}">
                     </template>
                 </div>
             </div>
-
         </template>
-
     </template>
 
     <script>

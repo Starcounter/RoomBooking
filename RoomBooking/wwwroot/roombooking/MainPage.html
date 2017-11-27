@@ -1,42 +1,36 @@
 ﻿<link rel="import" href="/sys/polymer/polymer.html">
-<link rel="stylesheet" href="/RoomBooking/css/main.css" />
+<link rel="import" href="/sys/palindrom-redirect/palindrom-redirect.html">
 <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
-
+<link rel="stylesheet" href="/RoomBooking/css/mainapp.css" />
 
 <template>
     <template is="dom-bind">
 
-
-        <div class="mainPage">
+        <div class="mainAppPage">
 
             <div>
                 <!-- Error MessageBox -->
-                <template is="imported-template" model="{{model.ErrorMessage}}" content$="{{model.ErrorMessage.Html}}">
+                <template is="imported-template" model="{{model.ErrorMessage}}" href="{{model.ErrorMessage.Html}}">
                 </template>
                 <!-- MessageBox -->
-                <template is="imported-template" model="{{model.MessageBox}}" content$="{{model.MessageBox.Html}}">
+                <template is="imported-template" model="{{model.MessageBox}}" href="{{model.MessageBox.Html}}">
                 </template>
             </div>
 
-
             <template is="dom-if" if="{{!model.HideMenu}}">
-                <div class="mainHeader">
+                <div class="appMenu">
                     <!--<a style="margin:10px" href="/RoomBooking">Home</a>-->
                     <a style="margin:10px" href="/RoomBooking/rooms">Rooms</a>
                 </div>
             </template>
 
-            <div class="mainContent">
-
-
-                <template is="imported-template" model="{{model.Content}}" content$="{{model.Content.Html}}">
+            <div class="appContent">
+                <template is="imported-template" model="{{model.Content}}" href="{{model.Content.Html}}">
                 </template>
             </div>
-
         </div>
 
-        <link is="puppet-redirect" history url$="{{model.RedirectUrl}}" />
+        <link is="palindrom-redirect" history url$="{{model.RedirectUrl}}" />
 
     </template>
-
 </template>

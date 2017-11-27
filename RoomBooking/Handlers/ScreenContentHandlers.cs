@@ -3,7 +3,7 @@ using System.Linq;
 using Starcounter;
 using RoomBooking.ViewModels.Screens;
 
-namespace RoomBooking
+namespace RoomBooking.Handlers
 {
     public class ScreenContentHandlers
     {

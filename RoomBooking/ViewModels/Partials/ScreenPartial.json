@@ -4,10 +4,7 @@
   "Rooms": [
     {
       "Id": "",
-      "Name": "",
-      "$Url": { "Bind": "UrlString" },
-      "Url": "",
-      "SelectTrigger$": 0
+      "Name": ""
     }
   ],
   "SelectedRoomId$": "",

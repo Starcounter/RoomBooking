@@ -9,12 +9,6 @@ namespace RoomBooking.ViewModels.Screens
 {
     partial class ScreenContentPage : Json, IBound<RoomScreenRelation>
     {
-
-
-
-
-
-
         protected override void OnData()
         {
             base.OnData();
@@ -144,6 +138,9 @@ namespace RoomBooking.ViewModels.Screens
             };
 
             this.CalendarPartial = calendarePage;
+
+//            RegisterTimer();
+//            SetEventTimer();
 
         }
 
@@ -280,6 +277,48 @@ namespace RoomBooking.ViewModels.Screens
         }
 
         #endregion
+
+
+        #region Timer
+
+        private static Timer EventTimer;
+
+        private void RegisterTimer()
+        {
+            EventTimer = new Timer(TimerCallback);
+            SetEventTimer();
+        }
+
+
+
+        private void TimerCallback(Object state)
+        {
+            Scheduling.ScheduleTask(() =>
+            {
+                // Set timer to next event
+                SetEventTimer();
+                Utils.PushChanges();
+            }, false);
+        }
+
+
+        private void SetEventTimer()
+        {
+            TimeSpan timeSpan = new TimeSpan(0, 0, 5);
+            EventTimer.Change(1000*5,1000*5);
+
+            //DateTime utcNow = DateTime.UtcNow;
+            //RoomBookingEvent firstEvent = Db.SQL<RoomBookingEvent>($"SELECT o FROM {typeof(RoomBookingEvent)} o WHERE o.{nameof(RoomBookingEvent.BeginUtcDate)} >= ? ORDER BY o.{nameof(RoomBookingEvent.BeginUtcDate)}", utcNow).FirstOrDefault();
+
+            //if (firstEvent != null)
+            //{
+            //    TimeSpan timeSpan = firstEvent.BeginUtcDate - utcNow;
+            //    EventTimer.Change(timeSpan, TimeSpan.FromTicks(-1));
+            //}
+        }
+
+        #endregion
+
 
     }
 }

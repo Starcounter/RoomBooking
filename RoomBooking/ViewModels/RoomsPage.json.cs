@@ -11,10 +11,6 @@ namespace RoomBooking.ViewModels
     [RoomsPage_json.Rooms]
     partial class RoomsPageRoomItem : Json, IBound<Room>
     {
-
         public string Url => string.Format("/roomBooking/rooms/{0}", this.Data?.GetObjectID());
-
-
-
     }
 }
