@@ -23,18 +23,20 @@ namespace RoomBooking
         /// <returns></returns>
         public static User GetSignedInUser()
         {
-            User user = Db.SQL<User>($"SELECT o FROM {typeof(RoomBooking.User)} o").FirstOrDefault();
+            string firstName = "Anonymouse";
+            string lastName = "Anonymouse";
+
+            User user = Db.SQL<User>($"SELECT o FROM {typeof(RoomBooking.User)} o WHERE o.{nameof(RoomBooking.User.FirstName)} = ? AND o.{nameof(RoomBooking.User.LastName)} = ?", firstName, lastName).FirstOrDefault();
 
             if( user == null)
             {
                 Db.Transact(() =>
                 {
-                    user = new User() { FirstName = "Anonymouse", LastName = "Anonymouse" };
+                    user = new User() { FirstName = firstName, LastName = lastName };
                 });
             }
 
             return user;
-            //return Db.SQL<User>($"SELECT o.{nameof(UserSession.User)} FROM {typeof(RoomBooking.UserSession)} o WHERE o.{nameof(UserSession.SessionId)} = ?", Starcounter.Session.Current.SessionId).FirstOrDefault();
         }
     }
 
