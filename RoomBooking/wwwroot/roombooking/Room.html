@@ -16,6 +16,10 @@
                 <i>Name</i>
             </p>
 
+            <input type="number" min="0" value="{{model.WarnNotificationMinutes$::input}}" placeholder="Notify ahead (minutes)" />
+            <p>
+                <i>Notify ahead (minutes)</i>
+            </p>
 
             <juicy-select caption-text="" value="{{model.SelectedTimeZoneId$}}" options="{{model.TimeZones}}" text-property="DisplayName" value-property="Id"></juicy-select>
             <p>

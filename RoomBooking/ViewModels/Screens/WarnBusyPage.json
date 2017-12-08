@@ -1,19 +1,10 @@
 {
-  "Html": "/roombooking/screens/Busy.html",
-  "WarnBooking": {
-    "BeginUtcDate": "",
-    "BeginDate": "",
-    "EndUtcDate": "",
-    "EndDate": "",
-    "Name": "",
-    "Description": "",
-    "Room": {
-      "Name": ""
-    }
-  },
+  "Html": "/roombooking/screens/WarnBusy.html",
   "Booking": {
     "BeginUtcDate": "",
     "BeginDate": "",
+    "WarnDate": "",
+    "WarnUtcDate": "",
     "EndUtcDate": "",
     "EndDate": "",
     "Name": "",

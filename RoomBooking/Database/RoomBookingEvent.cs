@@ -19,6 +19,14 @@ namespace RoomBooking
         public string Name { get; set; }
         public string Description { get; set; }
 
+        public int WarnNotificationMinutes { get; set; }
+        
+        public DateTime WarnUtcDate {
+            get {
+                return this.BeginUtcDate.Subtract(new TimeSpan(0, (int)this.WarnNotificationMinutes, 0));
+            }
+        }
+
         public static void RegisterHooks()
         {
             Hook<Room>.BeforeDelete += (sender, room) =>

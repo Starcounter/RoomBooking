@@ -6,28 +6,30 @@
 
         <style>
             .contentPageHolder {
-                background-color: #A40D27;
+                background-color: #ff6a00;
             }
 
             .contentTicker {
                 flex: 1 1 auto;
                 display: flex;
-                margin: 50px;
+                margin:50px;
             }
+
         </style>
 
 
         <div class="contentPageHolder">
 
             <div class="contentPageHeader">
-                <p style="font-size:2em;margin:0px;">OCCUPIED</p>
+                <p style="font-size:2em;margin:0px;">NEXT</p>
                 <p style="font-size:0.5em;margin:0px;">{{model.Booking.Name}}</p>
             </div>
+<div>
+    {{model.Booking.WarnDate}}
 
-            <sgb-countdown class="contentTicker" begin-date="{{model.Booking.BeginDate}}" end-date="{{model.Booking.EndDate}}"></sgb-countdown>
 
-            <!-- TODO -->
-            <h1>Warn: {{model.WarnBooking.Name}}</h1>
+</div>
+            <sgb-countdown class="contentTicker" begin-date="{{model.Booking.WarnDate}}" end-date="{{model.Booking.BeginDate}}"></sgb-countdown>
 
             <div class="contentPageOperationPanel">
                 <button type="button" value="{{model.ClaimTrigger$::click}}" class="btn btn-sm btn-primary" onclick="++this.value">Claim</button>

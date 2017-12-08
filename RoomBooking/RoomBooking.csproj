@@ -85,6 +85,9 @@
     <Compile Include="ViewModels\Screens\ErrorMessageBox.json.cs">
       <DependentUpon>ErrorMessageBox.json</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\Screens\WarnBusyPage.json.cs">
+      <DependentUpon>WarnBusyPage.json</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\Screens\MessageBox.json.cs">
       <DependentUpon>MessageBox.json</DependentUpon>
     </Compile>
@@ -180,6 +183,9 @@
     <TypedJSON Include="ViewModels\Menu.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
+    <TypedJSON Include="ViewModels\Screens\WarnBusyPage.json">
+      <Generator>MsBuild:Compile</Generator>
+    </TypedJSON>
     <None Include="wwwroot\roombooking\MainPage.html" />
   </ItemGroup>
   <ItemGroup>
@@ -217,6 +223,7 @@
     <Content Include="wwwroot\roombooking\elements\sgb-countdown\sgb-countdown.html" />
     <Content Include="wwwroot\roombooking\elements\sgb-timepicker\sgb-timepicker.html" />
     <Content Include="wwwroot\roombooking\elements\sgb-daypicker\sgb-daypicker.html" />
+    <None Include="wwwroot\roombooking\screens\WarnBusy.html" />
     <None Include="wwwroot\roombooking\Menu.html" />
     <None Include="wwwroot\roombooking\screens\NewQuickBooking.html" />
     <None Include="wwwroot\roombooking\screens\ContentPartial.html" />

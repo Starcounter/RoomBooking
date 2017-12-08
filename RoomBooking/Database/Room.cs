@@ -34,6 +34,8 @@ namespace RoomBooking
                 return TimeZoneInfo.GetUtcOffset(DateTime.UtcNow).TotalMinutes;
             }
         }
+
+        public int WarnNotificationMinutes { get; set; }
     }
- 
+
 }

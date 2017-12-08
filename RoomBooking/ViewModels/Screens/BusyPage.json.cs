@@ -31,14 +31,14 @@ namespace RoomBooking.ViewModels.Screens
     [BusyPage_json.Booking]
     partial class BusyPageBooking : Json, IBound<RoomBookingEvent>
     {
-        private Timer EventTimer = null;
+        //private Timer EventTimer = null;
 
         public DateTime BeginDate {
             get {
 
                 if (this.Data != null)
                 {
-                    SetEventTimer();
+                    //SetEventTimer();
                     return TimeZoneInfo.ConvertTimeFromUtc(this.Data.BeginUtcDate, this.Data.Room.TimeZoneInfo);
                 }
 
@@ -51,7 +51,7 @@ namespace RoomBooking.ViewModels.Screens
 
                 if (this.Data != null)
                 {
-                    SetEventTimer();
+                    //SetEventTimer();
                     return TimeZoneInfo.ConvertTimeFromUtc(this.Data.EndUtcDate, this.Data.Room.TimeZoneInfo);
                 }
 
@@ -65,14 +65,14 @@ namespace RoomBooking.ViewModels.Screens
             base.OnData();
             if (this.Data != null)
             {
-                RegisterTimer();
+//                RegisterTimer();
             }
             else
             {
-                if (this.EventTimer != null)
-                {
-                    this.EventTimer.Dispose();
-                }
+                //if (this.EventTimer != null)
+                //{
+                //    this.EventTimer.Dispose();
+                //}
 
 
                 BusyPage busyPage = this.Parent as BusyPage;
@@ -92,51 +92,50 @@ namespace RoomBooking.ViewModels.Screens
             }
         }
 
-        public void RegisterTimer()
-        {
-            EventTimer = new Timer(TimerCallback);
-            SetEventTimer();
-        }
+        //public void RegisterTimer()
+        //{
+        //    EventTimer = new Timer(TimerCallback);
+        //    SetEventTimer();
+        //}
 
 
-        private DateTime previousEndUtcDate;
-        private void SetEventTimer()
-        {
+        //private DateTime previousEndUtcDate;
+        //private void SetEventTimer()
+        //{
 
-            if (this.previousEndUtcDate == this.Data.EndUtcDate)
-            {
-                return;
-            }
+        //    if (this.previousEndUtcDate == this.Data.EndUtcDate)
+        //    {
+        //        return;
+        //    }
 
-            DateTime utcNow = DateTime.UtcNow;
+        //    DateTime utcNow = DateTime.UtcNow;
 
-            //EventTimer.Change(new TimeSpan(0,0,0,10,0), TimeSpan.FromTicks(Timeout.Infinite));
-            TimeSpan timeSpan = this.Data.EndUtcDate - utcNow;
+        //    //EventTimer.Change(new TimeSpan(0,0,0,10,0), TimeSpan.FromTicks(Timeout.Infinite));
+        //    TimeSpan timeSpan = this.Data.EndUtcDate - utcNow;
 
-            if (timeSpan.TotalSeconds < 0)
-            {
-                if (this.EventTimer != null)
-                {
-                    this.EventTimer.Dispose();
-                }
-            }
-            else
-            {
-                this.EventTimer.Change(timeSpan, TimeSpan.FromTicks(Timeout.Infinite));
-                this.previousEndUtcDate = this.Data.EndUtcDate;
-            }
+        //    if (timeSpan.TotalSeconds < 0)
+        //    {
+        //        if (this.EventTimer != null)
+        //        {
+        //            this.EventTimer.Dispose();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        this.EventTimer.Change(timeSpan, TimeSpan.FromTicks(Timeout.Infinite));
+        //        this.previousEndUtcDate = this.Data.EndUtcDate;
+        //    }
 
-        }
-        public void TimerCallback(Object state)
-        {
-            Scheduling.RunTask(() =>
-            {
-                BusyPage busyPage = this.Parent as BusyPage;
-                busyPage.OnClose?.Invoke();
-                Utils.PushChanges();
-            });
-        }
-
+        //}
+        //public void TimerCallback(Object state)
+        //{
+        //    Scheduling.RunTask(() =>
+        //    {
+        //        BusyPage busyPage = this.Parent as BusyPage;
+        //        busyPage.OnClose?.Invoke();
+        //        Utils.PushChanges();
+        //    });
+        //}
 
     }
 

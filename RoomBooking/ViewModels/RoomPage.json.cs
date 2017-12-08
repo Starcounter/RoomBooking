@@ -1,11 +1,17 @@
 using Starcounter;
 using System;
 using System.Collections.Generic;
+using Starcounter.Templates;
 
 namespace RoomBooking.ViewModels
 {
     partial class RoomPage : Json, IBound<Room>
     {
+
+        public override void Checkpoint()
+        {
+            base.Checkpoint();
+        }
 
         protected override void OnData()
         {
