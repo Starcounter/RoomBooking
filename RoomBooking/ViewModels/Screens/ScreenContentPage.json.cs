@@ -187,6 +187,11 @@ namespace RoomBooking.ViewModels.Screens
             // Show Warn event
             if (this.WarnEvent != null)
             {
+                if (this.ContentPartial is WarnBusyPage)
+                {
+                    return this.ContentPartial;
+                }
+
                 return CreateWarnPage(this.WarnEvent);
             }
 
@@ -299,6 +304,15 @@ namespace RoomBooking.ViewModels.Screens
         /// <returns></returns>
         private NewBookingPage CreateNewBookingPage(Room room, DateTime defaultBeginUtcDate, DateTime defaultEndUtcDate, string name = null)
         {
+
+            // Reset seconds and milliseconds
+            defaultBeginUtcDate = defaultBeginUtcDate.AddSeconds(-defaultBeginUtcDate.Second);
+            defaultBeginUtcDate = defaultBeginUtcDate.AddMilliseconds(-defaultBeginUtcDate.Millisecond);
+
+            defaultEndUtcDate = defaultEndUtcDate.AddSeconds(-defaultEndUtcDate.Second);
+            defaultEndUtcDate = defaultEndUtcDate.AddMilliseconds(-defaultEndUtcDate.Millisecond);
+
+
             RoomBookingEvent roomBookingEvent = new RoomBookingEvent()
             {
                 BeginUtcDate = defaultBeginUtcDate,

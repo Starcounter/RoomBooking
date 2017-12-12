@@ -11,6 +11,14 @@ namespace RoomBooking.ViewModels.Screens
         public Action OnClaim;
         public Action OnClose;
 
+
+        public void Handle(Input.SyncTimeTrigger action)
+        {
+            // 2008-09-22T14:01:54.9571247Z
+            this.ServerUTCDate = DateTime.UtcNow.ToString("o");
+        }
+
+
         public void Handle(Input.ClaimTrigger action)
         {
 

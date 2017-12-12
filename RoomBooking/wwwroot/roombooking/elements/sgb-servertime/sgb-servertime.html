@@ -1,0 +1,143 @@
+<dom-module id="sgb-servertime">
+
+    <template>
+
+        <!--<h4><span>[[syncedUtcServerDateString]]</span> (syncedUtcServerDateString)</h4>
+        <h4><span>[[roundTrippTime]]</span> (roundTrippTime)</h4>-->
+
+    </template>
+
+    <script>
+        Polymer({
+            is: "sgb-servertime",
+            properties: {
+                serverUtcDate: {
+                    type: String,
+                    observer: '_serverUTCDateChanged'
+                },
+                syncTrigger: {
+                    type: Number,
+                    notify: true,
+                    observer: '_syncTriggerChanged'
+                },
+                serverClientDate: {
+                    type: Date,
+                    observer: '_serverClientDateChanged'
+                },
+                syncedServerUtcDate: {
+                    type: Date,
+                    notify: true
+                },
+                syncedUtcServerDateString: {
+                    type: String,
+                    notify: true
+                },
+                roundTrippTime: {
+                    type: Number,
+                    value: 0,
+                    observer: '_roundTrippTimeChanged'
+                },
+                clientTimeZoneOffset: {
+                    type: Number,
+                    value: 0
+                },
+                intervallId: {
+                    type: String
+                },
+                timerId: {
+                    type: String
+                },
+
+            },
+            _syncTriggerChanged: function (newValue, oldValue) {
+
+                // Start roundtrip timer.
+                if (oldValue != undefined) {
+                    this.roundTrippTime = new Date().getTime();
+                }
+            },
+            _serverUTCDateChanged: function (newValue, oldValue) {
+                // Collect roundtrip timer
+                if (newValue) {
+                    this.roundTrippTime = new Date().getTime() - this.roundTrippTime;
+                }
+            },
+            _roundTrippTimeChanged: function (newValue, oldValue) {
+
+
+                // Reset timer
+                if (!this.serverUtcDate) return;
+
+                var _serverDate = new Date(this.serverUtcDate);// Server UTC => Local date
+
+                this.syncedServerUtcDate = new Date(
+                    Date.UTC(
+                        _serverDate.getUTCFullYear(),
+                        _serverDate.getUTCMonth(),
+                        _serverDate.getUTCDate(),
+                        _serverDate.getUTCHours(),
+                        _serverDate.getUTCMinutes(),
+                        _serverDate.getUTCSeconds(),
+                        _serverDate.getUTCMilliseconds()
+                    )
+                );
+
+                this.syncedServerUtcDate.setUTCMilliseconds(this.syncedServerUtcDate.getUTCMilliseconds() + (this.roundTrippTime / 2));
+                this.syncTimerCallback(this.syncedServerUtcDate);
+            },
+            detached: function () {
+                this.disposeTimer();
+            },
+            attached: function () {
+                // Start roundtrip calculation
+                this.syncTrigger++;
+            },
+            syncTimerCallback: function (sourceUtcDate) {
+                // Wait secUntilZero until we start our timer
+                this.disposeTimer();
+
+                var adjustms = 1000 - sourceUtcDate.getUTCMilliseconds();
+
+                // Adjust for the extra waiting time, we need to sync the "seconds" so the "ticking" is on full seconds
+                //                sourceUtcDate.setUTCSeconds(sourceUtcDate.getUTCSeconds()-1);
+                //                sourceUtcDate.setUTCMilliseconds(0);
+
+                // Add one second for the millisecond adjustment.
+                this.syncedServerUtcDate.setUTCSeconds(this.syncedServerUtcDate.getUTCSeconds() + 1);
+
+                this.timerId = setTimeout(this.syncedTimer.bind(this), adjustms);
+            },
+            // Dispose timer
+            disposeTimer: function () {
+
+                if (this.timerId) {
+                    clearTimeout(this.timerId);
+                    this.timerId = undefined;
+                }
+
+                if (this.intervallId) {
+                    clearInterval(this.intervallId);
+                    this.intervallId = undefined;
+                }
+
+            },
+            // Start synced timer (with seconds acuracy)
+            syncedTimer: function () {
+                this.disposeTimer();
+                this.timerCallback();
+                this.timerId = setInterval(this.timerCallback.bind(this), 1000);
+            },
+            timerCallback: function () {
+
+                this.syncedUtcServerDateString = this.syncedServerUtcDate.toString();
+
+                //                this.notifyPath('syncedServerUtcDate.*');
+                //                this.set('syncedServerUtcDate', this.syncedServerUtcDate);
+
+                // Update this.syncedServerUtcDate +1 second
+                this.syncedServerUtcDate.setUTCSeconds(this.syncedServerUtcDate.getUTCSeconds() + 1);
+            }
+        });
+    </script>
+
+</dom-module>

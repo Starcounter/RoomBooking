@@ -1,7 +1,5 @@
 <dom-module id="sgb-availabletime">
 
-
-
     <template>
         {{timeLeft}}
     </template>
@@ -11,89 +9,27 @@
             is: "sgb-availabletime",
             properties: {
                 endDate: {
-                    type: String,
-                    notify: false,
-                    observer: '_endDateChanged'
+                    type: Date,
+                },
+                serverUtcTime: {
+                    type: Date,
+                    observer: '_serverUtcTimeChanged'
+                },
+                showSeconds: {
+                    type: Boolean,
+                    value: false
                 },
                 timeLeft: {
                     type: String
-                },
-                progress: {
-                    type: Number
-                },
-                timerId: {
-                    type: String
-                },
-                debugText: {
-                    type: String
                 }
             },
-            _endDateChanged: function (newValue, oldValue) {
-                if (newValue) {
-                    this.timerCallback();
-                }
+            _serverUtcTimeChanged: function (newValue, oldValue) {
+
+                var eventLeftDuration = new Date(this.endDate).getTime() - new Date(this.serverUtcTime).getTime();
+
+                this.timeLeft = this.userFrindlyDuration(eventLeftDuration / 1000);
             },
-            detached: function () {
-
-                if (this.timerId) {
-                    clearTimeout(this.timerId);
-                }
-            },
-            ready: function () {
-                this.timerCallback();
-                var ms = 1000 - new Date().getMilliseconds();
-
-
-                // Wait secUntilZero until we start our timer
-                this.timerId = setTimeout(this.syncedTimer.bind(this), 1000 - ms);
-            },
-            syncedTimer: function () {
-                if (this.timerId) {
-                    clearTimeout(this.timerId);
-                    this.timerId = undefined;
-                }
-                this.timerId = setInterval(this.timerCallback.bind(this), 1000);
-            },
-            timerCallback: function () {
-
-                if (this.endDate) {
-                    var localEndDate = this.utcDateStringToLocalDate(this.endDate);
-                    var eventLeftDuration = (localEndDate.getTime() - new Date().getTime()) / 1000;
-
-                    this.timeLeft = this.userFrindlyDuration(eventLeftDuration, false);
-                }
-            },
-            // Convert a UTC date to local date
-            utcDateStringToLocalDate: function (dateStr) {
-                // 2015-03-25T12:00:00Z
-
-                var fixedDateStr = this.fixDateFormat(dateStr);
-                var yy = parseInt(fixedDateStr.substr(0, 4));
-                var mm = parseInt(fixedDateStr.substr(5, 2)) - 1;
-                var dd = parseInt(fixedDateStr.substr(8, 2));
-
-                var hh = parseInt(fixedDateStr.substr(11, 2));
-                var MM = parseInt(fixedDateStr.substr(14, 2));
-                var ss = parseInt(fixedDateStr.substr(17, 2));
-
-                return new Date(yy, mm, dd, hh, MM, ss);
-            },
-            fixDateFormat: function (dateStr) {
-
-                // Add missing 'T'
-                if (dateStr.charAt(10) == " ") {
-                    dateStr = dateStr.substr(0, 10) + "T" + dateStr.substr(11);
-                }
-
-                // Remove trailing 'Z'
-                if (dateStr.charAt(dateStr.length - 1) != "Z") {
-                    dateStr = dateStr + "Z";
-                    //dateStr = dateStr.substring(0, dateStr.length - 1); // 2015-03-25T12:00:00Z
-                }
-
-                return dateStr;
-            },
-            userFrindlyDuration: function (totalSeconds, showSeconds) {
+            userFrindlyDuration: function (totalSeconds) {
 
                 var days = Math.floor(totalSeconds / 3600 / 60);
                 var hours = Math.floor(totalSeconds / 3600);
@@ -102,7 +38,7 @@
                 var seconds = Math.floor(totalSeconds - (hours * 3600) - (minutes * 60));
 
                 if (totalMinutes < 120) {
-                    if (showSeconds) {
+                    if (this.showSeconds) {
                         return totalMinutes + "min " + seconds + "sec";
                     }
                     return totalMinutes + "min";
@@ -119,7 +55,6 @@
                 n = n + '';
                 return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
             }
-
         });
     </script>
 

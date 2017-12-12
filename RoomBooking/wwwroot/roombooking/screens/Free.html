@@ -1,9 +1,7 @@
 ﻿<link rel="import" href="/sys/polymer/polymer.html">
 <link rel="import" href="/roombooking/elements/sgb-availabletime/sgb-availabletime.html" />
 <link rel="import" href="/roombooking/elements/sgb-clock/sgb-clock.html" />
-
-
-<!--<script src="/sys/moment/moment.js"></script>-->
+<link rel="import" href="/roombooking/elements/sgb-servertime/sgb-servertime.html" />
 
 <template>
 
@@ -57,8 +55,6 @@
             /*margin-right: 20px;*/
         }
 
-
-
         .contentPageFooter {
             align-self: flex-end;
             margin-right: 20px;
@@ -89,7 +85,10 @@
                 <div class="contentPageContentItem">
                     <p style="font-size:2vw;margin:0px;line-height:64px;">Available for</p>
                 </div>
-                <sgb-availabletime class="contentPageContentItem" end-date="{{model.NextEventDate}}"></sgb-availabletime>
+                <sgb-availabletime class="contentPageContentItem" end-date="{{model.NextEventBeginUtcDate}}" server-utc-time="{{syncedTimeString}}">
+                    <sgb-servertime synced-Utc-Server-Date-String="{{syncedTimeString}}" sync-Trigger="{{model.SyncTimeTrigger$}}" server-Utc-Date="{{model.ServerUTCDate}}"></sgb-servertime>
+                </sgb-availabletime>
+
                 <p class="contentPageContentItem" style="font-size:4vw;margin:0px;line-height:64px;">CLAIM</p>
                 <p class="contentPageContentItem" style="font-size:4vw;margin:0px;line-height:64px;">ROOM</p>
                 <p class="contentPageContentItem" style="font-size:4vw;margin:0px;line-height:64px;">NOW!!!</p>
@@ -97,14 +96,10 @@
             </div>
 
             <div class="contentPageFooter">
-
                 <span class="contentPageFooterItem">{{model.Room.Name}}</span>
                 <sgb-clock class="contentPageFooterItem"  time-offset="{{model.Room.TimeOffset}}"></sgb-clock>
-
             </div>
-
         </div>
-
 
     </template>
 </template>

@@ -220,6 +220,7 @@
     <Content Include="wwwroot\roombooking\elements\sgb-countdown-button\sgb-countdown-button.html" />
     <Content Include="wwwroot\roombooking\elements\sgb-clock\sgb-clock.html" />
     <Content Include="wwwroot\roombooking\elements\sgb-availabletime\sgb-availabletime.html" />
+    <Content Include="wwwroot\roombooking\elements\sgb-servertime\sgb-servertime.html" />
     <Content Include="wwwroot\roombooking\elements\sgb-countdown\sgb-countdown.html" />
     <Content Include="wwwroot\roombooking\elements\sgb-timepicker\sgb-timepicker.html" />
     <Content Include="wwwroot\roombooking\elements\sgb-daypicker\sgb-daypicker.html" />

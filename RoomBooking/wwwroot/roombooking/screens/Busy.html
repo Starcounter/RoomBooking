@@ -1,5 +1,6 @@
 ﻿<link rel="import" href="/sys/polymer/polymer.html">
 <link rel="import" href="/roombooking/elements/sgb-countdown/sgb-countdown.html" />
+<link rel="import" href="/roombooking/elements/sgb-servertime/sgb-servertime.html" />
 
 <template>
     <template is="dom-bind">
@@ -24,10 +25,13 @@
                 <p style="font-size:0.5em;margin:0px;">{{model.Booking.Name}}</p>
             </div>
 
-            <sgb-countdown class="contentTicker" begin-date="{{model.Booking.BeginDate}}" end-date="{{model.Booking.EndDate}}"></sgb-countdown>
+            <sgb-countdown class="contentTicker" begin-utc-date="{{model.Booking.BeginUtcDate}}" end-utc-date="{{model.Booking.EndUtcDate}}" server-utc-time="{{syncedTimeString}}">
+                <sgb-servertime synced-Utc-Server-Date-String="{{syncedTimeString}}" sync-Trigger="{{model.SyncTimeTrigger$}}" server-Utc-Date="{{model.ServerUTCDate}}"></sgb-servertime>
+            </sgb-countdown>
 
             <!-- TODO -->
-            <h1>Warn: {{model.WarnBooking.Name}}</h1>
+            <!--<h1>Warn: {{model.WarnBooking.Name}}</h1>-->
+
 
             <div class="contentPageOperationPanel">
                 <button type="button" value="{{model.ClaimTrigger$::click}}" class="btn btn-sm btn-primary" onclick="++this.value">Claim</button>

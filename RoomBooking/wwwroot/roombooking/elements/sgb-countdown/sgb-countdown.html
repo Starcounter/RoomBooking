@@ -38,11 +38,9 @@
         <div class="countdownHolder">
 
             <progress-bubble value="[[progress]]" max="100" stroke-width="40">
-                <p>{{timeLeft}}</p>
+                <p>[[timeLeft]]</p>
             </progress-bubble>
-
         </div>
-
 
     </template>
 
@@ -50,15 +48,17 @@
         Polymer({
             is: "sgb-countdown",
             properties: {
-                beginDate: {
+                beginUtcDate: {
                     type: String,
-                    notify: true,
-                    observer: '_beginDateChanged'
+                    notify: true
                 },
-                endDate: {
+                endUtcDate: {
                     type: String,
-                    notify: true,
-                    observer: '_endDateChanged'
+                    notify: true
+                },
+                serverUtcTime: {
+                    type: Date,
+                    observer: '_serverTimeChanged'
                 },
                 timeLeft: {
                     type: String
@@ -70,58 +70,21 @@
                     type: String
                 }
             },
-            _beginDateChanged: function (newValue, oldValue) {
-                if (newValue) {
-                    this.timerCallback();
-                }
-            },
-            _endDateChanged: function (newValue, oldValue) {
-                if (newValue) {
-                    this.timerCallback();
-                }
-            },
-            detached: function () {
 
-                if (this.timerId) {
-                    clearTimeout(this.timerId);
-                }
-            },
+            _serverTimeChanged: function (newValue, oldValue) {
 
-            ready: function () {
-                this.timerCallback();
-                var ms = 1000 - new Date().getMilliseconds();
-                // Wait secUntilZero until we start our timer
-                this.timerId = setTimeout(this.syncedTimer.bind(this), 1000 - ms);
-            },
-            syncedTimer: function () {
-                if (this.timerId) {
-                    clearTimeout(this.timerId);
-                    this.timerId = undefined;
-                }
-                this.timerId = setInterval(this.timerCallback.bind(this), 1000);
-            },
-            timerCallback: function () {
+                var endDate = new Date(this.endUtcDate);
+                var beginDate = new Date(this.beginUtcDate);
 
-
-                if (!this.beginDate) return;
-
-                var localEndDate = this.utcDateStringToLocalDate(this.endDate);
-                var localBeginDate = this.utcDateStringToLocalDate(this.beginDate);
-
-                var eventTotalDuration = (localEndDate.getTime() - localBeginDate.getTime()) / 1000;
-                var eventLeftDuration = (localEndDate.getTime() - new Date().getTime()) / 1000;
+                var eventTotalDuration = (endDate.getTime() - beginDate.getTime()) / 1000;
+                var eventLeftDuration = (endDate.getTime() - new Date(this.serverUtcTime).getTime()) / 1000;
 
                 this.timeLeft = this.durationToStr(eventLeftDuration);
                 this.progress = 100 - Math.floor((100 * eventLeftDuration) / eventTotalDuration);
-
-
             },
+
             durationToStr: function (sec) {
 
-                // TODO: Check output formats
-                // >=1h  "1h 20min""
-                // <1h 20min
-                //return sec;
                 var sec_num = parseInt(sec, 10);
                 var hours = Math.floor(sec_num / 3600);
                 var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
@@ -134,82 +97,9 @@
                 if (minutes < 1) {
                     minutes = 0;
                 }
+
                 return this.pad(hours, 2) + ":" + this.pad(minutes, 2) + ":" + this.pad(seconds, 2);
-
-                //                return hours + "h " + minutes + "min " + seconds + "sec";
-
-
-                if (hours > 24) {
-                    return ">24h";
-                }
-
-                if (hours < 1) {
-
-                    if (minutes < 1) {
-                        return seconds + "sec";
-
-                    }
-                    return minutes + "min";
-                }
-
-                if (minutes == 0) {
-                    return hours + "h";
-                }
-
-                return hours + "h " + minutes + "min";
             },
-            // Convert a UTC date to local date
-            utcDateStringToLocalDate: function (dateStr) {
-                // 2015-03-25T12:00:00Z
-
-                var fixedDateStr = this.fixDateFormat(dateStr);
-                var yy = parseInt(fixedDateStr.substr(0, 4));
-                var mm = parseInt(fixedDateStr.substr(5, 2)) - 1;
-                var dd = parseInt(fixedDateStr.substr(8, 2));
-
-                var hh = parseInt(fixedDateStr.substr(11, 2));
-                var MM = parseInt(fixedDateStr.substr(14, 2));
-                var ss = parseInt(fixedDateStr.substr(17, 2));
-
-                return new Date(yy, mm, dd, hh, MM, ss);
-            },
-            fixDateFormat: function (dateStr) {
-
-                // Add missing 'T'
-                if (dateStr.charAt(10) == " ") {
-                    dateStr = dateStr.substr(0, 10) + "T" + dateStr.substr(11);
-                }
-
-                // Remove trailing 'Z'
-                if (dateStr.charAt(dateStr.length - 1) != "Z") {
-                    dateStr = dateStr + "Z";
-                    //dateStr = dateStr.substring(0, dateStr.length - 1); // 2015-03-25T12:00:00Z
-                }
-
-                return dateStr;
-            },
-            userFrindlyDuration: function (totalSeconds, showSeconds) {
-
-                var days = Math.floor(totalSeconds / 3600 / 60);
-                var hours = Math.floor(totalSeconds / 3600);
-                var minutes = Math.floor((totalSeconds - (hours * 3600)) / 60);
-                var totalMinutes = Math.floor(totalSeconds / 60);
-                var seconds = Math.floor(totalSeconds - (hours * 3600) - (minutes * 60));
-
-                if (totalMinutes < 120) {
-                    if (showSeconds) {
-                        return totalMinutes + "min " + seconds + "sec";
-                    }
-                    return totalMinutes + "min";
-                }
-
-                if (hours >= 24) {
-                    return "+24h";
-                }
-
-                return hours + "h " + minutes + "min";
-            },
-
             pad: function (n, width, z) {
                 z = z || '0';
                 n = n + '';

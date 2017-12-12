@@ -1,9 +1,11 @@
 {
   "Html": "/roombooking/screens/Free.html",
-  "NextEventDate": "",
+  "NextEventBeginUtcDate": "",
   "Room": {
     "Name": "",
     "TimeOffset": 0
   },
+  "SyncTimeTrigger$": 0,
+  "ServerUTCDate": "",
   "ClaimTrigger$": 0
 }

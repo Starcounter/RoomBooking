@@ -1,5 +1,6 @@
 ﻿<link rel="import" href="/sys/polymer/polymer.html">
-<link rel="import" href="/roombooking/elements/sgb-countdown/sgb-countdown.html" />
+<link rel="import" href="/roombooking/elements/sgb-servertime/sgb-servertime.html" />
+<link rel="import" href="/roombooking/elements/sgb-availabletime/sgb-availabletime.html" />
 
 <template>
     <template is="dom-bind">
@@ -7,13 +8,11 @@
         <style>
             .contentPageHolder {
                 background-color: #ff6a00;
+                display:flex;
             }
 
-            .contentTicker {
-                flex: 1 1 auto;
-                display: flex;
-                margin:50px;
-            }
+
+
 
         </style>
 
@@ -24,12 +23,14 @@
                 <p style="font-size:2em;margin:0px;">NEXT</p>
                 <p style="font-size:0.5em;margin:0px;">{{model.Booking.Name}}</p>
             </div>
-<div>
-    {{model.Booking.WarnDate}}
 
-
-</div>
-            <sgb-countdown class="contentTicker" begin-date="{{model.Booking.WarnDate}}" end-date="{{model.Booking.BeginDate}}"></sgb-countdown>
+            <div class="contentPageContent" >
+                <h1 style="text-align:center;color:white">
+                    <sgb-availabletime class="contentPageContentItem" show-seconds="true" end-date="{{model.Booking.BeginUtcDate}}" server-utc-time="{{syncedTimeString}}">
+                        <sgb-servertime synced-Utc-Server-Date-String="{{syncedTimeString}}" sync-Trigger="{{model.SyncTimeTrigger$}}" server-Utc-Date="{{model.ServerUTCDate}}"></sgb-servertime>
+                    </sgb-availabletime>
+                </h1>
+            </div>
 
             <div class="contentPageOperationPanel">
                 <button type="button" value="{{model.ClaimTrigger$::click}}" class="btn btn-sm btn-primary" onclick="++this.value">Claim</button>
