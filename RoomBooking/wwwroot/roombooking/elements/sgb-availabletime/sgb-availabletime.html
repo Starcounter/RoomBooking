@@ -1,7 +1,7 @@
 <dom-module id="sgb-availabletime">
 
     <template>
-        {{timeLeft}}
+        <span>&nbsp;{{timeLeft}}&nbsp;</span>
     </template>
 
     <script>
@@ -20,7 +20,8 @@
                     value: false
                 },
                 timeLeft: {
-                    type: String
+                    type: String,
+                    value: ""
                 }
             },
             _serverUtcTimeChanged: function (newValue, oldValue) {

@@ -1,14 +1,20 @@
 <dom-module id="sgb-clock">
 
     <template>
-        <template is="dom-if" if="{{!diffOffset}}">
+        <!--<template is="dom-if" if="{{!diffOffset}}">
             <span>{{roomTime}}</span>
         </template>
 
         <template is="dom-if" if="{{diffOffset}}">
             <span>Screen: {{screenTime}}</span>
             <span>Room: {{roomTime}}</span>
-        </template>
+           
+        </template>-->
+        <!--<span>Server timeOffset: {{timeOffset}}</span>
+        <br />
+        <span>serverUtcTime: {{serverUtcTime}}</span>
+        <br />
+        <span>test: {{test}}</span>-->
 
     </template>
 
@@ -16,79 +22,56 @@
         Polymer({
             is: "sgb-clock",
             properties: {
-                localOffset: Number,    // Offset to be added to UTC time
-                localTime: String, 
-                roomTime: String,
+                screenTime: { 
+                    type: String,
+                    notify: true
+                },
+                roomTime: {  
+                    type: String,
+                    notify: true
+                },
                 timeOffset: {   // Offset from the UTC time
                     type: Number,
                     notify: true,
                     observer: '_timeOffsetChanged'
                 },
-                timerId: {
-                    type: String
+                serverUtcTime: {
+                    type: Date,
+                    observer: '_serverUtcTimeChanged'
                 },
                 diffOffset: {
                     type: Boolean,
-                    value: false
+                    value: false,
+                    notify: true
+                },
+                test: {
+                    type: String,
+                    notify: true
                 }
+            },
+            _serverUtcTimeChanged: function (newValue, oldValue) {
+
+                var serverUtcDate = new Date(this.serverUtcTime);
+                var serverUtcOffsetMs = serverUtcDate.getTimezoneOffset() * 60 * 1000;
+
+               //  serverUtcDate.getTimezoneOffset();  = -60
+
+                // Faked UTC Time
+                var fakeUtcTime = new Date(serverUtcDate.getTime() + serverUtcOffsetMs);
+
+//                var dateNow = new Date();
+//                this.test = dateNow.toLocaleTimeString() + " OFFSET:" + dateNow.getTimezoneOffset();
+
+                var roomDate = new Date(fakeUtcTime.getTime() + (60 * 1000 * this.timeOffset));
+
+                this.roomTime = roomDate.toLocaleTimeString();
+                this.screenTime = serverUtcDate.toLocaleTimeString();
             },
             _timeOffsetChanged: function (newValue, oldValue) {
 
-
-                this.localOffset = -new Date().getTimezoneOffset(); // Offset to be added to the local time
-
-//                console.log("Screen TimeOffset:" + this.localOffset);
-//                console.log("Room TimeOffset  :" + this.timeOffset);   // Offset to be added to UTC time
-
-
-
-                this.diffOffset = this.localOffset != this.timeOffset;
-
-            },
-            detached: function () {
-                if (this.timerId) {
-                    clearTimeout(this.timerId);
-                }
-            },
-            ready: function () {
-
-                this.timerCallback();
-                var ms = 1000 - new Date().getMilliseconds();
-                // Wait secUntilZero until we start our timer
-                this.timerId = setTimeout(this.syncedTimer.bind(this), 1000 - ms);
-
-            },
-            syncedTimer: function () {
-                if (this.timerId) {
-                    clearTimeout(this.timerId);
-                    this.timerId = undefined;
-                }
-                this.timerId = setInterval(this.timerCallback.bind(this), 1000);
-            },
-            timerCallback: function () {
-
-                var nowDate = new Date();
-//                this.roomTime = new Date(nowDate.setMinutes(nowDate.getMinutes() - this.localOffset)).toLocaleTimeString();
-
-                var d = new Date();
-                var utc = d.getTime() + (d.getTimezoneOffset() * 60000);
-                // 3600000
-                var roomtime = new Date(utc - (60 * 1000 * -this.timeOffset));
-
-                //console.log("utc:" + utc);
-
-
-                //var hour = roomtime.getHours();
-                //var minutes = roomtime.getMinutes();
-                //var seconds = roomtime.getSeconds();
-                //var roomTimeStr = hour + ":" + minutes + ":" + seconds
-                this.roomTime = roomtime.toLocaleTimeString();
-                this.screenTime = new Date().toLocaleTimeString();
-
-//                console.log("RoomTime:" + this.roomTime);
-//                console.log("ScreenTime:" + this.screenTime);
+                var localOffset = -new Date().getTimezoneOffset(); // Offset to be added to the local time
+                this.diffOffset = localOffset != this.timeOffset;
             }
-
         });
     </script>
 

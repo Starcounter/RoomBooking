@@ -2,9 +2,6 @@
 
     <template>
 
-        <!--<h4><span>[[syncedUtcServerDateString]]</span> (syncedUtcServerDateString)</h4>
-        <h4><span>[[roundTrippTime]]</span> (roundTrippTime)</h4>-->
-
     </template>
 
     <script>
@@ -47,6 +44,9 @@
                 timerId: {
                     type: String
                 },
+                reTimerId: {
+                    type: String
+                }
 
             },
             _syncTriggerChanged: function (newValue, oldValue) {
@@ -60,6 +60,7 @@
                 // Collect roundtrip timer
                 if (newValue) {
                     this.roundTrippTime = new Date().getTime() - this.roundTrippTime;
+                    console.log("Roundtripp:" + this.roundTrippTime);   // REMOVE
                 }
             },
             _roundTrippTimeChanged: function (newValue, oldValue) {
@@ -88,6 +89,20 @@
             detached: function () {
                 this.disposeTimer();
             },
+            ready: function () {
+
+//                this.reTimerId = setTimeout(this.reSyncServerTimer.bind(this), 5000);
+
+            },
+            //reSyncServerTimer: function () {
+            //    console.log("ReSync");
+            //    if (this.reTimerId) {
+            //        clearTimeout(this.reTimerId);
+            //        this.reTimerId = undefined;
+            //    }
+
+            //    this.syncTrigger++;
+            //},
             attached: function () {
                 // Start roundtrip calculation
                 this.syncTrigger++;
