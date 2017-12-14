@@ -147,10 +147,6 @@ namespace RoomBooking.ViewModels.Screens
             };
 
             this.CalendarPartial = calendarePage;
-
-//            RegisterTimer();
-//            SetEventTimer();
-
         }
 
 
@@ -167,7 +163,7 @@ namespace RoomBooking.ViewModels.Screens
             }
 
             // User is making a new booking event
-            if (this.ContentPartial is NewBookingPage)
+            if (this.ContentPartial is NewBookingPage || this.ContentPartial is NewQuickBookingPage)
             {
                 return this.ContentPartial;
             }
@@ -187,7 +183,7 @@ namespace RoomBooking.ViewModels.Screens
             // Show Warn event
             if (this.WarnEvent != null)
             {
-                if (this.ContentPartial is WarnBusyPage)
+                if (this.ContentPartial is WarnBusyPage && this.WarnEvent.Equals(((WarnBusyPage)this.ContentPartial).Booking.Data))
                 {
                     return this.ContentPartial;
                 }
@@ -231,8 +227,9 @@ namespace RoomBooking.ViewModels.Screens
             FreePage freePage = new FreePage();
             freePage.Init(room);
             freePage.OnNewBooking = () =>
-            {
-                this.ContentPartial = CreateNewBookingPage(room, DateTime.UtcNow, DateTime.UtcNow.AddHours(1), "Booked from screen");
+            {              
+                this.ContentPartial = CreateNewQuickBookingPage(room, DateTime.UtcNow, DateTime.UtcNow.AddHours(1), "Booked from screen");
+//                this.ContentPartial = CreateNewBookingPage(room, DateTime.UtcNow, DateTime.UtcNow.AddHours(1), "Booked from screen");
             };
 
             return freePage;
@@ -255,7 +252,8 @@ namespace RoomBooking.ViewModels.Screens
 
             busyPage.OnClaim = () =>
             {
-                this.ContentPartial = CreateNewBookingPage(roomBookingEvent.Room, DateTime.UtcNow, DateTime.UtcNow.AddHours(1));
+                this.ContentPartial = CreateNewQuickBookingPage(roomBookingEvent.Room, DateTime.UtcNow, DateTime.UtcNow.AddHours(1), "Booked from screen");
+//                this.ContentPartial = CreateNewBookingPage(roomBookingEvent.Room, DateTime.UtcNow, DateTime.UtcNow.AddHours(1));
 
                 Db.Transact(() =>
                 {
@@ -331,43 +329,38 @@ namespace RoomBooking.ViewModels.Screens
             return newBookingPage;
         }
 
+
+        private NewQuickBookingPage CreateNewQuickBookingPage(Room room, DateTime defaultBeginUtcDate, DateTime defaultEndUtcDate, string name = null)
+        {
+
+            // Reset seconds and milliseconds
+            defaultBeginUtcDate = defaultBeginUtcDate.AddSeconds(-defaultBeginUtcDate.Second);
+            defaultBeginUtcDate = defaultBeginUtcDate.AddMilliseconds(-defaultBeginUtcDate.Millisecond);
+
+            defaultEndUtcDate = defaultEndUtcDate.AddSeconds(-defaultEndUtcDate.Second);
+            defaultEndUtcDate = defaultEndUtcDate.AddMilliseconds(-defaultEndUtcDate.Millisecond);
+
+
+            RoomBookingEvent roomBookingEvent = new RoomBookingEvent()
+            {
+                BeginUtcDate = defaultBeginUtcDate,
+                EndUtcDate = defaultEndUtcDate,
+                Room = room,
+                Name = name,
+                WarnNotificationMinutes = room.WarnNotificationMinutes
+            };
+
+            NewQuickBookingPage newquickBookingPage = new NewQuickBookingPage() { Data = roomBookingEvent };
+            newquickBookingPage.OnClose = () =>
+            {
+                this.ContentPartial = new Json();
+            };
+
+            return newquickBookingPage;
+        }
         #endregion
 
-        #region Timer
 
-        //private static Timer EventTimer;
-
-        //private static void RegisterTimer()
-        //{
-        //    EventTimer = new Timer(TimerCallback);
-        //    SetNextEventTimer();
-        //}
-
-        //private static void TimerCallback(Object state)
-        //{
-        //    Scheduling.RunTask(() =>
-        //    {
-        //        SetNextEventTimer();
-        //        Utils.PushChanges();
-        //    });
-        //}
-
-        ///// <summary>
-        ///// Set timer to next event
-        ///// </summary>
-        //private static void SetNextEventTimer()
-        //{
-        //    DateTime utcNow = DateTime.UtcNow;
-        //    RoomBookingEvent firstEvent = Db.SQL<RoomBookingEvent>($"SELECT o FROM {typeof(RoomBookingEvent)} o WHERE o.{nameof(RoomBookingEvent.BeginUtcDate)} >= ? ORDER BY o.{nameof(RoomBookingEvent.BeginUtcDate)}", utcNow).FirstOrDefault();
-
-        //    if (firstEvent != null)
-        //    {
-        //        TimeSpan timeSpan = firstEvent.BeginUtcDate - utcNow;
-        //        EventTimer.Change(timeSpan, TimeSpan.FromTicks(-1));
-        //    }
-        //}
-
-        #endregion
 
 
     }

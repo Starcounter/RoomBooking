@@ -1,12 +1,15 @@
 {
   "Html": "/roombooking/screens/NewQuickBooking.html",
-  "BeginDay$": "",
-  "StartTime$": "",
-  "DurationTime$": "",
-  "DurationHours$": 0,
-  "DurationMinutes$": 0,
   "Name$": "",
-  "CreatedBy$": "",
+  "ToTimeItems": [
+    {
+      "Name": "",
+      "Minutes": 0,
+      "Duration": "",
+      "Selected": false,
+      "SelectTrigger$": 0
+    }
+  ],
   "ValidationMessage": "",
   "CreateBookingTrigger$": 0,
   "CloseTrigger$": 0

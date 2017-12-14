@@ -79,10 +79,12 @@
                 var eventTotalDuration = (endDate.getTime() - beginDate.getTime()) / 1000;
                 var eventLeftDuration = (endDate.getTime() - new Date(this.serverUtcTime).getTime()) / 1000;
 
-                this.timeLeft = this.durationToStr(eventLeftDuration);
+//                this.timeLeft = this.durationToStr(eventLeftDuration);
+
+                this.timeLeft = this.userFrindlyDuration(eventLeftDuration);
+
                 this.progress = 100 - Math.floor((100 * eventLeftDuration) / eventTotalDuration);
             },
-
             durationToStr: function (sec) {
 
                 var sec_num = parseInt(sec, 10);
@@ -99,6 +101,27 @@
                 }
 
                 return this.pad(hours, 2) + ":" + this.pad(minutes, 2) + ":" + this.pad(seconds, 2);
+            },
+            userFrindlyDuration: function (totalSeconds) {
+
+                var days = Math.floor(totalSeconds / 3600 / 60);
+                var hours = Math.floor(totalSeconds / 3600);
+                var minutes = Math.floor((totalSeconds - (hours * 3600)) / 60);
+                var totalMinutes = Math.floor(totalSeconds / 60);
+                var seconds = Math.floor(totalSeconds - (hours * 3600) - (minutes * 60));
+
+                if (totalMinutes < 120) {
+                    if (this.showSeconds) {
+                        return totalMinutes + "min " + seconds + "sec";
+                    }
+                    return totalMinutes + "min";
+                }
+
+                if (hours >= 24) {
+                    return "+24h";
+                }
+
+                return hours + "h " + minutes + "min";
             },
             pad: function (n, width, z) {
                 z = z || '0';

@@ -9,77 +9,133 @@
             background-color: #5d5d5d;
         }
 
+
         .contentPageContent {
-            flex: 1 1 auto;
+            height: 100%;
             display: flex;
-            padding: 30px;
+            flex: 1 1;
+            color: white;
             font-family: Roboto;
             flex-direction: column;
+            background-color: white;
         }
 
-        .startAndDuration {
-            display: flex;
+
+        .listWrapper {
+            box-sizing: border-box;
             width: 100%;
+            height: 100%;
+            overflow-y:auto;
         }
 
-        .starAndDurationItems {
-            flex: 1 1 auto;
-        }
-
-        .details {
+        .timeItem {
             display: flex;
-            flex-direction: column;
-            flex: 1 1 auto;
-            padding-top: 20px;
+            flex-direction: row;
+            flex: 1;
+            color: black;
+            border-bottom: 1pt solid rgba(0, 0, 0, 0.08);
+            padding-left: 15px;
+            padding-right: 15px;
+            padding-top: 4px;
+            cursor: pointer;
+            font-size: 2.2vw;
         }
 
-        .details input {
-            font-size: 30px;
+        .timeItemSelected {
+            display: flex;
+            flex-direction: row;
+            flex: 1;
+            color: white;
+            border-bottom: 1pt solid rgba(0, 0, 0, 0.08);
+            background-color: #A40D27;
+            padding-left: 15px;
+            padding-right: 15px;
+            padding-top: 4px;
+            cursor: pointer;
+            font-size: 2.2vw;
         }
 
+        .timeItem > div:nth-child(1) {
+                
+        }
+        .timeItem > div:nth-child(2) {
+            flex: 1;
+            text-align: right;
+        }
+
+
+        .timeItemSelected > div:nth-child(1) {
+        }
+
+        .timeItemSelected > div:nth-child(2) {
+            flex: 1;
+            text-align: right;
+        }
     </style>
-
 
 
 
     <template is="dom-bind">
 
-        <div class="contentPageHolder">
 
-            <div class="contentPageHeader">
-                <p style="font-size:1em;margin:0px;">NEW QUICK BOOKING</p>
-            </div>
+        <div class="modalbackdrop">
 
-            <div class="contentPageContent">
 
-                <div class="startAndDuration">
+            <div class="newbooking">
 
-                    <div class="starAndDurationItems">
-                        <i>Start</i>
-                        <sgb-timepicker start-Time="{{model.StartTime$}}"></sgb-timepicker>
-                    </div>
-                    <div class="starAndDurationItems">
-
-                        <i>Duration</i>
-                        <sgb-timepicker start-Time="{{model.DurationTime$}}"></sgb-timepicker>
-                    </div>
+                <div class="header">
+                    <div>SELECT ENDTIME</div>
                 </div>
 
-                <div class="details">
+                <div class="contentPageContent">
 
-                    <i>Name</i><p class="text-danger">{{model.ValidationMessage}}</p>
-                    <input type="text" value="{{model.Name$::input}}" placeholder="enter event name here" />
+                    <div>
+                        <div>Select Endtime</div>
+                        <p class="text-danger">{{model.ValidationMessage}}</p>
+                    </div>
+
+
+                    <div class="listWrapper">
+
+                        <template is="dom-repeat" items="{{model.ToTimeItems}}">
+                            <div class$="[[selectedClass(item.Selected)]]" value="{{item.SelectTrigger$::click}}" onclick="++this.value">
+                                <div style="pointer-events:none">{{item.Name}}</div>
+                                <div style="pointer-events:none">{{item.Duration}}</div>
+                            </div>
+                        </template>
+
+
+                    </div>
+
+                    <!--<div>Summary</div>-->
+
                 </div>
+
+                <form class="contentPageOperationPanel">
+                    <button type="submit" value="{{model.CreateBookingTrigger$::click}}" class="btn btn-sm btn-primary" onclick="++this.value">Create</button>
+                    <button type="button" value="{{model.CloseTrigger$::click}}" class="btn btn-sm btn-default" onclick="++this.value">Close</button>
+
+                </form>
 
             </div>
 
-            <form class="contentPageOperationPanel">
-                <button type="submit" value="{{model.CreateBookingTrigger$::click}}" class="btn btn-sm btn-primary" onclick="++this.value">Create</button>
-                <button type="button" value="{{model.CloseTrigger$::click}}" class="btn btn-sm btn-default" onclick="++this.value">Close</button>
+            </div>
 
-            </form>
+</template>
+    <script>
+        (function () {
+            var script = document._currentScript || document.currentScript;
+            var template = script.previousElementSibling;
+            template.selectedClass = function (selected) {
+                if (selected) {
+                    return "timeItemSelected";
+                }
+                return "timeItem";
+           
+            };
 
-        </div>
+        })();
+    </script>
 
-    </template>
+
 </template>
