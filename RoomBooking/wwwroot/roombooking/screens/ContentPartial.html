@@ -1,10 +1,15 @@
 ﻿<link rel="import" href="/sys/polymer/polymer.html">
-<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
-<link rel="stylesheet" href="/roombooking/css/mainscreenpage.css" />
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+<link rel="stylesheet" href="/roombooking/css/mainscreenpage.css">
 
 <template>
-    <template is="dom-bind">
+    <dom-bind><template is="dom-bind">
+
+<imported-template model="{{model.Content}}" href="{{model.Content.Html}}"></imported-template>
+
+<!--
         <template is="imported-template" model="{{model.Content}}" href="{{model.Content.Html}}">
         </template>
-    </template>
+		-->
+    </template></dom-bind>
 </template>

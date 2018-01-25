@@ -1,5 +1,5 @@
 ﻿<link rel="import" href="/sys/polymer/polymer.html">
-<link rel="import" href="/roombooking/elements/sgb-timepicker/sgb-timepicker.html" />
+<link rel="import" href="/roombooking/elements/sgb-timepicker/sgb-timepicker.html">
 
 <template>
 
@@ -56,7 +56,7 @@
     </style>
 
 
-    <template is="dom-bind">
+    <dom-bind><template is="dom-bind">
 
         <div class="modalbackdrop">
 
@@ -70,19 +70,19 @@
 
                     <div class="details">
                         <i>Name</i><p class="text-danger">{{model.ValidationMessage}}</p>
-                        <input type="text" value="{{model.Name$::input}}" placeholder="enter event name here" />
+                        <input type="text" value="{{model.Name$::input}}" placeholder="enter event name here">
                     </div>
 
                     <div class="durationInput">
 
                         <div class="starAndDurationItems">
                             <i>Start</i>
-                            <sgb-timepicker start-Time="{{model.StartTime$}}"></sgb-timepicker>
+                            <sgb-timepicker start-time="{{model.StartTime$}}"></sgb-timepicker>
                         </div>
                         <div class="starAndDurationItems">
 
                             <i>Duration</i>
-                            <sgb-timepicker start-Time="{{model.DurationTime$}}"></sgb-timepicker>
+                            <sgb-timepicker start-time="{{model.DurationTime$}}"></sgb-timepicker>
                         </div>
                     </div>
 
@@ -100,5 +100,5 @@
 
         </div>
 
-    </template>
+    </template></dom-bind>
 </template>

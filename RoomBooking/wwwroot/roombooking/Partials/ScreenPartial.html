@@ -1,7 +1,7 @@
 ﻿<link rel="import" href="/sys/polymer/polymer.html">
 <link rel="import" href="/sys/juicy-select/juicy-select.html">
 <template>
-    <template is="dom-bind">
+    <dom-bind><template is="dom-bind">
         <div class="pluginItems">
 
             <h5>Room Booking</h5>
@@ -14,15 +14,11 @@
 
             <label>Connected to:</label>
 
-            <juicy-select caption-text="Select room"
-                          value="{{model.SelectedRoomId$}}"
-                          options="{{model.Rooms}}"
-                          text-property="Name"
-                          value-property="Id">
+            <juicy-select caption-text="Select room" value="{{model.SelectedRoomId$}}" options="{{model.Rooms}}" text-property="Name" value-property="Id">
                 <select class="form-control"></select>
             </juicy-select>
 
         </div>
-    </template>
+    </template></dom-bind>
 
 </template>

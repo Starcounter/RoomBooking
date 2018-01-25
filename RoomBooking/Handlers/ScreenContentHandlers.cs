@@ -12,6 +12,7 @@ namespace RoomBooking.Handlers
         {
       
             Handle.GET("/RoomBooking/screenContent/{?}", (Func<string, Response>)((string screenId) =>
+
             {
                 try
                 {

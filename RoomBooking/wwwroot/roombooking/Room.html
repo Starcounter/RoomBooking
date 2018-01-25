@@ -1,9 +1,9 @@
 ﻿<link rel="import" href="/sys/polymer/polymer.html">
 <link rel="import" href="/sys/palindrom-redirect/palindrom-redirect.html">
-<link rel="import" href="/sys/juicy-select/juicy-select.html" />
+<link rel="import" href="/sys/juicy-select/juicy-select.html">
 
 <template>
-    <template is="dom-bind">
+    <dom-bind><template is="dom-bind">
         
         <div class="formpanel">
 
@@ -11,12 +11,12 @@
                 <h1>Room</h1>
             </div>
 
-            <input type="text" value="{{model.Name$::input}}" placeholder="Name" />
+            <input type="text" value="{{model.Name$::input}}" placeholder="Name">
             <p>
                 <i>Name</i>
             </p>
 
-            <input type="number" min="0" value="{{model.WarnNotificationMinutes$::input}}" placeholder="Notify ahead (minutes)" />
+            <input type="number" min="0" value="{{model.WarnNotificationMinutes$::input}}" placeholder="Notify ahead (minutes)">
             <p>
                 <i>Notify ahead (minutes)</i>
             </p>
@@ -29,7 +29,10 @@
             <button type="button" value="{{model.SaveTrigger$::click}}" class="btn btn-sm btn-primary" onclick="++this.value">Save</button>
             <button type="button" value="{{model.CloseTrigger$::click}}" class="btn btn-sm btn-default" onclick="++this.value">Close</button>
             <button type="button" value="{{model.DeleteTrigger$::click}}" class="btn btn-sm btn-danger" onclick="++this.value">Delete</button>
-            <link is="palindrom-redirect" history url$="{{model.RedirectUrl}}" />
+
+			<palindrom-redirect history url="[[model.RedirectUrl]]"></palindrom-redirect>
+<!--
+            <link is="palindrom-redirect" history url$="{{model.RedirectUrl}}"> -->
         </div>
-</template>
+</template></dom-bind>
 </template>

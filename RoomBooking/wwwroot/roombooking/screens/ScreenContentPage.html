@@ -1,33 +1,46 @@
 ﻿<link rel="import" href="/sys/polymer/polymer.html">
-<link rel="stylesheet" href="/roombooking/css/ScreenContentPage.css" />
+<link rel="stylesheet" href="/roombooking/css/ScreenContentPage.css">
 
 <template>
-    <template is="dom-bind">
+    <dom-bind><template is="dom-bind">
 
         <template is="dom-if" if="{{model.Enabled}}">
 
             <div class="maincontentContainer">
 
                 <!-- Error MessageBox -->
+<imported-template model="{{model.ErrorMessage}}" href="{{model.ErrorMessage.Html}}"></imported-template>
+<!--
                 <template is="imported-template" model="{{model.ErrorMessage}}" href="{{model.ErrorMessage.Html}}">
-                </template>
+                </template>-->
                 <!-- MessageBox -->
+<imported-template model="{{model.MessageBox}}" href="{{model.MessageBox.Html}}"></imported-template>
+
+				<!--
                 <template is="imported-template" model="{{model.MessageBox}}" href="{{model.MessageBox.Html}}">
-                </template>
+                </template>-->
 
 
                 <div class="calendarContainer">
+<imported-template model="{{model.CalendarPartial}}" href="{{model.CalendarPartial.Html}}"></imported-template>
+
+				<!--
                     <template is="imported-template" model="{{model.CalendarPartial}}" href="{{model.CalendarPartial.Html}}">
                     </template>
+					-->
                 </div>
 
                 <div class="contentContainer">
+<imported-template model="{{model.ContentPartial}}" href="{{model.ContentPartial.Html}}"></imported-template>
+
+				<!--
                     <template is="imported-template" model="{{model.ContentPartial}}" href="{{model.ContentPartial.Html}}">
                     </template>
+					-->
                 </div>
             </div>
         </template>
-    </template>
+    </template></dom-bind>
 
     <script>
 

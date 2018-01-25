@@ -1,6 +1,6 @@
 ﻿<link rel="import" href="/sys/polymer/polymer.html">
-<link rel="import" href="/roombooking/elements/sgb-daypicker/sgb-daypicker.html" />
-<link rel="import" href="/roombooking/elements/sgb-calendar/sgb-calendar.html" />
+<link rel="import" href="/roombooking/elements/sgb-daypicker/sgb-daypicker.html">
+<link rel="import" href="/roombooking/elements/sgb-calendar/sgb-calendar.html">
 
 
 <template>
@@ -33,7 +33,7 @@
         }
     </style>
 
-    <template is="dom-bind">
+    <dom-bind><template is="dom-bind">
 
 
         <div class="holder">
@@ -43,11 +43,11 @@
             </div>
 
 <!--            <div class="cal">-->
-                <sgb-calendar class="cal"  selected-date="{{model.SelectedDate$}}" booking-Trigger="{{model.NewBooking.CreateTrigger$}}" events="{{model.Bookings}}" begin-date="{{model.NewBooking.BeginDate$}}" end-date="{{model.NewBooking.EndDate$}}"></sgb-calendar>
+                <sgb-calendar class="cal" selected-date="{{model.SelectedDate$}}" booking-trigger="{{model.NewBooking.CreateTrigger$}}" events="{{model.Bookings}}" begin-date="{{model.NewBooking.BeginDate$}}" end-date="{{model.NewBooking.EndDate$}}"></sgb-calendar>
 
     <!--  -->        </div>
 
-        </div>
+        
 
-    </template>
+    </template></dom-bind>
 </template>

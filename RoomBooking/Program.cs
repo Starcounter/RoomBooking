@@ -33,6 +33,7 @@ namespace RoomBooking
         private static void RegisterHandlers()
         {
             Handle.GET("/RoomBooking", (Request request) =>
+
             {
                 MainPage mainPage = Utils.GetMainPage();
                 try

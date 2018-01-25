@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Starcounter;
 
 namespace RoomBooking
@@ -8,6 +9,7 @@ namespace RoomBooking
     {
         public User User;
         public string SessionId;
+        public DateTime ExpiresAt { get; set; }
 
         public static void RegisterHooks()
         {
@@ -17,26 +19,14 @@ namespace RoomBooking
             };
         }
 
-        /// <summary>
-        /// TODO:
-        /// </summary>
-        /// <returns></returns>
         public static User GetSignedInUser()
         {
-            string firstName = "Anonymouse";
-            string lastName = "Anonymouse";
-
-            User user = Db.SQL<User>($"SELECT o FROM {typeof(RoomBooking.User)} o WHERE o.{nameof(RoomBooking.User.FirstName)} = ? AND o.{nameof(RoomBooking.User.LastName)} = ?", firstName, lastName).FirstOrDefault();
-
-            if( user == null)
+            if (Session.Current == null)
             {
-                Db.Transact(() =>
-                {
-                    user = new User() { FirstName = firstName, LastName = lastName };
-                });
+                return null;
             }
 
-            return user;
+            return Db.SQL<User>($"SELECT o.{nameof(UserSession.User)} FROM {typeof(UserSession)} o WHERE o.{nameof(UserSession.SessionId)} = ?", Session.Current?.SessionId).FirstOrDefault();
         }
     }
 

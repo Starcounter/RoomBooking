@@ -1,20 +1,26 @@
 ﻿<link rel="import" href="/sys/polymer/polymer.html">
 <link rel="import" href="/sys/palindrom-redirect/palindrom-redirect.html">
-<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
-<link rel="stylesheet" href="/RoomBooking/css/mainapp.css?ss" />
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+<link rel="stylesheet" href="/RoomBooking/css/mainapp.css?ss">
 
 <template>
-    <template is="dom-bind">
+    <dom-bind><template is="dom-bind">
 
         <div class="mainAppPage">
 
             <div>
                 <!-- Error MessageBox -->
+<imported-template model="{{model.ErrorMessage}}" href="{{model.ErrorMessage.Html}}"></imported-template>
+
+
+<!--
                 <template is="imported-template" model="{{model.ErrorMessage}}" href="{{model.ErrorMessage.Html}}">
-                </template>
+                </template>-->
                 <!-- MessageBox -->
+<imported-template model="{{model.MessageBox}}" href="{{model.MessageBox.Html}}"></imported-template>
+<!--
                 <template is="imported-template" model="{{model.MessageBox}}" href="{{model.MessageBox.Html}}">
-                </template>
+                </template>-->
             </div>
 
             <template is="dom-if" if="{{!model.HideMenu}}">
@@ -25,12 +31,20 @@
             </template>
 
             <div class="appContent">
+
+
+<imported-template model="{{model.Content}}" href="{{model.Content.Html}}"></imported-template>
+
+<!--
                 <template is="imported-template" model="{{model.Content}}" href="{{model.Content.Html}}">
                 </template>
+				-->
             </div>
         </div>
 
-        <link is="palindrom-redirect" history url$="{{model.RedirectUrl}}" />
+			<palindrom-redirect history url="[[model.RedirectUrl]]"></palindrom-redirect>
 
-    </template>
+<!--        <link is="palindrom-redirect" history url$="{{model.RedirectUrl}}"> -->
+
+    </template></dom-bind>
 </template>

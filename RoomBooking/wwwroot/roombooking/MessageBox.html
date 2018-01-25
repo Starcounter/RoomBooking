@@ -1,8 +1,8 @@
-﻿<link rel="import" href="/sys/paper-dialog/paper-dialog.html" />
+﻿<link rel="import" href="/sys/paper-dialog/paper-dialog.html">
 
 <template>
-    <template is="dom-bind">
-        <paper-dialog id="actions" opened="{{model.Visible}}" modal="true">
+    <dom-bind><template is="dom-bind">
+        <paper-dialog id="actions" opened="[[model.Visible]]" modal="true">
             <div style="min-width: 400px;min-height: 100px">
                 <h2 style="color:#2196f3;margin-bottom: 5px">{{model.Title}}</h2>
                 <p>{{model.Text}}</p>
@@ -21,7 +21,7 @@
                 </template>
             </div>
         </paper-dialog>
-    </template>
+    </template></dom-bind>
     <!--<script>
         (function () {
             var script = document._currentScript || document.currentScript;

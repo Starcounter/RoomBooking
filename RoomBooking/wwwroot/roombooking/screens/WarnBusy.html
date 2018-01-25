@@ -1,9 +1,9 @@
 ﻿<link rel="import" href="/sys/polymer/polymer.html">
-<link rel="import" href="/roombooking/elements/sgb-servertime/sgb-servertime.html" />
-<link rel="import" href="/roombooking/elements/sgb-availabletime/sgb-availabletime.html" />
+<link rel="import" href="/roombooking/elements/sgb-servertime/sgb-servertime.html">
+<link rel="import" href="/roombooking/elements/sgb-availabletime/sgb-availabletime.html">
 
 <template>
-    <template is="dom-bind">
+    <dom-bind><template is="dom-bind">
 
         <style>
             .contentPageHolder {
@@ -24,10 +24,10 @@
                 <p style="font-size:0.5em;margin:0px;">{{model.Booking.Name}}</p>
             </div>
 
-            <div class="contentPageContent" >
+            <div class="contentPageContent">
                 <h1 style="text-align:center;color:white">
                     <sgb-availabletime class="contentPageContentItem" show-seconds="true" end-date="{{model.Booking.BeginUtcDate}}" server-utc-time="{{syncedTimeString}}">
-                        <sgb-servertime synced-Utc-Server-Date-String="{{syncedTimeString}}" sync-Trigger="{{model.SyncTimeTrigger$}}" server-Utc-Date="{{model.ServerUTCDate}}"></sgb-servertime>
+                        <sgb-servertime synced-utc-server-date-string="{{syncedTimeString}}" sync-trigger="{{model.SyncTimeTrigger$}}" server-utc-date="{{model.ServerUTCDate}}"></sgb-servertime>
                     </sgb-availabletime>
                 </h1>
             </div>
@@ -38,5 +38,5 @@
 
         </div>
 
-    </template>
+    </template></dom-bind>
 </template>
