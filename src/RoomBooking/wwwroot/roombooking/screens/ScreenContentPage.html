@@ -2,43 +2,40 @@
 <link rel="stylesheet" href="/roombooking/css/ScreenContentPage.css" />
 
 <template>
-    <template is="dom-bind">
+    <dom-bind>
+        <template is="dom-bind">
 
-        <template is="dom-if" if="{{model.Enabled}}">
+            <template is="dom-if" if="{{model.Enabled}}">
 
-            <div class="maincontentContainer">
+                <div class="maincontentContainer">
 
-                <!-- Error MessageBox -->
-                <template is="imported-template" model="{{model.ErrorMessage}}" href="{{model.ErrorMessage.Html}}">
-                </template>
-                <!-- MessageBox -->
-                <template is="imported-template" model="{{model.MessageBox}}" href="{{model.MessageBox.Html}}">
-                </template>
+                    <!-- Error MessageBox -->
+                    <starcounter-include view-model="{{model.ErrorMessage}}"></starcounter-include>
+                    <!-- MessageBox -->
+                    <starcounter-include view-model="{{model.MessageBox}}"></starcounter-include>
 
+                    <div class="calendarContainer">
+                        <starcounter-include view-model="{{model.CalendarPartial}}"></starcounter-include>
+                    </div>
 
-                <div class="calendarContainer">
-                    <template is="imported-template" model="{{model.CalendarPartial}}" href="{{model.CalendarPartial.Html}}">
-                    </template>
+                    <div class="contentContainer">
+                        <starcounter-include view-model="{{model.ContentPartial}}"></starcounter-include>
+                    </div>
                 </div>
-
-                <div class="contentContainer">
-                    <template is="imported-template" model="{{model.ContentPartial}}" href="{{model.ContentPartial.Html}}">
-                    </template>
-                </div>
-            </div>
+            </template>
         </template>
-    </template>
+    </dom-bind>
 
-    <script>
+        <script>
 
-        var head = document.getElementsByTagName('head')[0];
+            var head = document.getElementsByTagName('head')[0];
 
-        // Prevent user to be able to zoom
-        var viewport = document.createElement('meta');
-        viewport.name = "viewport";
-        viewport.content = "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no";
-        head.appendChild(viewport);
+            // Prevent user to be able to zoom
+            var viewport = document.createElement('meta');
+            viewport.name = "viewport";
+            viewport.content = "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no";
+            head.appendChild(viewport);
 
-    </script>
+        </script>
 
 </template>

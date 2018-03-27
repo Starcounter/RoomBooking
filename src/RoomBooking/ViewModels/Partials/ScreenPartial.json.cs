@@ -37,16 +37,22 @@ namespace RoomBooking.ViewModels.Partials
                 Room room = this.Rooms.FirstOrDefault();
                 if (room != null)
                 {
-                    roomScreenRelation = new RoomScreenRelation();
-                    roomScreenRelation.ScreenId = this.ScreenId;
-                    roomScreenRelation.Room = room;
-                    this.SelectedRoomId = roomScreenRelation.Room.GetObjectID();
+                    Db.Transact(() =>
+                    {
+                        roomScreenRelation = new RoomScreenRelation();
+                        roomScreenRelation.ScreenId = this.ScreenId;
+                        roomScreenRelation.Room = room;
+                        this.SelectedRoomId = roomScreenRelation.Room.GetObjectID();
+                    });
                 }
             }
 
             if (roomScreenRelation != null)
             {
-                roomScreenRelation.Enabled = action.Value;
+                Db.Transact(() =>
+                {
+                    roomScreenRelation.Enabled = action.Value;
+                });
             }
         }
 
@@ -55,13 +61,19 @@ namespace RoomBooking.ViewModels.Partials
 
             try
             {
-                Room oldRoom = Db.FromId(this.SelectedRoomId) as Room;
-
-                if (oldRoom != null)
+                if (this.SelectedRoomId != "")
                 {
-                    // Remove old room relation
-                    RoomScreenRelation oldRoomScreenRelation = Db.SQL<RoomScreenRelation>($"SELECT o FROM {typeof(RoomScreenRelation)} o WHERE o.{nameof(RoomScreenRelation.ScreenId)} = ? AND o.{nameof(RoomScreenRelation.Room)} = ?", this.ScreenId, oldRoom).FirstOrDefault();
-                    oldRoomScreenRelation.Delete();
+                    Room oldRoom = Db.FromId(this.SelectedRoomId) as Room;
+
+                    if (oldRoom != null)
+                    {
+                        // Remove old room relation
+                        Db.Transact(() =>
+                        {
+                            RoomScreenRelation oldRoomScreenRelation = Db.SQL<RoomScreenRelation>($"SELECT o FROM {typeof(RoomScreenRelation)} o WHERE o.{nameof(RoomScreenRelation.ScreenId)} = ? AND o.{nameof(RoomScreenRelation.Room)} = ?", this.ScreenId, oldRoom).FirstOrDefault();
+                            oldRoomScreenRelation.Delete();
+                        });
+                    }
                 }
             }
             catch
@@ -70,17 +82,23 @@ namespace RoomBooking.ViewModels.Partials
             }
             try
             {
-                Room newRoom = Db.FromId(action.Value) as Room;
-
-                if (newRoom != null)
+                if (action.Value != "")
                 {
-                    // Create old room relation
-                    RoomScreenRelation roomScreenRelation = Db.SQL<RoomScreenRelation>($"SELECT o FROM {typeof(RoomScreenRelation)} o WHERE o.{nameof(RoomScreenRelation.ScreenId)}  = ? AND o.{nameof(RoomScreenRelation.Room)} = ?", this.ScreenId, newRoom).FirstOrDefault();
-                    if (roomScreenRelation == null)
+                    Room newRoom = Db.FromId(action.Value) as Room;
+
+                    if (newRoom != null)
                     {
-                        roomScreenRelation = new RoomScreenRelation();
-                        roomScreenRelation.ScreenId = this.ScreenId;
-                        roomScreenRelation.Room = newRoom;
+                        // Create old room relation
+                        RoomScreenRelation roomScreenRelation = Db.SQL<RoomScreenRelation>($"SELECT o FROM {typeof(RoomScreenRelation)} o WHERE o.{nameof(RoomScreenRelation.ScreenId)}  = ? AND o.{nameof(RoomScreenRelation.Room)} = ?", this.ScreenId, newRoom).FirstOrDefault();
+                        if (roomScreenRelation == null)
+                        {
+                            Db.Transact(() =>
+                            {
+                                roomScreenRelation = new RoomScreenRelation();
+                                roomScreenRelation.ScreenId = this.ScreenId;
+                                roomScreenRelation.Room = newRoom;
+                            });
+                        }
                     }
                 }
             }

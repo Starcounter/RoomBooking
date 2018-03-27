@@ -1,62 +1,66 @@
 <dom-module id="sgb-availabletime">
 
     <template>
-        <span>&nbsp;{{timeLeft}}&nbsp;</span>
+        <dom-bind>
+            <template is="dom-bind">
+                <span>&nbsp;{{timeLeft}}&nbsp;</span>
+            </template>
+        </dom-bind>
     </template>
 
-    <script>
-        Polymer({
-            is: "sgb-availabletime",
-            properties: {
-                endDate: {
-                    type: Date,
-                },
-                serverUtcTime: {
-                    type: Date,
-                    observer: '_serverUtcTimeChanged'
-                },
-                showSeconds: {
-                    type: Boolean,
-                    value: false
-                },
-                timeLeft: {
-                    type: String,
-                    value: ""
-                }
-            },
-            _serverUtcTimeChanged: function (newValue, oldValue) {
+            <script>
+                Polymer({
+                    is: "sgb-availabletime",
+                    properties: {
+                        endDate: {
+                            type: Date,
+                        },
+                        serverUtcTime: {
+                            type: Date,
+                            observer: '_serverUtcTimeChanged'
+                        },
+                        showSeconds: {
+                            type: Boolean,
+                            value: false
+                        },
+                        timeLeft: {
+                            type: String,
+                            value: ""
+                        }
+                    },
+                    _serverUtcTimeChanged: function (newValue, oldValue) {
 
-                var eventLeftDuration = new Date(this.endDate).getTime() - new Date(this.serverUtcTime).getTime();
+                        var eventLeftDuration = new Date(this.endDate).getTime() - new Date(this.serverUtcTime).getTime();
 
-                this.timeLeft = this.userFrindlyDuration(eventLeftDuration / 1000);
-            },
-            userFrindlyDuration: function (totalSeconds) {
+                        this.timeLeft = this.userFrindlyDuration(eventLeftDuration / 1000);
+                    },
+                    userFrindlyDuration: function (totalSeconds) {
 
-                var days = Math.floor(totalSeconds / 3600 / 60);
-                var hours = Math.floor(totalSeconds / 3600);
-                var minutes = Math.floor((totalSeconds - (hours * 3600)) / 60);
-                var totalMinutes = Math.floor(totalSeconds / 60);
-                var seconds = Math.floor(totalSeconds - (hours * 3600) - (minutes * 60));
+                        var days = Math.floor(totalSeconds / 3600 / 60);
+                        var hours = Math.floor(totalSeconds / 3600);
+                        var minutes = Math.floor((totalSeconds - (hours * 3600)) / 60);
+                        var totalMinutes = Math.floor(totalSeconds / 60);
+                        var seconds = Math.floor(totalSeconds - (hours * 3600) - (minutes * 60));
 
-                if (totalMinutes < 120) {
-                    if (this.showSeconds) {
-                        return totalMinutes + "min " + seconds + "sec";
+                        if (totalMinutes < 120) {
+                            if (this.showSeconds) {
+                                return totalMinutes + "min " + seconds + "sec";
+                            }
+                            return totalMinutes + "min";
+                        }
+
+                        if (hours >= 24) {
+                            return "+24h";
+                        }
+
+                        return hours + "h " + minutes + "min";
+                    },
+                    pad: function (n, width, z) {
+                        z = z || '0';
+                        n = n + '';
+                        return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
                     }
-                    return totalMinutes + "min";
-                }
-
-                if (hours >= 24) {
-                    return "+24h";
-                }
-
-                return hours + "h " + minutes + "min";
-            },
-            pad: function (n, width, z) {
-                z = z || '0';
-                n = n + '';
-                return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
-            }
-        });
-    </script>
+                });
+            </script>
 
 </dom-module>

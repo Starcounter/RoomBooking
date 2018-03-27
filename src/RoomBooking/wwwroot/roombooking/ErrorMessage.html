@@ -1,48 +1,49 @@
 ﻿<link rel="import" href="/sys/paper-dialog/paper-dialog.html" />
 
 <template>
-    <template is="dom-bind">
+    <dom-bind>
+        <template is="dom-bind">
 
-        <paper-dialog id="actions" opened="{{model.Visible}}" modal="true">
-            <div style="min-width: 400px;min-height: 100px">
-                <h2 style="color:#2196f3;margin-bottom: 5px">{{model.Title}}</h2>
-                <p>{{model.Text}}</p>
-                <template is="dom-if" if="{{model.Helplink}}">
-                    <p>
-                        <label>Helplink:</label>
-                        <a href="{{model.Helplink}}" target="_blank">{{model.Helplink}}</a>
-                    </p>
-                </template>
-                <template is="dom-if" if="{{model.StackTrace}}">
-                    <p class="lead">Internal Server Error</p>
-                    <p class="warehouse-stacktrace">{{model.StackTrace}}</p>
-                </template>
-            </div>
-            <div class="buttons" style="background-color:#dbdbdb">
-                <button style="min-width:100px;margin-left:10px" type="button" class="btn btn-sm btn-primary" value="{{model.Close$::click}}" onmouseup="++this.value">Close</button>
-            </div>
-        </paper-dialog>
-    </template>
+            <paper-dialog id="actions" opened="{{model.Visible$}}" modal="true">
+                <div style="min-width: 400px;min-height: 100px">
+                    <h2 style="color:#2196f3;margin-bottom: 5px">{{model.Title}}</h2>
+                    <p>{{model.Text}}</p>
+                    <template is="dom-if" if="{{model.Helplink}}">
+                        <p>
+                            <label>Helplink:</label>
+                            <a href="{{model.Helplink}}" target="_blank">{{model.Helplink}}</a>
+                        </p>
+                    </template>
+                    <template is="dom-if" if="{{model.StackTrace}}">
+                        <p class="lead">Internal Server Error</p>
+                        <p class="warehouse-stacktrace">{{model.StackTrace}}</p>
+                    </template>
+                </div>
+                <div class="buttons" style="background-color:#dbdbdb">
+                    <button style="min-width:100px;margin-left:10px" type="button" class="btn btn-sm btn-primary" value="{{model.Close$::click}}" onmouseup="++this.value">Close</button>
+                </div>
+            </paper-dialog>
+        </template>
+    </dom-bind>
+        <!--<script>
+            (function () {
+                var script = document._currentScript || document.currentScript;
+                var template = script.previousElementSibling;
 
-    <!--<script>
-        (function () {
-            var script = document._currentScript || document.currentScript;
-            var template = script.previousElementSibling;
+                template.visibleChanged = function (visible) {
+                    if (!visible) {
+                        return;
+                    }
 
-            template.visibleChanged = function (visible) {
-                if (!visible) {
-                    return;
-                }
+                    var dialog = template.parentNode.querySelector("paper-dialog");
 
-                var dialog = template.parentNode.querySelector("paper-dialog");
+                    setTimeout(function () {
+                        dialog.refit();
+                    }, 100);
+                };
 
-                setTimeout(function () {
-                    dialog.refit();
-                }, 100);
-            };
-
-            template.observers = ["visibleChanged(model.Visible)"];
-        })();
-    </script>-->
+                template.observers = ["visibleChanged(model.Visible)"];
+            })();
+        </script>-->
 
 </template>

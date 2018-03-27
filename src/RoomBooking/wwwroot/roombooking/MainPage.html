@@ -4,33 +4,32 @@
 <link rel="stylesheet" href="/RoomBooking/css/mainapp.css?ss" />
 
 <template>
-    <template is="dom-bind">
+    <dom-bind>
+        <template is="dom-bind">
 
-        <div class="mainAppPage">
+            <div class="mainAppPage">
 
-            <div>
-                <!-- Error MessageBox -->
-                <template is="imported-template" model="{{model.ErrorMessage}}" href="{{model.ErrorMessage.Html}}">
-                </template>
-                <!-- MessageBox -->
-                <template is="imported-template" model="{{model.MessageBox}}" href="{{model.MessageBox.Html}}">
-                </template>
-            </div>
-
-            <template is="dom-if" if="{{!model.HideMenu}}">
-                <div class="appMenu">
-                    <!--<a style="margin:10px" href="/RoomBooking">Home</a>-->
-                    <a style="margin:10px" href="/RoomBooking/rooms">Rooms</a>
+                <div>
+                    <!-- Error MessageBox -->
+                    <starcounter-include view-model="{{model.ErrorMessage}}"></starcounter-include>
+                    <!-- MessageBox -->
+                    <starcounter-include view-model="{{model.MessageBox}}"></starcounter-include>
                 </div>
-            </template>
 
-            <div class="appContent">
-                <template is="imported-template" model="{{model.Content}}" href="{{model.Content.Html}}">
+                <template is="dom-if" if="{{!model.HideMenu}}">
+                    <div class="appMenu">
+                        <!--<a style="margin:10px" href="/RoomBooking">Home</a>-->
+                        <a style="margin:10px" href="/RoomBooking/rooms">Rooms</a>
+                    </div>
                 </template>
+
+                <div class="appContent">
+                    <starcounter-include view-model="{{model.Content}}"></starcounter-include>
+                </div>
             </div>
-        </div>
 
-        <link is="palindrom-redirect" history url$="{{model.RedirectUrl}}" />
-
-    </template>
+            <palindrom-redirect is="palindrom-redirect" history url="{{model.MorphUrl$}}"></palindrom-redirect>
+            
+        </template>
+    </dom-bind>
 </template>

@@ -32,22 +32,24 @@
             overflow-x: scroll;*/
         }
     </style>
+    <dom-bind>
+        <template is="dom-bind">
 
-    <template is="dom-bind">
 
+            <div class="holder">
 
-        <div class="holder">
+                <div class="picker" style="margin:20px">
+                    <sgb-daypicker date="{{model.SelectedDate$}}"></sgb-daypicker>
+                </div>
 
-            <div class="picker" style="margin:20px">
-                <sgb-daypicker date="{{model.SelectedDate$}}"></sgb-daypicker>
+                <!--            <div class="cal">-->
+                <sgb-calendar class="cal" selected-date="{{model.SelectedDate$}}" booking-Trigger="{{model.NewBooking.CreateTrigger$}}" events="{{model.Bookings}}" begin-date="{{model.NewBooking.BeginDate$}}" end-date="{{model.NewBooking.EndDate$}}"></sgb-calendar>
+
+                <!--  -->
             </div>
 
-<!--            <div class="cal">-->
-                <sgb-calendar class="cal"  selected-date="{{model.SelectedDate$}}" booking-Trigger="{{model.NewBooking.CreateTrigger$}}" events="{{model.Bookings}}" begin-date="{{model.NewBooking.BeginDate$}}" end-date="{{model.NewBooking.EndDate$}}"></sgb-calendar>
+            </div>
 
-    <!--  -->        </div>
-
-        </div>
-
-    </template>
+        </template>
+    </dom-bind>
 </template>

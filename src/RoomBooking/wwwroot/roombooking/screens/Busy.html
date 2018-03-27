@@ -3,41 +3,43 @@
 <link rel="import" href="/roombooking/elements/sgb-servertime/sgb-servertime.html" />
 
 <template>
-    <template is="dom-bind">
+    <dom-bind>
+        <template is="dom-bind">
 
-        <style>
-            .contentPageHolder {
-                background-color: #A40D27;
-            }
+            <style>
+                .contentPageHolder {
+                    background-color: #A40D27;
+                }
 
-            .contentTicker {
-                flex: 1 1 auto;
-                display: flex;
-                margin: 50px;
-            }
-        </style>
+                .contentTicker {
+                    flex: 1 1 auto;
+                    display: flex;
+                    margin: 50px;
+                }
+            </style>
 
 
-        <div class="contentPageHolder">
+            <div class="contentPageHolder">
 
-            <div class="contentPageHeader">
-                <p style="font-size:2em;margin:0px;">OCCUPIED</p>
-                <p style="font-size:0.5em;margin:0px;">{{model.Booking.Name}}</p>
+                <div class="contentPageHeader">
+                    <p style="font-size:2em;margin:0px;">OCCUPIED</p>
+                    <p style="font-size:0.5em;margin:0px;">{{model.Booking.Name}}</p>
+                </div>
+
+                <sgb-countdown class="contentTicker" begin-utc-date="{{model.Booking.BeginUtcDate}}" end-utc-date="{{model.Booking.EndUtcDate}}" server-utc-time="{{syncedTimeString}}">
+                    <sgb-servertime synced-Utc-Server-Date-String="{{syncedTimeString}}" sync-Trigger="{{model.SyncTimeTrigger$}}" server-Utc-Date="{{model.ServerUTCDate}}"></sgb-servertime>
+                </sgb-countdown>
+
+                <!-- TODO -->
+                <!--<h1>Warn: {{model.WarnBooking.Name}}</h1>-->
+
+
+                <div class="contentPageOperationPanel">
+                    <button type="button" value="{{model.ClaimTrigger$::click}}" class="btn btn-sm btn-primary" onclick="++this.value">Claim</button>
+                </div>
+
             </div>
 
-            <sgb-countdown class="contentTicker" begin-utc-date="{{model.Booking.BeginUtcDate}}" end-utc-date="{{model.Booking.EndUtcDate}}" server-utc-time="{{syncedTimeString}}">
-                <sgb-servertime synced-Utc-Server-Date-String="{{syncedTimeString}}" sync-Trigger="{{model.SyncTimeTrigger$}}" server-Utc-Date="{{model.ServerUTCDate}}"></sgb-servertime>
-            </sgb-countdown>
-
-            <!-- TODO -->
-            <!--<h1>Warn: {{model.WarnBooking.Name}}</h1>-->
-
-
-            <div class="contentPageOperationPanel">
-                <button type="button" value="{{model.ClaimTrigger$::click}}" class="btn btn-sm btn-primary" onclick="++this.value">Claim</button>
-            </div>
-
-        </div>
-
-    </template>
+        </template>
+    </dom-bind>
 </template>

@@ -4,7 +4,7 @@
 <template>
 
     <style>
-        
+
 
 
         .contentHolder {
@@ -37,7 +37,8 @@
         .details input {
             font-size: 30px;
         }
-         .operations {
+
+        .operations {
             flex: 0 1 auto;
             align-self: center;
             /*background-color: gray;*/
@@ -45,60 +46,60 @@
         }
 
 
-        .operations button {
-            min-height: 70px;
-            min-width: 170px;
-            font-size: 30px;
-            margin-left: 20px;
-            margin-right: 20px;
-        }
-
+            .operations button {
+                min-height: 70px;
+                min-width: 170px;
+                font-size: 30px;
+                margin-left: 20px;
+                margin-right: 20px;
+            }
     </style>
 
+    <dom-bind>
+        <template is="dom-bind">
 
-    <template is="dom-bind">
+            <div class="modalbackdrop">
 
-        <div class="modalbackdrop">
+                <div class="newbooking">
 
-            <div class="newbooking">
-
-                <div class="header">
-                    <div>NEW BOOKING</div>
-                </div>
-
-                <div class="contentHolder">
-
-                    <div class="details">
-                        <i>Name</i><p class="text-danger">{{model.ValidationMessage}}</p>
-                        <input type="text" value="{{model.Name$::input}}" placeholder="enter event name here" />
+                    <div class="header">
+                        <div>NEW BOOKING</div>
                     </div>
 
-                    <div class="durationInput">
+                    <div class="contentHolder">
 
-                        <div class="starAndDurationItems">
-                            <i>Start</i>
-                            <sgb-timepicker start-Time="{{model.StartTime$}}"></sgb-timepicker>
+                        <div class="details">
+                            <i>Name</i><p class="text-danger">{{model.ValidationMessage}}</p>
+                            <input type="text" value="{{model.Name$::input}}" placeholder="enter event name here" />
                         </div>
-                        <div class="starAndDurationItems">
 
-                            <i>Duration</i>
-                            <sgb-timepicker start-Time="{{model.DurationTime$}}"></sgb-timepicker>
+                        <div class="durationInput">
+
+                            <div class="starAndDurationItems">
+                                <i>Start</i>
+                                <sgb-timepicker start-Time="{{model.StartTime$}}"></sgb-timepicker>
+                            </div>
+                            <div class="starAndDurationItems">
+
+                                <i>Duration</i>
+                                <sgb-timepicker start-Time="{{model.DurationTime$}}"></sgb-timepicker>
+                            </div>
                         </div>
-                    </div>
 
-                    <form class="operations">
-                        <button type="submit" value="{{model.CreateBookingTrigger$::click}}" class="btn btn-sm btn-primary" onclick="++this.value">Create</button>
-                        <button type="button" value="{{model.CloseTrigger$::click}}" class="btn btn-sm btn-default" onclick="++this.value">Close</button>
-                        <!--<sgb-countdown-button length=20 tigger="{{model.CloseTrigger$}}">
+                        <form class="operations">
+                            <button type="submit" value="{{model.CreateBookingTrigger$::click}}" class="btn btn-sm btn-primary" onclick="++this.value">Create</button>
                             <button type="button" value="{{model.CloseTrigger$::click}}" class="btn btn-sm btn-default" onclick="++this.value">Close</button>
-                        </sgb-countdown-button>-->
-                
-                    </form>
+                            <!--<sgb-countdown-button length=20 tigger="{{model.CloseTrigger$}}">
+                                <button type="button" value="{{model.CloseTrigger$::click}}" class="btn btn-sm btn-default" onclick="++this.value">Close</button>
+                            </sgb-countdown-button>-->
+
+                        </form>
+                    </div>
+
                 </div>
 
             </div>
 
-        </div>
-
-    </template>
+        </template>
+    </dom-bind>
 </template>

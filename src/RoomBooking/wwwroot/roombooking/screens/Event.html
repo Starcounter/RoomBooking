@@ -1,39 +1,41 @@
 ﻿<link rel="import" href="/sys/polymer/polymer.html">
 
 <template>
-    <template is="dom-bind">
+    <dom-bind>
+        <template is="dom-bind">
 
 
-        <style>
-            .contentPageHolder {
-                background-color: #5d5d5d;
-            }
+            <style>
+                .contentPageHolder {
+                    background-color: #5d5d5d;
+                }
 
-            .contentTicker {
-                flex: 1 1 auto;
-                display: flex;
-                margin: 50px;
-            }
-        </style>
+                .contentTicker {
+                    flex: 1 1 auto;
+                    display: flex;
+                    margin: 50px;
+                }
+            </style>
 
 
-        <div class="contentPageHolder">
+            <div class="contentPageHolder">
 
-            <div class="contentPageHeader">
-                <p style="font-size:2em;margin:0px;">EVENT</p>
-                <p style="font-size:0.5em;margin:0px;">{{model.Name}}</p>
+                <div class="contentPageHeader">
+                    <p style="font-size:2em;margin:0px;">EVENT</p>
+                    <p style="font-size:0.5em;margin:0px;">{{model.Name}}</p>
+                </div>
+
+                <div class="contentPageContent">
+                    no content
+                </div>
+
+                <div class="contentPageOperationPanel">
+                    <button type="button" value="{{model.CloseTrigger$::click}}" class="btn btn-sm btn-primary" onclick="++this.value">Close</button>
+                    <button type="button" value="{{model.DeleteTrigger$::click}}" class="btn btn-sm btn-danger" onclick="++this.value">Delete</button>
+                </div>
+
             </div>
 
-            <div class="contentPageContent">
-                no content
-            </div>
-
-            <div class="contentPageOperationPanel">
-                <button type="button" value="{{model.CloseTrigger$::click}}" class="btn btn-sm btn-primary" onclick="++this.value">Close</button>
-                <button type="button" value="{{model.DeleteTrigger$::click}}" class="btn btn-sm btn-danger" onclick="++this.value">Delete</button>
-            </div>
-
-        </div>
-
-    </template>
+        </template>
+    </dom-bind>
 </template>

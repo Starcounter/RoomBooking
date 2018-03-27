@@ -19,9 +19,9 @@ namespace RoomBooking.ViewModels
             // This "workaround" is needed see github issue
             // https://github.com/Starcounter/Home/issues/316
 
-            if (this.Data == null && !string.IsNullOrEmpty(this.RedirectUrl))
+            if (this.Data == null && !string.IsNullOrEmpty(this.MorphUrl))
             {
-                this.RedirectUrl = this.RedirectUrl;
+                this.MorphUrl = this.MorphUrl;
             }
 
 
@@ -53,13 +53,13 @@ namespace RoomBooking.ViewModels
         public void Handle(Input.SaveTrigger action)
         {
             this.Transaction.Commit();
-            this.RedirectUrl = "/roomBooking/rooms";
+            this.MorphUrl = "/roomBooking/rooms";
         }
 
         public void Handle(Input.CloseTrigger action)
         {
             this.Transaction.Rollback();
-            this.RedirectUrl = "/roomBooking/rooms";
+            this.MorphUrl = "/roomBooking/rooms";
         }
 
         public void Handle(Input.DeleteTrigger action)

@@ -1,7 +1,7 @@
 {
   "Html": "/roombooking/mainpage.html",
   "HideMenu": false,
-  "RedirectUrl": "",
+  "MorphUrl$": "",
   "MessageBox": { "$": { "Reuse": "RoomBooking.ViewModels.MessageBox" } },
   "ErrorMessage": { "$": { "Reuse": "RoomBooking.ViewModels.ErrorMessageBox" } },
   "Content": {}

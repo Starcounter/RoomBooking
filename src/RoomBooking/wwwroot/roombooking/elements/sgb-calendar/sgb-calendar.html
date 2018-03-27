@@ -1,122 +1,125 @@
 <dom-module id="sgb-calendar">
 
     <template>
+        <dom-bind>
+            <template is="dom-bind">
 
-        <style>
-            :host {
-                overflow: auto;
-            }
-
-            .startStopHolder {
-                display: flex;
-                flex-direction: column;
-                /*height: 100%;*/
-                margin-left: 20px;
-            }
-
-            .timeTable {
-                width: 100%;
-                font-size: 2.2vw;
-            }
-
-            .eventNameColumn {
-                padding-left: 20px;
-                padding-right: 20px;
-            }
-
-            .booking1 {
-                flex: 1 1 100%;
-                padding-top: 4px;
-            }
-
-            .booking2 {
-                flex: 1 1 auto;
-                vertical-align: bottom;
-                padding-top: 4px;
-            }
-
-            .eventItem {
-                border-bottom: 1pt solid rgba(0, 0, 0, 0.08);
-                cursor: pointer;
-            }
-
-            .eventItemSelected {
-                color: white;
-                background-color: #5d5d5d;
-                cursor: pointer;
-            }
-
-            .eventItemActive {
-                color: white;
-                background-color: #A40D27;
-                cursor: pointer;
-            }
-
-            .eventItem:hover {
-                background-color: rgba(0, 0, 0, 0.10);
-            }
-
-            table {
-                border-collapse: collapse;
-                /*overflow-y: scroll;
-                overflow-x: scroll;*/
-            }
-
-                table tr {
-                    border-bottom: 1pt solid rgba(0, 0, 0, 0.08);
+              <style>
+                :host {
+                    overflow: auto;
                 }
-        </style>
 
-        <table id="myElement" class="timeTable" border="0" cellspacing="0" cellpadding="0">
-            <tbody>
-                <template is="dom-repeat" items="[[timeSlotes]]">
+                .startStopHolder {
+                    display: flex;
+                    flex-direction: column;
+                    /*height: 100%;*/
+                    margin-left: 20px;
+                }
 
-                    <template is="dom-if" if="{{item.Booking}}">
-                        <tr class$="[[selectedClass(item.Booking.IsSelected,item.Booking.IsActive,item,index)]]" on-tap="selectEventTrigger">
+                .timeTable {
+                    width: 100%;
+                    font-size: 2.2vw;
+                }
 
-                            <td width="10px" bgcolor="#A40D27"></td>
+                .eventNameColumn {
+                    padding-left: 20px;
+                    padding-right: 20px;
+                }
 
-                            <td width="90px" style="padding-top:0px;padding-bottom:0px">
-                                <div class="startStopHolder">
-                                    <div class="booking1">{{item.beginTimeStr}}</div>
-                                    <template is="dom-if" if="{{item.Booking.Overlapping}}">
-                                        <div style="flex:0 0 auto; padding-left: 7px">
-                                            <img height="50" title="Overlapping event" src="/roombooking/images/warning1.svg" />
-                                        </div>
-                                    </template>
-                                    <div class="booking2">{{item.endTimeStr}}</div>
-                                </div>
-                            </td>
+                .booking1 {
+                    flex: 1 1 100%;
+                    padding-top: 4px;
+                }
 
-                            <td class="eventNameColumn" style="vertical-align:top;padding-top: 4px;">
-                                {{item.Booking.Name}}
-                            </td>
+                .booking2 {
+                    flex: 1 1 auto;
+                    vertical-align: bottom;
+                    padding-top: 4px;
+                }
 
-                            <td style="vertical-align:top;text-align: right;padding-right:30px;padding-top: 4px;">
-                                {{item.Duration}}
-                            </td>
-                        </tr>
+                .eventItem {
+                    border-bottom: 1pt solid rgba(0, 0, 0, 0.08);
+                    cursor: pointer;
+                }
+
+                .eventItemSelected {
+                    color: white;
+                    background-color: #5d5d5d;
+                    cursor: pointer;
+                }
+
+                .eventItemActive {
+                    color: white;
+                    background-color: #A40D27;
+                    cursor: pointer;
+                }
+
+                .eventItem:hover {
+                    background-color: rgba(0, 0, 0, 0.10);
+                }
+
+                table {
+                    border-collapse: collapse;
+                    /*overflow-y: scroll;
+                overflow-x: scroll;*/
+                }
+
+                    table tr {
+                        border-bottom: 1pt solid rgba(0, 0, 0, 0.08);
+                    }
+            </style>
+
+              <table id="myElement" class="timeTable" border="0" cellspacing="0" cellpadding="0">
+                <tbody>
+                    <template is="dom-repeat" items="[[timeSlotes]]">
+
+                        <template is="dom-if" if="{{item.Booking}}">
+                            <tr class$="[[selectedClass(item.Booking.IsSelected,item.Booking.IsActive,item,index)]]" on-tap="selectEventTrigger">
+
+                                <td width="10px" bgcolor="#A40D27"></td>
+
+                                <td width="90px" style="padding-top:0px;padding-bottom:0px">
+                                    <div class="startStopHolder">
+                                        <div class="booking1">{{item.beginTimeStr}}</div>
+                                        <template is="dom-if" if="{{item.Booking.Overlapping}}">
+                                            <div style="flex:0 0 auto; padding-left: 7px">
+                                                <img height="50" title="Overlapping event" src="/roombooking/images/warning1.svg" />
+                                            </div>
+                                        </template>
+                                        <div class="booking2">{{item.endTimeStr}}</div>
+                                    </div>
+                                </td>
+
+                                <td class="eventNameColumn" style="vertical-align:top;padding-top: 4px;">
+                                    {{item.Booking.Name}}
+                                </td>
+
+                                <td style="vertical-align:top;text-align: right;padding-right:30px;padding-top: 4px;">
+                                    {{item.Duration}}
+                                </td>
+                            </tr>
+                        </template>
+
+                        <template is="dom-if" if="{{!item.Booking}}">
+
+                            <tr style="height:40px" class="eventItem" on-tap="selectEventTrigger">
+                                <td width="10px"></td>
+                                <td style="height:inherit">
+
+                                    <div style="height:100%;margin-left:20px" class="startStopHolder">
+                                        <div class="booking1">{{item.beginTimeStr}}</div>
+                                    </div>
+
+                                </td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </template>
                     </template>
-
-                    <template is="dom-if" if="{{!item.Booking}}">
-
-                        <tr style="height:40px" class="eventItem" on-tap="selectEventTrigger">
-                            <td width="10px"></td>
-                            <td style="height:inherit">
-
-                                <div style="height:100%;margin-left:20px" class="startStopHolder">
-                                    <div class="booking1">{{item.beginTimeStr}}</div>
-                                </div>
-
-                            </td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </template>
-                </template>
-            </tbody>
-        </table>
-
+                </tbody>
+            </table>
+           </template>
+        </dom-bind>
     </template>
 
 

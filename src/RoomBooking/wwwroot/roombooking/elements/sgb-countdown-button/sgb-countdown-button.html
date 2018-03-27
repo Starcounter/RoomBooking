@@ -1,49 +1,52 @@
 <dom-module id="sgb-countdown-button">
 
     <template>
-
-        <content></content>
+        <dom-bind>
+            <template is="dom-bind">
+                <content></content>
+            </template>
+        </dom-bind>
     </template>
 
-    <script>
-        Polymer({
-            is: "sgb-countdown-button",
-            properties: {
-                timeOut: {
-                    type: Number,
-                    notify: true,
-                    observer: '_timeOuthanged'
-                },
-                tigger: {
-                    type: Object,
-                    notify: true
-                },
-                length: {
-                    type: Number,
-                    value: 10
-                },
-                timeLeft: {
-                    type: Number
-                }, timerId: {
-                    type: Object
-                }
-            },
-            _timeOuthanged: function (newValue, oldValue) {
-                //this._setEndTime(newValue.substring(0, newValue.length - 1));
-            },
-            ready: function () {
-                //                this.timerCallback();
-                this.timerId = setInterval(this.timerCallback.bind(this), 1000);
-            },
-            timerCallback: function () {
+            <script>
+                Polymer({
+                    is: "sgb-countdown-button",
+                    properties: {
+                        timeOut: {
+                            type: Number,
+                            notify: true,
+                            observer: '_timeOuthanged'
+                        },
+                        tigger: {
+                            type: Object,
+                            notify: true
+                        },
+                        length: {
+                            type: Number,
+                            value: 10
+                        },
+                        timeLeft: {
+                            type: Number
+                        }, timerId: {
+                            type: Object
+                        }
+                    },
+                    _timeOuthanged: function (newValue, oldValue) {
+                        //this._setEndTime(newValue.substring(0, newValue.length - 1));
+                    },
+                    ready: function () {
+                        //                this.timerCallback();
+                        this.timerId = setInterval(this.timerCallback.bind(this), 1000);
+                    },
+                    timerCallback: function () {
 
-                console.log("callback:" + this.length);
+                        console.log("callback:" + this.length);
 
-                clearInterval(this.timerId);
-                this.tigger++;
-            },
+                        clearInterval(this.timerId);
+                        this.tigger++;
+                    },
 
-        });
-    </script>
+                });
+            </script>
 
 </dom-module>

@@ -1,12 +1,13 @@
 ﻿<link rel="import" href="/sys/polymer/polymer.html">
 
 <template>
-
-    <template is="dom-bind">
-        <template is="dom-repeat" items="{{model.Items}}">
-            <li>
-                <a href="{{item.Url}}">{{item.Name}}</a>
-            </li>
+    <dom-bind>
+        <template is="dom-bind">
+            <template is="dom-repeat" items="{{model.Items}}">
+                <li>
+                    <a href="{{item.Url}}">{{item.Name}}</a>
+                </li>
+            </template>
         </template>
-    </template>
+    </dom-bind>
 </template>

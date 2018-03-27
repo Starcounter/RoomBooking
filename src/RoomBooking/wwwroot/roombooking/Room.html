@@ -3,33 +3,35 @@
 <link rel="import" href="/sys/juicy-select/juicy-select.html" />
 
 <template>
-    <template is="dom-bind">
-        
-        <div class="formpanel">
+    <dom-bind>
+        <template is="dom-bind">
 
-            <div>
-                <h1>Room</h1>
+            <div class="formpanel">
+
+                <div>
+                    <h1>Room</h1>
+                </div>
+
+                <input type="text" value="{{model.Name$::input}}" placeholder="Name" />
+                <p>
+                    <i>Name</i>
+                </p>
+
+                <input type="number" min="0" value="{{model.WarnNotificationMinutes$::input}}" placeholder="Notify ahead (minutes)" />
+                <p>
+                    <i>Notify ahead (minutes)</i>
+                </p>
+
+                <juicy-select caption-text="" value="{{model.SelectedTimeZoneId$}}" options="{{model.TimeZones}}" text-property="DisplayName" value-property="Id"></juicy-select>
+                <p>
+                    <i>Timezone</i>
+                </p>
+
+                <button type="button" value="{{model.SaveTrigger$::click}}" class="btn btn-sm btn-primary" onclick="++this.value">Save</button>
+                <button type="button" value="{{model.CloseTrigger$::click}}" class="btn btn-sm btn-default" onclick="++this.value">Close</button>
+                <button type="button" value="{{model.DeleteTrigger$::click}}" class="btn btn-sm btn-danger" onclick="++this.value">Delete</button>
             </div>
-
-            <input type="text" value="{{model.Name$::input}}" placeholder="Name" />
-            <p>
-                <i>Name</i>
-            </p>
-
-            <input type="number" min="0" value="{{model.WarnNotificationMinutes$::input}}" placeholder="Notify ahead (minutes)" />
-            <p>
-                <i>Notify ahead (minutes)</i>
-            </p>
-
-            <juicy-select caption-text="" value="{{model.SelectedTimeZoneId$}}" options="{{model.TimeZones}}" text-property="DisplayName" value-property="Id"></juicy-select>
-            <p>
-                <i>Timezoon</i>
-            </p>
-
-            <button type="button" value="{{model.SaveTrigger$::click}}" class="btn btn-sm btn-primary" onclick="++this.value">Save</button>
-            <button type="button" value="{{model.CloseTrigger$::click}}" class="btn btn-sm btn-default" onclick="++this.value">Close</button>
-            <button type="button" value="{{model.DeleteTrigger$::click}}" class="btn btn-sm btn-danger" onclick="++this.value">Delete</button>
-            <link is="palindrom-redirect" history url$="{{model.RedirectUrl}}" />
-        </div>
-</template>
+            <palindrom-redirect is="palindrom-redirect" history url="{{model.MorphUrl$}}"></palindrom-redirect>            
+        </template>
+    </dom-bind>
 </template>

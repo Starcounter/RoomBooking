@@ -3,8 +3,9 @@
 <link rel="stylesheet" href="/roombooking/css/mainscreenpage.css" />
 
 <template>
-    <template is="dom-bind">
-        <template is="imported-template" model="{{model.Content}}" href="{{model.Content.Html}}">
+    <dom-bind>
+        <template is="dom-bind">
+            <starcounter-include view-model="{{model.Content}}"></starcounter-include>
         </template>
-    </template>
+    </dom-bind>
 </template>

@@ -1,45 +1,47 @@
 ﻿<link rel="import" href="/sys/paper-dialog/paper-dialog.html" />
 
 <template>
-    <template is="dom-bind">
-        <paper-dialog id="actions" opened="{{model.Visible}}" modal="true">
-            <div style="min-width: 400px;min-height: 100px">
-                <h2 style="color:#2196f3;margin-bottom: 5px">{{model.Title}}</h2>
-                <p>{{model.Text}}</p>
-            </div>
-            <div class="buttons" style="background-color:#dbdbdb">
-                <template is="dom-repeat" items="{{model.Buttons}}">
+    <dom-bind>
+        <template is="dom-bind">
+            <paper-dialog id="actions" opened="{{model.Visible$}}" modal="true">
+                <div style="min-width: 400px;min-height: 100px">
+                    <h2 style="color:#2196f3;margin-bottom: 5px">{{model.Title}}</h2>
+                    <p>{{model.Text}}</p>
+                </div>
+                <div class="buttons" style="background-color:#dbdbdb">
+                    <template is="dom-repeat" items="{{model.Buttons}}">
 
-                    <template is="dom-if" if="{{item.Default}}">
-                        <button style="min-width:100px;margin-left:10px" autofocus$="{{item.Default}}" type="submit" class$="{{item.CssClass}}" value="{{item.Click$::click}}" onmouseup="++this.value">{{item.Text}}</button>
+                        <template is="dom-if" if="{{item.Default}}">
+                            <button style="min-width:100px;margin-left:10px" autofocus$="{{item.Default}}" type="submit" class$="{{item.CssClass}}" value="{{item.Click$::click}}" onmouseup="++this.value">{{item.Text}}</button>
+                        </template>
+
+                        <template is="dom-if" if="{{!item.Default}}">
+                            <button style="min-width:100px;margin-left:10px" autofocus$="{{item.Default}}" type="button" class$="{{item.CssClass}}" value="{{item.Click$::click}}" onmouseup="++this.value">{{item.Text}}</button>
+                        </template>
+
                     </template>
+                </div>
+            </paper-dialog>
+        </template>
+        <!--<script>
+            (function () {
+                var script = document._currentScript || document.currentScript;
+                var template = script.previousElementSibling;
 
-                    <template is="dom-if" if="{{!item.Default}}">
-                        <button style="min-width:100px;margin-left:10px" autofocus$="{{item.Default}}" type="button" class$="{{item.CssClass}}" value="{{item.Click$::click}}" onmouseup="++this.value">{{item.Text}}</button>
-                    </template>
+                template.visibleChanged = function (visible) {
+                    if (!visible) {
+                        return;
+                    }
 
-                </template>
-            </div>
-        </paper-dialog>
-    </template>
-    <!--<script>
-        (function () {
-            var script = document._currentScript || document.currentScript;
-            var template = script.previousElementSibling;
+                    var dialog = template.parentNode.querySelector("paper-dialog");
 
-            template.visibleChanged = function (visible) {
-                if (!visible) {
-                    return;
-                }
+                    setTimeout(function () {
+                        dialog.refit();
+                    }, 100);
+                };
 
-                var dialog = template.parentNode.querySelector("paper-dialog");
-
-                setTimeout(function () {
-                    dialog.refit();
-                }, 100);
-            };
-
-            template.observers = ["visibleChanged(model.Visible)"];
-        })();
-    </script>-->
+                template.observers = ["visibleChanged(model.Visible)"];
+            })();
+        </script>-->
+    </dom-bind>
 </template>
