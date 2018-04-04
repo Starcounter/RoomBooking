@@ -7,13 +7,13 @@ using Starcounter;
 
 namespace RoomBooking
 {
-
     [Database]
     public class Room
     {
         public string Name { get; set; }
-        public string Description;
-        public string TimeZoneId;
+        public string Description { get; set; }
+        public string TimeZoneId { get; set; }
+        public int WarnNotificationMinutes { get; set; }
 
         public TimeZoneInfo TimeZoneInfo {
             get {
@@ -34,8 +34,6 @@ namespace RoomBooking
                 return TimeZoneInfo.GetUtcOffset(DateTime.UtcNow).TotalMinutes;
             }
         }
-
-        public int WarnNotificationMinutes { get; set; }
     }
 
 }

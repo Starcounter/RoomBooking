@@ -64,15 +64,16 @@
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Database\RoomObjectRelation.cs" />
     <Compile Include="Database\UserSession.cs" />
     <Compile Include="Database\User.cs" />
-    <Compile Include="Database\RoomScreenRelation.cs" />
     <Compile Include="Database\UserRoomRelation.cs" />
     <Compile Include="Database\RoomBookingEvent.cs" />
     <Compile Include="Database\Room.cs" />
+    <Compile Include="Handlers\BlenderMapping.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Handlers\RoomHandlers.cs" />
+    <Compile Include="Handlers\MainHandlers.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="UpdateHooks.cs" />
     <Compile Include="Handlers\ScreenContentHandlers.cs" />
@@ -80,17 +81,14 @@
     <Compile Include="ViewModels\Menu.json.cs">
       <DependentUpon>Menu.json</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\Screens\ContentPage.json.cs">
+      <DependentUpon>ContentPage.json</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\Screens\ContentPartial.json.cs">
       <DependentUpon>ContentPartial.json</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\Screens\ErrorMessageBox.json.cs">
-      <DependentUpon>ErrorMessageBox.json</DependentUpon>
-    </Compile>
     <Compile Include="ViewModels\Screens\WarnBusyPage.json.cs">
       <DependentUpon>WarnBusyPage.json</DependentUpon>
-    </Compile>
-    <Compile Include="ViewModels\Screens\MessageBox.json.cs">
-      <DependentUpon>MessageBox.json</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Partials\ScreenPartial.json.cs">
       <DependentUpon>ScreenPartial.json</DependentUpon>
@@ -100,9 +98,6 @@
     </Compile>
     <Compile Include="ViewModels\Screens\NewQuickBookingPage.json.cs">
       <DependentUpon>NewQuickBookingPage.json</DependentUpon>
-    </Compile>
-    <Compile Include="ViewModels\Screens\ScreenContentPage.json.cs">
-      <DependentUpon>ScreenContentPage.json</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\MessageBox.json.cs">
       <DependentUpon>MessageBox.json</DependentUpon>
@@ -133,9 +128,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <TypedJSON Include="ViewModels\Screens\ScreenContentPage.json">
-      <Generator>MsBuild:Compile</Generator>
-    </TypedJSON>
     <TypedJSON Include="ViewModels\MessageBox.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
@@ -169,12 +161,6 @@
     <TypedJSON Include="ViewModels\Partials\ScreenPartial.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
-    <TypedJSON Include="ViewModels\Screens\MessageBox.json">
-      <Generator>MsBuild:Compile</Generator>
-    </TypedJSON>
-    <TypedJSON Include="ViewModels\Screens\ErrorMessageBox.json">
-      <Generator>MsBuild:Compile</Generator>
-    </TypedJSON>
     <TypedJSON Include="ViewModels\Screens\ContentPartial.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
@@ -188,6 +174,9 @@
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
     <None Include="app.config" />
+    <TypedJSON Include="ViewModels\Screens\ContentPage.json">
+      <Generator>MsBuild:Compile</Generator>
+    </TypedJSON>
     <None Include="wwwroot\roombooking\MainPage.html" />
   </ItemGroup>
   <ItemGroup>
@@ -215,7 +204,7 @@
     <None Include="wwwroot\roombooking\MessageBox.html" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="wwwroot\roombooking\screens\ScreenContentPage.html" />
+    <None Include="wwwroot\roombooking\screens\ContentPage.html" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="wwwroot\roombooking\elements\sgb-calendar\sgb-calendar.html" />
@@ -233,7 +222,7 @@
     <None Include="wwwroot\roombooking\Partials\ScreenPartial.html" />
     <None Include="wwwroot\roombooking\screens\Event.html" />
     <Content Include="wwwroot\roombooking\css\mainapp.css" />
-    <Content Include="wwwroot\roombooking\css\ScreenContentPage.css" />
+    <Content Include="wwwroot\roombooking\css\ContentPage.css" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(StarcounterBin)\Starcounter.MsBuild.targets" />

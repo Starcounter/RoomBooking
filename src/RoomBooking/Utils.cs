@@ -13,6 +13,8 @@ namespace RoomBooking
 {
     public class Utils
     {
+        static public string MAIN_PAGE_TYPE = "MainPage";
+        static public string CONTENT_PAGE_TYPE = "ContentPage";
         static private Object thisLock = new Object();
 
         internal static void PushChanges()
@@ -26,33 +28,35 @@ namespace RoomBooking
             }
         }
 
-
         internal static MainPage GetMainPage()
         {
             var session = Session.Ensure();
-
+            
             MainPage mainPage = session.Store[nameof(MainPage)] as MainPage;
 
             if (mainPage == null)
             {
                 mainPage = new MainPage();
+                
+                // Menu blending point
+                mainPage.Menu = Self.GET("/RoomBooking/menu");
+
                 session.Store[nameof(MainPage)] = mainPage;
             }
 
             return mainPage;
         }
 
-        internal static ScreenContentPage AssureScreenContentPage()
+        internal static ContentPage AssureContentPage()
         {
-
             var session = Session.Ensure();
 
-            ScreenContentPage mainPage = session.Store[nameof(ScreenContentPage)] as ScreenContentPage;
+            ContentPage mainPage = session.Store[nameof(ContentPage)] as ContentPage;
 
             if (mainPage == null)
             {
-                mainPage = new ScreenContentPage();
-                session.Store[nameof(ScreenContentPage)] = mainPage;
+                mainPage = new ContentPage();
+                session.Store[nameof(ContentPage)] = mainPage;
             }
 
             return mainPage;

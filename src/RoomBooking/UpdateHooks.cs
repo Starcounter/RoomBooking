@@ -57,9 +57,9 @@ namespace RoomBooking
         private static void RegisterHook_RoomScreenRelation()
         {
             // Push updates to client sessions
-            Hook<RoomScreenRelation>.CommitUpdate += (sender, room) => Utils.PushChanges();
-            Hook<RoomScreenRelation>.CommitInsert += (sender, room) => Utils.PushChanges();
-            Hook<RoomScreenRelation>.CommitDelete += (sender, room) => Utils.PushChanges();
+            Hook<RoomObjectRelation>.CommitUpdate += (sender, room) => Utils.PushChanges();
+            Hook<RoomObjectRelation>.CommitInsert += (sender, room) => Utils.PushChanges();
+            Hook<RoomObjectRelation>.CommitDelete += (sender, room) => Utils.PushChanges();
         }
 
         private static void RegisterHook_UserRoomRelation()

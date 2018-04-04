@@ -8,30 +8,26 @@ namespace RoomBooking.Handlers
     public class ScreenContentHandlers
     {
 
-        public static void RegisterHandlers()
-        {
-      
-            Handle.GET("/RoomBooking/screenContent/{?}", (Func<string, Response>)((string screenId) =>
+        public static void Register()
+        {      
+            Handle.GET("/RoomBooking/Content/{?}", (string objId) =>
             {
                 try
                 {
-                    RoomScreenRelation roomScreenRelation = Db.SQL<RoomScreenRelation>($"SELECT o FROM {typeof(RoomScreenRelation)} o WHERE o.{nameof(RoomScreenRelation.ScreenId)} = ?", screenId).FirstOrDefault();
+                    RoomObjectRelation roomObjectRelation = Db.SQL<RoomObjectRelation>($"SELECT o FROM {typeof(RoomObjectRelation)} o WHERE o.{nameof(RoomObjectRelation.ObjId)} = ?", objId).FirstOrDefault();
                     return Db.Scope(() =>
                     {
-                        ScreenContentPage mainScreenPage = Utils.AssureScreenContentPage();
-                        mainScreenPage.Data = roomScreenRelation;
+                        ContentPage mainScreenPage = Utils.AssureContentPage();
+                        mainScreenPage.Data = roomObjectRelation;
                         return mainScreenPage;
                     });
                 }
                 catch (Exception e)
                 {
-                    ViewModels.Screens.ErrorMessageBox.Show(e);
-                    return Utils.AssureScreenContentPage();
+                    ViewModels.ErrorMessageBox.Show(e, Utils.CONTENT_PAGE_TYPE);
+                    return Utils.AssureContentPage();
                 }
-            }));
-
-            Blender.MapUri("/RoomBooking/screenContent/{?}", "screenContent");
+            });
         }
-
     }
 }

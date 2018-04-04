@@ -5,8 +5,8 @@ namespace RoomBooking
     [Database]
     public class UserRoomRelation
     {
-        public User User;
-        public Room Room;
+        public User User { get; set; }
+        public Room Room { get; set; }
         public static void RegisterHooks()
         {
             Hook<Room>.BeforeDelete += (sender, room) =>

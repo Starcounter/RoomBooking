@@ -1,5 +1,5 @@
 ﻿<link rel="import" href="/sys/polymer/polymer.html">
-<link rel="stylesheet" href="/roombooking/css/ScreenContentPage.css" />
+<link rel="stylesheet" href="/roombooking/css/ContentPage.css" />
 
 <template>
     <dom-bind>
@@ -26,16 +26,16 @@
         </template>
     </dom-bind>
 
-        <script>
+    <script>
 
-            var head = document.getElementsByTagName('head')[0];
+        var head = document.getElementsByTagName('head')[0];
 
-            // Prevent user to be able to zoom
-            var viewport = document.createElement('meta');
-            viewport.name = "viewport";
-            viewport.content = "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no";
-            head.appendChild(viewport);
+        // Prevent user to be able to zoom
+        var viewport = document.createElement('meta');
+        viewport.name = "viewport";
+        viewport.content = "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no";
+        head.appendChild(viewport);
 
-        </script>
+    </script>
 
 </template>

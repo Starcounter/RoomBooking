@@ -7,7 +7,7 @@ namespace RoomBooking.Handlers
     public class ScreenSettingHandlers
     {
 
-        public static void RegisterHandlers()
+        public static void Register()
         {
       
             Handle.GET("/RoomBooking/partial/screen/{?}", (string screenId) =>
@@ -23,7 +23,7 @@ namespace RoomBooking.Handlers
                 return new Json();
             });
 
-            Blender.MapUri("/RoomBooking/partial/screen/{?}", "screen");
+            //Blender.MapUri("/RoomBooking/partial/screen/{?}", "screen");
         
         }
 

@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace RoomBooking.ViewModels.Screens
 {
-    partial class ScreenContentPage : Json, IBound<RoomScreenRelation>
+    partial class ContentPage: Json, IBound<RoomObjectRelation>
     {
         protected override void OnData()
         {

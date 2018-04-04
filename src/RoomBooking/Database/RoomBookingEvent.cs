@@ -13,12 +13,11 @@ namespace RoomBooking
     [Database]
     public class RoomBookingEvent
     {
-        public Room Room;
+        public Room Room { get; set; }
         public DateTime BeginUtcDate { get; set; }
         public DateTime EndUtcDate { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-
         public int WarnNotificationMinutes { get; set; }
         
         public DateTime WarnUtcDate {

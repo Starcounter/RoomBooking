@@ -81,7 +81,7 @@ namespace RoomBooking.ViewModels.Screens
             get {
 
                 CalendarPage calendarPage = this.Parent.Parent as CalendarPage;
-                ScreenContentPage mainContentPage = calendarPage.Parent as ScreenContentPage;
+                ContentPage mainContentPage = calendarPage.Parent as ContentPage;
 
                 if (mainContentPage.ContentPartial != null)
                 {

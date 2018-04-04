@@ -18,8 +18,9 @@
 
                 <template is="dom-if" if="{{!model.HideMenu}}">
                     <div class="appMenu">
-                        <!--<a style="margin:10px" href="/RoomBooking">Home</a>-->
-                        <a style="margin:10px" href="/RoomBooking/rooms">Rooms</a>
+                        <ul>
+                            <starcounter-include style="height:100%" view-model="{{model.Menu}}"></starcounter-include>
+                        </ul>
                     </div>
                 </template>
 

@@ -4,16 +4,12 @@ using System.Collections.Generic;
 
 namespace RoomBooking.ViewModels
 {
-
-
     partial class MessageBox : Json
     {
-
         private Action<MessageBoxResult> CallBack = null;
 
-        public static void Show(string title, string text, MessageBoxButton button1, MessageBoxButton button2, Action<MessageBoxResult> callback = null)
+        public static void Show(string title, string text, MessageBoxButton button1, MessageBoxButton button2, string page_type, Action<MessageBoxResult> callback = null)
         {
-
             List<MessageBoxButton> buttons = new List<MessageBoxButton>();
             if (button1 != null)
             {
@@ -23,22 +19,32 @@ namespace RoomBooking.ViewModels
             {
                 buttons.Add(button2);
             }
-            Show(title, text, buttons, callback);
+            Show(title, text, page_type, buttons, callback);
         }
 
-        public static void Show(string title, string text, Action<MessageBoxResult> callback = null)
+        public static void Show(string title, string text, string page_type, Action<MessageBoxResult> callback = null)
         {
-
             MessageBoxButton btn = new MessageBoxButton();
             btn.ID = (long)MessageBoxResult.OK;
             btn.Text = "Ok";
 
-            Show(title, text, btn, null, callback);
+            Show(title, text, page_type, null, callback);
         }
 
-        public static void Show(string title, string text, IList<MessageBoxButton> buttons, Action<MessageBoxResult> callback = null)
+        public static void Show(string title, string text, string page_type, IList<MessageBoxButton> buttons, Action<MessageBoxResult> callback = null)
         {
+            if (page_type == Utils.CONTENT_PAGE_TYPE)
+            {
+                ShowContent(title, text, buttons, callback);
+            }
+            else
+            {
+                ShowMain(title, text, buttons, callback);
+            }
+        }
 
+        public static void ShowMain(string title, string text, IList<MessageBoxButton> buttons, Action<MessageBoxResult> callback = null)
+        {
             MainPage holderPage = Utils.GetMainPage();
             if (holderPage == null)
             {
@@ -57,6 +63,7 @@ namespace RoomBooking.ViewModels
             messageBox.CallBack = callback;
             messageBox.Title = title;
             messageBox.Text = text;
+            messageBox.Type = Utils.MAIN_PAGE_TYPE;
 
             bool hasDefault = false;
 
@@ -79,7 +86,6 @@ namespace RoomBooking.ViewModels
             // Fix style
             foreach (MessageBoxButton btn in buttons)
             {
-
                 if (!string.IsNullOrEmpty(btn.CssClass))
                 {
                     continue;
@@ -93,7 +99,66 @@ namespace RoomBooking.ViewModels
                 {
                     btn.CssClass = "btn btn-sm btn-default";
                 }
+            }
+            messageBox.Visible = true;
+        }
 
+        public static void ShowContent(string title, string text, IList<MessageBoxButton> buttons, Action<MessageBoxResult> callback = null)
+        {
+            Screens.ContentPage holderPage = Utils.AssureContentPage();
+            if (holderPage == null)
+            {
+                // TODO: Show error
+                return;
+            }
+
+            MessageBox messageBox = holderPage.MessageBox;
+
+            if (messageBox.CallBack != null)
+            {
+                throw new NotImplementedException("Nested Messageboxes is not supported");
+            }
+
+            messageBox.Reset();
+            messageBox.CallBack = callback;
+            messageBox.Title = title;
+            messageBox.Text = text;
+            messageBox.Type = Utils.CONTENT_PAGE_TYPE;
+
+            bool hasDefault = false;
+
+            foreach (MessageBoxButton btn in buttons)
+            {
+                if (btn.Default == true)
+                {
+                    hasDefault = true;
+                }
+
+                messageBox.Buttons.Add(btn);
+            }
+
+            if (hasDefault == false)
+            {
+                MessageBoxButton lastBtn = buttons[buttons.Count - 1];
+                lastBtn.Default = true;
+            }
+
+            // Fix style
+            foreach (MessageBoxButton btn in buttons)
+            {
+                if (!string.IsNullOrEmpty(btn.CssClass))
+                {
+                    continue;
+                }
+
+                if (btn.Default == true)
+                {
+                    btn.CssClass = "btn btn-sm btn-primary";
+                }
+                else
+                {
+                    btn.CssClass = "btn btn-sm btn-default";
+                }
             }
             messageBox.Visible = true;
         }
@@ -107,9 +172,8 @@ namespace RoomBooking.ViewModels
             }
             catch (Exception e)
             {
-                ErrorMessageBox.Show(e);
+                ErrorMessageBox.Show(e, this.Type);
             }
-
         }
 
         public void OnButtonClick(MessageBoxButton button)
@@ -120,7 +184,6 @@ namespace RoomBooking.ViewModels
 
         private void InvokeCallback(MessageBoxResult result)
         {
-
             if (this.CallBack != null)
             {
                 var callback = this.CallBack;
@@ -145,6 +208,7 @@ namespace RoomBooking.ViewModels
             this.Buttons.Clear();
             this.Title = null;
             this.Text = null;
+            this.Type = null;
         }
 
         public enum MessageBoxResult
@@ -169,26 +233,24 @@ namespace RoomBooking.ViewModels
             //     The result value of the message box is No.
             No = 7,
         }
-
-
     }
 
     [MessageBox_json.Buttons]
     partial class MessageBoxButton : Json
     {
-
         void Handle(Input.Click action)
         {
+            var page_type = Utils.MAIN_PAGE_TYPE;
             try
             {
                 MessageBox messageBox = this.Parent.Parent as MessageBox;
+                page_type = messageBox.Type;
                 messageBox.OnButtonClick(this);
             }
             catch (Exception e)
             {
-                ErrorMessageBox.Show(e);
+                ErrorMessageBox.Show(e, page_type);
             }
-
         }
     }
 

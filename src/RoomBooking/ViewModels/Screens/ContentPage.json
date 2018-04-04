@@ -1,9 +1,9 @@
 {
-  "Html": "/roombooking/mainpage.html",
-  "HideMenu": false,
-  "MorphUrl$": "",
-  "Menu": {},
+  "Html": "/roombooking/screens/ContentPage.html",
   "MessageBox": { "$": { "Reuse": "RoomBooking.ViewModels.MessageBox" } },
   "ErrorMessage": { "$": { "Reuse": "RoomBooking.ViewModels.ErrorMessageBox" } },
-  "Content": {}
+  "Enabled": false,
+  "DefaultPageTrigger": false,
+  "CalendarPartial": {},
+  "ContentPartial": {}
 }

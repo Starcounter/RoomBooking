@@ -4,20 +4,16 @@ using System.Threading;
 
 namespace RoomBooking.ViewModels.Screens
 {
-
-
     partial class BusyPage : Json
     {
         public Action OnClaim;
         public Action OnClose;
-
-
+        
         public void Handle(Input.SyncTimeTrigger action)
         {
             // 2008-09-22T14:01:54.9571247Z
             this.ServerUTCDate = DateTime.UtcNow.ToString("o");
         }
-
 
         public void Handle(Input.ClaimTrigger action)
         {
@@ -25,7 +21,7 @@ namespace RoomBooking.ViewModels.Screens
             MessageBoxButton deleteButton = new MessageBoxButton() { ID = (long)MessageBox.MessageBoxResult.Yes, Text = "Claim", CssClass = "btn btn-sm btn-danger" };
             MessageBoxButton cancelButton = new MessageBoxButton() { ID = (long)MessageBox.MessageBoxResult.Cancel, Text = "Cancel" };
 
-            MessageBox.Show("Claim Room", "This Room will be claimed and current event be deleted.", cancelButton, deleteButton, (result) =>
+            MessageBox.Show("Claim Room", "This Room will be claimed and current event be deleted.", cancelButton, deleteButton, Utils.CONTENT_PAGE_TYPE, (result) =>
             {
                 if (result == MessageBox.MessageBoxResult.Yes)
                 {

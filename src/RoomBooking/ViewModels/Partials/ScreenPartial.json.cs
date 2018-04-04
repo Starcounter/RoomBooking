@@ -19,19 +19,19 @@ namespace RoomBooking.ViewModels.Partials
         {
             this.ScreenId = screenId;
 
-            RoomScreenRelation roomScreenRelation = Db.SQL<RoomScreenRelation>($"SELECT o FROM {typeof(RoomScreenRelation)} o WHERE o.{nameof(RoomScreenRelation.ScreenId)} = ?", this.ScreenId).FirstOrDefault();
-            if (roomScreenRelation != null)
+            RoomObjectRelation RoomObjectRelation = Db.SQL<RoomObjectRelation>($"SELECT o FROM {typeof(RoomObjectRelation)} o WHERE o.{nameof(RoomObjectRelation.ObjId)} = ?", this.ScreenId).FirstOrDefault();
+            if (RoomObjectRelation != null)
             {
-                this.SelectedRoomId = roomScreenRelation.Room.GetObjectID();
-                this.Enable = roomScreenRelation.Enabled;
+                this.SelectedRoomId = RoomObjectRelation.Room.GetObjectID();
+                this.Enable = RoomObjectRelation.Enabled;
             }
         }
 
         public void Handle(Input.Enable action)
         {
-            RoomScreenRelation roomScreenRelation = Db.SQL<RoomScreenRelation>($"SELECT o FROM {typeof(RoomScreenRelation)} o WHERE o.{nameof(RoomScreenRelation.ScreenId)} = ?", this.ScreenId).FirstOrDefault();
+            RoomObjectRelation RoomObjectRelation = Db.SQL<RoomObjectRelation>($"SELECT o FROM {typeof(RoomObjectRelation)} o WHERE o.{nameof(RoomObjectRelation.ObjId)} = ?", this.ScreenId).FirstOrDefault();
 
-            if (roomScreenRelation == null)
+            if (RoomObjectRelation == null)
             {
 
                 Room room = this.Rooms.FirstOrDefault();
@@ -39,19 +39,19 @@ namespace RoomBooking.ViewModels.Partials
                 {
                     Db.Transact(() =>
                     {
-                        roomScreenRelation = new RoomScreenRelation();
-                        roomScreenRelation.ScreenId = this.ScreenId;
-                        roomScreenRelation.Room = room;
-                        this.SelectedRoomId = roomScreenRelation.Room.GetObjectID();
+                        RoomObjectRelation = new RoomObjectRelation();
+                        RoomObjectRelation.ObjId = this.ScreenId;
+                        RoomObjectRelation.Room = room;
+                        this.SelectedRoomId = RoomObjectRelation.Room.GetObjectID();
                     });
                 }
             }
 
-            if (roomScreenRelation != null)
+            if (RoomObjectRelation != null)
             {
                 Db.Transact(() =>
                 {
-                    roomScreenRelation.Enabled = action.Value;
+                    RoomObjectRelation.Enabled = action.Value;
                 });
             }
         }
@@ -70,7 +70,7 @@ namespace RoomBooking.ViewModels.Partials
                         // Remove old room relation
                         Db.Transact(() =>
                         {
-                            RoomScreenRelation oldRoomScreenRelation = Db.SQL<RoomScreenRelation>($"SELECT o FROM {typeof(RoomScreenRelation)} o WHERE o.{nameof(RoomScreenRelation.ScreenId)} = ? AND o.{nameof(RoomScreenRelation.Room)} = ?", this.ScreenId, oldRoom).FirstOrDefault();
+                            RoomObjectRelation oldRoomScreenRelation = Db.SQL<RoomObjectRelation>($"SELECT o FROM {typeof(RoomObjectRelation)} o WHERE o.{nameof(RoomObjectRelation.ObjId)} = ? AND o.{nameof(RoomObjectRelation.Room)} = ?", this.ScreenId, oldRoom).FirstOrDefault();
                             oldRoomScreenRelation.Delete();
                         });
                     }
@@ -89,14 +89,14 @@ namespace RoomBooking.ViewModels.Partials
                     if (newRoom != null)
                     {
                         // Create old room relation
-                        RoomScreenRelation roomScreenRelation = Db.SQL<RoomScreenRelation>($"SELECT o FROM {typeof(RoomScreenRelation)} o WHERE o.{nameof(RoomScreenRelation.ScreenId)}  = ? AND o.{nameof(RoomScreenRelation.Room)} = ?", this.ScreenId, newRoom).FirstOrDefault();
-                        if (roomScreenRelation == null)
+                        RoomObjectRelation RoomObjectRelation = Db.SQL<RoomObjectRelation>($"SELECT o FROM {typeof(RoomObjectRelation)} o WHERE o.{nameof(RoomObjectRelation.ObjId)}  = ? AND o.{nameof(RoomObjectRelation.Room)} = ?", this.ScreenId, newRoom).FirstOrDefault();
+                        if (RoomObjectRelation == null)
                         {
                             Db.Transact(() =>
                             {
-                                roomScreenRelation = new RoomScreenRelation();
-                                roomScreenRelation.ScreenId = this.ScreenId;
-                                roomScreenRelation.Room = newRoom;
+                                RoomObjectRelation = new RoomObjectRelation();
+                                RoomObjectRelation.ObjId = this.ScreenId;
+                                RoomObjectRelation.Room = newRoom;
                             });
                         }
                     }

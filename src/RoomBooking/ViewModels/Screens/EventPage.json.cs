@@ -18,7 +18,7 @@ namespace RoomBooking.ViewModels.Screens
             MessageBoxButton deleteButton = new MessageBoxButton() { ID = (long)MessageBox.MessageBoxResult.Yes, Text = "Delete", CssClass = "btn btn-sm btn-danger" };
             MessageBoxButton cancelButton = new MessageBoxButton() { ID = (long)MessageBox.MessageBoxResult.Cancel, Text = "Cancel" };
 
-            MessageBox.Show("Delete Event", "This event will be deleted.", cancelButton, deleteButton, (result) =>
+            MessageBox.Show("Delete Event", "This event will be deleted.", cancelButton, deleteButton, Utils.CONTENT_PAGE_TYPE, (result) =>
             {
 
                 if (result == MessageBox.MessageBoxResult.Yes)
