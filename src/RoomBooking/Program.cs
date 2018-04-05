@@ -15,14 +15,11 @@ namespace RoomBooking
             // Hooks
             UserSession.RegisterHooks();
             UserRoomRelation.RegisterHooks();
-            RoomObjectRelation.RegisterHooks();
             RoomBookingEvent.RegisterHooks();
 
             UpdateGuiHooks.Register();
 
             // Handlers
-            ScreenSettingHandlers.Register();
-            ScreenContentHandlers.Register();
             MainHandlers.Register();
 
             // Blending

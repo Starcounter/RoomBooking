@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Starcounter;
-using RoomBooking.ViewModels.Partials;
 using System.Threading;
 using RoomBooking.ViewModels.Screens;
 using RoomBooking.ViewModels;
@@ -60,6 +59,27 @@ namespace RoomBooking
             }
 
             return mainPage;
+        }
+
+        static UserRoomRelation AssureDefaultUserRoom(User user)
+        {
+            UserRoomRelation userRoomRelation = Db.SQL<UserRoomRelation>($"SELECT o FROM {typeof(UserRoomRelation)} o WHERE o.{nameof(UserRoomRelation.User)} = ?", user).FirstOrDefault();
+            if (userRoomRelation == null)
+            {
+                Db.Transact(() =>
+                {
+                    userRoomRelation = new UserRoomRelation();
+                    userRoomRelation.User = user;
+                    userRoomRelation.Room = new Room() { Name = "Default", Description = "This is your default room" };
+                });
+            }
+
+            return userRoomRelation;
+        }
+
+        static public IEnumerable<Room> GetAllRooms()
+        {
+            return Db.SQL<Room>($"SELECT r FROM {nameof(Room)} r");
         }
     }
 }

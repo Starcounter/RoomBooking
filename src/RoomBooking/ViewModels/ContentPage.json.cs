@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace RoomBooking.ViewModels.Screens
 {
-    partial class ContentPage: Json, IBound<RoomObjectRelation>
+    partial class ContentPage: Json, IBound<Room>
     {
         protected override void OnData()
         {
@@ -24,12 +24,11 @@ namespace RoomBooking.ViewModels.Screens
             }
         }
 
-
         public RoomBookingEvent ActiveEvent {
             get {
                 if (this.Data == null) return null;
                 DateTime utcNow = DateTime.UtcNow;
-                RoomBookingEvent roomBookingEvent = Db.SQL<RoomBookingEvent>($"SELECT o FROM {typeof(RoomBookingEvent)} o WHERE o.{nameof(RoomBookingEvent.Room)} = ? AND ? >= o.{nameof(RoomBookingEvent.BeginUtcDate)} AND ? < o.{nameof(RoomBookingEvent.EndUtcDate)} AND o.{nameof(RoomBookingEvent.EndUtcDate)} >= o.{nameof(RoomBookingEvent.BeginUtcDate)} ORDER BY o.{nameof(RoomBookingEvent.BeginUtcDate)}", this.Data.Room, utcNow, utcNow).FirstOrDefault();
+                RoomBookingEvent roomBookingEvent = Db.SQL<RoomBookingEvent>($"SELECT o FROM {typeof(RoomBookingEvent)} o WHERE o.{nameof(RoomBookingEvent.Room)} = ? AND ? >= o.{nameof(RoomBookingEvent.BeginUtcDate)} AND ? < o.{nameof(RoomBookingEvent.EndUtcDate)} AND o.{nameof(RoomBookingEvent.EndUtcDate)} >= o.{nameof(RoomBookingEvent.BeginUtcDate)} ORDER BY o.{nameof(RoomBookingEvent.BeginUtcDate)}", this.Data, utcNow, utcNow).FirstOrDefault();
                 return roomBookingEvent;
             }
         }
@@ -38,7 +37,7 @@ namespace RoomBooking.ViewModels.Screens
             get {
                 if (this.Data == null) return null;
                 DateTime utcNow = DateTime.UtcNow;
-                return Db.SQL<RoomBookingEvent>($"SELECT o FROM {typeof(RoomBookingEvent)} o WHERE o.{nameof(RoomBookingEvent.Room)} = ? AND ? >= o.{nameof(RoomBookingEvent.WarnUtcDate)} AND ? < o.{nameof(RoomBookingEvent.BeginUtcDate)} AND o.{nameof(RoomBookingEvent.BeginUtcDate)} >= o.{nameof(RoomBookingEvent.WarnUtcDate)} ORDER BY o.{nameof(RoomBookingEvent.BeginUtcDate)}", this.Data.Room, utcNow, utcNow).FirstOrDefault();
+                return Db.SQL<RoomBookingEvent>($"SELECT o FROM {typeof(RoomBookingEvent)} o WHERE o.{nameof(RoomBookingEvent.Room)} = ? AND ? >= o.{nameof(RoomBookingEvent.WarnUtcDate)} AND ? < o.{nameof(RoomBookingEvent.BeginUtcDate)} AND o.{nameof(RoomBookingEvent.BeginUtcDate)} >= o.{nameof(RoomBookingEvent.WarnUtcDate)} ORDER BY o.{nameof(RoomBookingEvent.BeginUtcDate)}", this.Data, utcNow, utcNow).FirstOrDefault();
             }
         }
 
@@ -60,11 +59,10 @@ namespace RoomBooking.ViewModels.Screens
         {
             CalendarPage calendarePage = new CalendarPage();
 
-            calendarePage.Init(this.Data.Room.TimeZoneInfo);
+            calendarePage.Init(this.Data.TimeZoneInfo);
 
             calendarePage.OnEventSelected = (roomBookingEvent) =>
             {
-
                 if (this.ContentPartial is NewBookingPage && ((NewBookingPage)this.ContentPartial).Data.Equals(roomBookingEvent))
                 {
                     return;
@@ -94,7 +92,7 @@ namespace RoomBooking.ViewModels.Screens
                     calendarePage.Transaction.Rollback();
                 }
 
-                this.ContentPartial = this.CreateNewBookingPage(this.Data.Room, beginUtcDate, endUtcDate);
+                this.ContentPartial = this.CreateNewBookingPage(this.Data, beginUtcDate, endUtcDate);
 
             };
 
@@ -113,13 +111,13 @@ namespace RoomBooking.ViewModels.Screens
                     TimeSpan duration = newBookingPage.Data.EndUtcDate - newBookingPage.Data.BeginUtcDate;
                     // 1 Get room time
 
-                    DateTime roomBeginTime = TimeZoneInfo.ConvertTimeFromUtc(newBookingPage.Data.BeginUtcDate, this.Data.Room.TimeZoneInfo);
+                    DateTime roomBeginTime = TimeZoneInfo.ConvertTimeFromUtc(newBookingPage.Data.BeginUtcDate, this.Data.TimeZoneInfo);
 
                     // 2. change year,month,day
                     DateTime newRoomBeginTime = new DateTime(selectedDate.Year, selectedDate.Month, selectedDate.Day, roomBeginTime.Hour, roomBeginTime.Minute, roomBeginTime.Second, roomBeginTime.Millisecond, DateTimeKind.Unspecified);
 
                     // 3. convert to UTC
-                    newBookingPage.Data.BeginUtcDate = TimeZoneInfo.ConvertTimeToUtc(newRoomBeginTime, this.Data.Room.TimeZoneInfo);
+                    newBookingPage.Data.BeginUtcDate = TimeZoneInfo.ConvertTimeToUtc(newRoomBeginTime, this.Data.TimeZoneInfo);
                     newBookingPage.Data.EndUtcDate = newBookingPage.Data.BeginUtcDate + duration;
                 }
                 else if (this.ContentPartial is NewQuickBookingPage)
@@ -133,13 +131,13 @@ namespace RoomBooking.ViewModels.Screens
                     TimeSpan duration = newQuickBookingPage.Data.EndUtcDate - newQuickBookingPage.Data.BeginUtcDate;
                     // 1 Get room time
 
-                    DateTime roomBeginTime = TimeZoneInfo.ConvertTimeFromUtc(newQuickBookingPage.Data.BeginUtcDate, this.Data.Room.TimeZoneInfo);
+                    DateTime roomBeginTime = TimeZoneInfo.ConvertTimeFromUtc(newQuickBookingPage.Data.BeginUtcDate, this.Data.TimeZoneInfo);
 
                     // 2. change year,month,day
                     DateTime newRoomBeginTime = new DateTime(selectedDate.Year, selectedDate.Month, selectedDate.Day, roomBeginTime.Hour, roomBeginTime.Minute, roomBeginTime.Second, roomBeginTime.Millisecond, DateTimeKind.Unspecified);
 
                     // 3. convert to UTC
-                    newQuickBookingPage.Data.BeginUtcDate = TimeZoneInfo.ConvertTimeToUtc(newRoomBeginTime, this.Data.Room.TimeZoneInfo);
+                    newQuickBookingPage.Data.BeginUtcDate = TimeZoneInfo.ConvertTimeToUtc(newRoomBeginTime, this.Data.TimeZoneInfo);
                     newQuickBookingPage.Data.EndUtcDate = newQuickBookingPage.Data.BeginUtcDate + duration;
                 }
 
@@ -197,7 +195,7 @@ namespace RoomBooking.ViewModels.Screens
                 return this.ContentPartial;
             }
 
-            return CreateFreePage(this.Data.Room);
+            return CreateFreePage(this.Data);
         }
 
 

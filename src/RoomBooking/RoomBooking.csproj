@@ -64,7 +64,6 @@
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Database\RoomObjectRelation.cs" />
     <Compile Include="Database\UserSession.cs" />
     <Compile Include="Database\User.cs" />
     <Compile Include="Database\UserRoomRelation.cs" />
@@ -76,27 +75,22 @@
     <Compile Include="Handlers\MainHandlers.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="UpdateHooks.cs" />
-    <Compile Include="Handlers\ScreenContentHandlers.cs" />
-    <Compile Include="Handlers\ScreenSettingHandlers.cs" />
     <Compile Include="ViewModels\Menu.json.cs">
       <DependentUpon>Menu.json</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\Screens\ContentPage.json.cs">
+    <Compile Include="ViewModels\ContentPage.json.cs">
       <DependentUpon>ContentPage.json</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\Screens\ContentPartial.json.cs">
+    <Compile Include="ViewModels\ContentPartial.json.cs">
       <DependentUpon>ContentPartial.json</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\Screens\WarnBusyPage.json.cs">
+    <Compile Include="ViewModels\WarnBusyPage.json.cs">
       <DependentUpon>WarnBusyPage.json</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\Partials\ScreenPartial.json.cs">
-      <DependentUpon>ScreenPartial.json</DependentUpon>
-    </Compile>
-    <Compile Include="ViewModels\Screens\EventPage.json.cs">
+    <Compile Include="ViewModels\EventPage.json.cs">
       <DependentUpon>EventPage.json</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\Screens\NewQuickBookingPage.json.cs">
+    <Compile Include="ViewModels\NewQuickBookingPage.json.cs">
       <DependentUpon>NewQuickBookingPage.json</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\MessageBox.json.cs">
@@ -111,16 +105,16 @@
     <Compile Include="ViewModels\RoomPage.json.cs">
       <DependentUpon>RoomPage.json</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\Screens\NewBookingPage.json.cs">
+    <Compile Include="ViewModels\NewBookingPage.json.cs">
       <DependentUpon>NewBookingPage.json</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\Screens\BusyPage.json.cs">
+    <Compile Include="ViewModels\BusyPage.json.cs">
       <DependentUpon>BusyPage.json</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\Screens\FreePage.json.cs">
+    <Compile Include="ViewModels\FreePage.json.cs">
       <DependentUpon>FreePage.json</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\Screens\CalendarPage.json.cs">
+    <Compile Include="ViewModels\CalendarPage.json.cs">
       <DependentUpon>CalendarPage.json</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\MainPage.json.cs">
@@ -140,56 +134,53 @@
     <TypedJSON Include="ViewModels\RoomPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
-    <TypedJSON Include="ViewModels\Screens\NewBookingPage.json">
+    <TypedJSON Include="ViewModels\NewBookingPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
-    <TypedJSON Include="ViewModels\Screens\BusyPage.json">
+    <TypedJSON Include="ViewModels\BusyPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
-    <TypedJSON Include="ViewModels\Screens\FreePage.json">
+    <TypedJSON Include="ViewModels\FreePage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
-    <TypedJSON Include="ViewModels\Screens\CalendarPage.json">
+    <TypedJSON Include="ViewModels\CalendarPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
     <TypedJSON Include="ViewModels\MainPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
-    <TypedJSON Include="ViewModels\Screens\EventPage.json">
+    <TypedJSON Include="ViewModels\EventPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
-    <TypedJSON Include="ViewModels\Partials\ScreenPartial.json">
+    <TypedJSON Include="ViewModels\ContentPartial.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
-    <TypedJSON Include="ViewModels\Screens\ContentPartial.json">
-      <Generator>MsBuild:Compile</Generator>
-    </TypedJSON>
-    <TypedJSON Include="ViewModels\Screens\NewQuickBookingPage.json">
+    <TypedJSON Include="ViewModels\NewQuickBookingPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
     <TypedJSON Include="ViewModels\Menu.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
-    <TypedJSON Include="ViewModels\Screens\WarnBusyPage.json">
+    <TypedJSON Include="ViewModels\WarnBusyPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
     <None Include="app.config" />
-    <TypedJSON Include="ViewModels\Screens\ContentPage.json">
+    <TypedJSON Include="ViewModels\ContentPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
     <None Include="wwwroot\roombooking\MainPage.html" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="wwwroot\roombooking\screens\Calendar.html" />
+    <None Include="wwwroot\roombooking\Calendar.html" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="wwwroot\roombooking\screens\Free.html" />
+    <None Include="wwwroot\roombooking\Free.html" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="wwwroot\roombooking\screens\Busy.html" />
+    <None Include="wwwroot\roombooking\Busy.html" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="wwwroot\roombooking\screens\NewBooking.html" />
+    <None Include="wwwroot\roombooking\NewBooking.html" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\roombooking\Room.html" />
@@ -204,7 +195,7 @@
     <None Include="wwwroot\roombooking\MessageBox.html" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="wwwroot\roombooking\screens\ContentPage.html" />
+    <None Include="wwwroot\roombooking\ContentPage.html" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="wwwroot\roombooking\elements\sgb-calendar\sgb-calendar.html" />
@@ -215,12 +206,11 @@
     <Content Include="wwwroot\roombooking\elements\sgb-countdown\sgb-countdown.html" />
     <Content Include="wwwroot\roombooking\elements\sgb-timepicker\sgb-timepicker.html" />
     <Content Include="wwwroot\roombooking\elements\sgb-daypicker\sgb-daypicker.html" />
-    <None Include="wwwroot\roombooking\screens\WarnBusy.html" />
+    <None Include="wwwroot\roombooking\WarnBusy.html" />
     <None Include="wwwroot\roombooking\Menu.html" />
-    <None Include="wwwroot\roombooking\screens\NewQuickBooking.html" />
-    <None Include="wwwroot\roombooking\screens\ContentPartial.html" />
-    <None Include="wwwroot\roombooking\Partials\ScreenPartial.html" />
-    <None Include="wwwroot\roombooking\screens\Event.html" />
+    <None Include="wwwroot\roombooking\NewQuickBooking.html" />
+    <None Include="wwwroot\roombooking\ContentPartial.html" />
+    <None Include="wwwroot\roombooking\Event.html" />
     <Content Include="wwwroot\roombooking\css\mainapp.css" />
     <Content Include="wwwroot\roombooking\css\ContentPage.css" />
   </ItemGroup>

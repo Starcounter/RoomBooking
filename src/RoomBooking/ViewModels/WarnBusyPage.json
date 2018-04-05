@@ -1,5 +1,5 @@
 {
-  "Html": "/roombooking/screens/WarnBusy.html",
+  "Html": "/roombooking/WarnBusy.html",
   "Booking": {
     "BeginUtcDate": "",
     "BeginDate": "",

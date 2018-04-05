@@ -1,5 +1,5 @@
 {
-  "Html": "/roombooking/screens/ContentPage.html",
+  "Html": "/roombooking/ContentPage.html",
   "MessageBox": { "$": { "Reuse": "RoomBooking.ViewModels.MessageBox" } },
   "ErrorMessage": { "$": { "Reuse": "RoomBooking.ViewModels.ErrorMessageBox" } },
   "Enabled": false,

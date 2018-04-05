@@ -12,8 +12,6 @@ namespace RoomBooking
         public static void Register()
         {
             Blender.MapUri("/RoomBooking/menu", "menu");
-            Blender.MapUri("/RoomBooking/screenContent/{?}", "screenContent");
-            Blender.MapUri("/RoomBooking/partial/screen/{?}", "screen");
         }
     }
 }

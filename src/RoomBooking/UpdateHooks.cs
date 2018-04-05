@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Starcounter;
-using RoomBooking.ViewModels.Partials;
 using System.Threading;
 using RoomBooking.ViewModels.Screens;
 
@@ -18,7 +17,6 @@ namespace RoomBooking
         {
             RegisterHook_Room();
             RegisterHook_RoomBookingEvent();
-            RegisterHook_RoomScreenRelation();
             RegisterHook_UserRoomRelation();
         }
 
@@ -52,14 +50,6 @@ namespace RoomBooking
                 SetNextEventTimer();
                 Utils.PushChanges();
             };
-        }
-
-        private static void RegisterHook_RoomScreenRelation()
-        {
-            // Push updates to client sessions
-            Hook<RoomObjectRelation>.CommitUpdate += (sender, room) => Utils.PushChanges();
-            Hook<RoomObjectRelation>.CommitInsert += (sender, room) => Utils.PushChanges();
-            Hook<RoomObjectRelation>.CommitDelete += (sender, room) => Utils.PushChanges();
         }
 
         private static void RegisterHook_UserRoomRelation()
