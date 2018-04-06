@@ -26,10 +26,10 @@
             flex-grow: 1;
             flex-shrink: 1;
             flex-basis: auto;
+            height: 500px;
             max-height: 100%;
-            height: 100px;
-            /*overflow-y: scroll;
-            overflow-x: scroll;*/
+            overflow-y: scroll;
+            resize: vertical;
         }
     </style>
     <dom-bind>
@@ -38,9 +38,9 @@
                 <div class="picker" style="margin:20px">
                     <sgb-daypicker date="{{model.SelectedDate$}}"></sgb-daypicker>
                 </div>
-                <!--            <div class="cal">-->
-                <sgb-calendar class="cal" selected-date="{{model.SelectedDate$}}" booking-Trigger="{{model.NewBooking.CreateTrigger$}}" events="{{model.Bookings}}" begin-date="{{model.NewBooking.BeginDate$}}" end-date="{{model.NewBooking.EndDate$}}"></sgb-calendar>
-                <!--</div>  -->
+                <div class="cal">
+                    <sgb-calendar class="cal" selected-date="{{model.SelectedDate$}}" booking-Trigger="{{model.NewBooking.CreateTrigger$}}" events="{{model.Bookings}}" begin-date="{{model.NewBooking.BeginDate$}}" end-date="{{model.NewBooking.EndDate$}}"></sgb-calendar>
+                </div>
             </div>   
         </template>
     </dom-bind>

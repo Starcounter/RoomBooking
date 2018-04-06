@@ -15,7 +15,6 @@ namespace RoomBooking.ViewModels
         }
 
         public DateTime NextEventBeginUtcDate => GetNextEventBeginUtcDate();
-        public DateTime ServerUTCDate => GetServerUTCDate();
 
         private DateTime GetNextEventBeginUtcDate()
         {
@@ -28,23 +27,17 @@ namespace RoomBooking.ViewModels
                 //return TimeZoneInfo.ConvertTimeFromUtc(roomBookingEvent.BeginUtcDate, room.TimeZoneInfo);
             }
 
-            return DateTime.Now;
-        }
-
-        private DateTime GetServerUTCDate()
-        {
-            return DateTime.UtcNow;
+            return DateTime.MaxValue;
         }
         
         public void Handle(Input.SyncTimeTrigger action)
         {
-            //Room room = this.Room.Data as Room;
+            Room room = this.Room.Data as Room;
 
             // UTC time  :2008-09-22T14:01:54.9571247Z
             // local time: 1970-01-01T00:00:00-0500  
-            //this.ServerUTCDate = DateTime.UtcNow.ToString("o");
+            this.ServerUTCDate = DateTime.UtcNow.ToString("o");
         }
-
 
         public void Handle(Input.ClaimTrigger action)
         {
