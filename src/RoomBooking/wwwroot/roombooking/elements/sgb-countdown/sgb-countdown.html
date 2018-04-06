@@ -3,137 +3,130 @@
     <link rel="import" href="/sys/progress-bubble/progress-bubble.html" />
 
     <template>
-        <dom-bind>
-            <template is="dom-bind">
+        <style is="custom-style">
+            progress-bubble {
+                --progress-bubble-stroke-color: #A40D27;
+                --progress-bubble-stroke-linecap: butt;
+                --progress-bubble-bg-stroke-color: White;
+                --progress-bubble-background: transparent;
+                --progress-bubble-reflection-display: none;
+                height: 100%;
+                width: 100%;
+                margin: 0px;
+            }
 
-                <style is="custom-style">
-                        progress-bubble {
-                            --progress-bubble-stroke-color: #A40D27;
-                            --progress-bubble-stroke-linecap: butt;
-                            --progress-bubble-bg-stroke-color: White;
-                            --progress-bubble-background: transparent;
-                            --progress-bubble-reflection-display: none;
-                            height: 100%;
-                            width: 100%;
-                            margin: 0px;
-                        }
+            <!-- Does not work -->#svgCircle {
+                stroke-width: 41;
+            }
 
-                        <!-- Does not work -->
-                        #svgCircle {
-                            stroke-width: 41;
-                        }
-
-                        .countdownHolder {
-                            flex: 1 1 auto;
-                            /*justify-content: center;
+            .countdownHolder {
+                flex: 1 1 auto;
+                /*justify-content: center;
                     display: flex;
                     flex-direction: column;
                     align-items: center*/
-                            /*background-color:orange;*/
-                        }
+                /*background-color:orange;*/
+            }
 
-                        progress-bubble p {
-                            font-size: 2em;
-                        }
-                </style>
+            progress-bubble p {
+                font-size: 2em;
+            }
+        </style>
 
-                <div class="countdownHolder">
+        <div class="countdownHolder">
 
-                    <progress-bubble value="[[progress]]" max="100" stroke-width="40">
-                        <p>[[timeLeft]]</p>
-                    </progress-bubble>
-                </div>
-
-            </template>
-        </dom-bind>
+            <progress-bubble value="[[progress]]" max="100" stroke-width="40">
+                <p>[[timeLeft]]</p>
+            </progress-bubble>
+        </div>
     </template>
 
-            <script>
-                Polymer({
-                    is: "sgb-countdown",
-                    properties: {
-                        beginUtcDate: {
-                            type: String,
-                            notify: true
-                        },
-                        endUtcDate: {
-                            type: String,
-                            notify: true
-                        },
-                        serverUtcTime: {
-                            type: Date,
-                            observer: '_serverTimeChanged'
-                        },
-                        timeLeft: {
-                            type: String
-                        },
-                        progress: {
-                            type: Number
-                        },
-                        timerId: {
-                            type: String
-                        }
-                    },
+    <script>
+        Polymer({
+            is: "sgb-countdown",
+            properties: {
+                beginUtcDate: {
+                    type: String,
+                    notify: true
+                },
+                endUtcDate: {
+                    type: String,
+                    notify: true
+                },
+                serverUtcTime: {
+                    type: Date,
+                    observer: '_serverTimeChanged'
+                },
+                timeLeft: {
+                    type: String
+                },
+                progress: {
+                    type: Number
+                },
+                timerId: {
+                    type: String
+                }
+            },
 
-                    _serverTimeChanged: function (newValue, oldValue) {
+            _serverTimeChanged: function (newValue, oldValue) {
 
-                        var endDate = new Date(this.endUtcDate);
-                        var beginDate = new Date(this.beginUtcDate);
+                var endDate = new Date(this.endUtcDate);
+                var beginDate = new Date(this.beginUtcDate);
 
-                        var eventTotalDuration = (endDate.getTime() - beginDate.getTime()) / 1000;
-                        var eventLeftDuration = (endDate.getTime() - new Date(this.serverUtcTime).getTime()) / 1000;
+                var eventTotalDuration = (endDate.getTime() - beginDate.getTime()) / 1000;
+                var eventLeftDuration = (endDate.getTime() - new Date(this.serverUtcTime).getTime()) / 1000;
 
-                        //                this.timeLeft = this.durationToStr(eventLeftDuration);
+                //                this.timeLeft = this.durationToStr(eventLeftDuration);
 
-                        this.timeLeft = this.userFrindlyDuration(eventLeftDuration);
+                this.timeLeft = this.userFrindlyDuration(eventLeftDuration);
 
-                        this.progress = 100 - Math.floor((100 * eventLeftDuration) / eventTotalDuration);
-                    },
-                    durationToStr: function (sec) {
+                this.progress = 100 - Math.floor((100 * eventLeftDuration) / eventTotalDuration);
+            },
+            durationToStr: function (sec) {
 
-                        var sec_num = parseInt(sec, 10);
-                        var hours = Math.floor(sec_num / 3600);
-                        var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-                        var seconds = sec_num - (hours * 3600) - (minutes * 60);
+                var sec_num = parseInt(sec, 10);
+                var hours = Math.floor(sec_num / 3600);
+                var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+                var seconds = sec_num - (hours * 3600) - (minutes * 60);
 
-                        if (hours < 1) {
-                            hours = 0;
-                        }
+                if (hours < 1) {
+                    hours = 0;
+                }
 
-                        if (minutes < 1) {
-                            minutes = 0;
-                        }
+                if (minutes < 1) {
+                    minutes = 0;
+                }
 
-                        return this.pad(hours, 2) + ":" + this.pad(minutes, 2) + ":" + this.pad(seconds, 2);
-                    },
-                    userFrindlyDuration: function (totalSeconds) {
+                return this.pad(hours, 2) + ":" + this.pad(minutes, 2) + ":" + this.pad(seconds, 2);
+            },
+            userFrindlyDuration: function (totalSeconds) {
 
-                        var days = Math.floor(totalSeconds / 3600 / 60);
-                        var hours = Math.floor(totalSeconds / 3600);
-                        var minutes = Math.floor((totalSeconds - (hours * 3600)) / 60);
-                        var totalMinutes = Math.floor(totalSeconds / 60);
-                        var seconds = Math.floor(totalSeconds - (hours * 3600) - (minutes * 60));
+                var days = Math.floor(totalSeconds / 3600 / 60);
+                var hours = Math.floor(totalSeconds / 3600);
+                var minutes = Math.floor((totalSeconds - (hours * 3600)) / 60);
+                var totalMinutes = Math.floor(totalSeconds / 60);
+                var seconds = Math.floor(totalSeconds - (hours * 3600) - (minutes * 60));
 
-                        if (totalMinutes < 120) {
-                            if (this.showSeconds) {
-                                return totalMinutes + "min " + seconds + "sec";
-                            }
-                            return totalMinutes + "min";
-                        }
-
-                        if (hours >= 24) {
-                            return "+24h";
-                        }
-
-                        return hours + "h " + minutes + "min";
-                    },
-                    pad: function (n, width, z) {
-                        z = z || '0';
-                        n = n + '';
-                        return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+                if (totalMinutes < 120) {
+                    if (this.showSeconds) {
+                        return totalMinutes + "min " + seconds + "sec";
                     }
+                    return totalMinutes + "min";
+                }
 
-                });
-            </script>
+                if (hours >= 24) {
+                    return "+24h";
+                }
+
+                return hours + "h " + minutes + "min";
+            },
+            pad: function (n, width, z) {
+                z = z || '0';
+                n = n + '';
+                return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+            }
+
+        });
+    </script>
 
 </dom-module>

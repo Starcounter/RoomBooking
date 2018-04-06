@@ -11,9 +11,9 @@
 
                 <div>
                     <!-- Error MessageBox -->
-                    <starcounter-include view-model="{{model.ErrorMessage}}"></starcounter-include>
+                    <div><imported-template model="{{model.ErrorMessage}}"></imported-template></div>
                     <!-- MessageBox -->
-                    <starcounter-include view-model="{{model.MessageBox}}"></starcounter-include>
+                    <div><imported-template model="{{model.MessageBox}}"></imported-template></div>
                 </div>
 
                 <template is="dom-if" if="{{!model.HideMenu}}">
