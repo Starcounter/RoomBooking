@@ -1,7 +1,7 @@
 using Starcounter;
 using System;
 
-namespace RoomBooking.ViewModels.Screens
+namespace RoomBooking.ViewModels
 {
     partial class WarnBusyPage : Json
     {

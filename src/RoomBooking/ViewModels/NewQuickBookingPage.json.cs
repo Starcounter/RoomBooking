@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Linq;
 using Starcounter.Templates;
 
-namespace RoomBooking.ViewModels.Screens
+namespace RoomBooking.ViewModels
 {
     partial class NewQuickBookingPage : Json, IBound<RoomBookingEvent>
     {

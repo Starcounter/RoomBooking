@@ -19,13 +19,11 @@
             font-size: 4vw;
         }
 
-
         sgb-availabletime p {
             color: red;
             margin: 0px;
             padding: 0px;
         }
-
 
         .contentPageContentItem:nth-child(1) {
             font-size: 0.5em;
@@ -73,12 +71,12 @@
                     <div class="contentPageContentItem">
                         <p style="font-size:2vw;margin:0px;line-height:64px;">Available for</p>
                     </div>
-                    <sgb-availabletime class="contentPageContentItem" end-date="{{model.NextEventBeginUtcDate}}" server-utc-time="{{syncedTimeString}}">
+                    <sgb-availabletime  end-date="{{model.NextEventBeginUtcDate}}" server-utc-time="{{model.ServerUTCDate}}">
                     </sgb-availabletime>
 
                     <p class="contentPageContentItem" style="font-size:4vw;margin:0px;line-height:64px;">CLAIM</p>
                     <p class="contentPageContentItem" style="font-size:4vw;margin:0px;line-height:64px;">ROOM</p>
-                    <p class="contentPageContentItem" style="font-size:4vw;margin:0px;line-height:64px;">NOW!!!</p>
+                    <p class="contentPageContentItem" style="font-size:4vw;margin:0px;line-height:64px;">NOW</p>
                     <button type="button" value="{{model.ClaimTrigger$::click}}" class="btn btn-sm btn-primary contentPageContentItem" onclick="++this.value">PRESS HERE</button>
                 </div>
 
@@ -94,8 +92,6 @@
                         <span>&nbsp;Room</span>
                         <span>&nbsp;{{roomTime}}</span>
                     </template>
-
-
                 </div>
 
                 <sgb-clock class="contentPageFooterItem" screen-Time="{{screenTime}}" room-Time="{{roomTime}}" diff-Offset="{{diffOffset}}" server-utc-time="{{syncedTimeString}}" time-offset="{{model.Room.TimeOffset}}"></sgb-clock>

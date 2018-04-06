@@ -2,7 +2,7 @@ using Starcounter;
 using System;
 using System.Linq;
 
-namespace RoomBooking.ViewModels.Screens
+namespace RoomBooking.ViewModels
 {
     partial class FreePage : Json
     {
@@ -15,7 +15,7 @@ namespace RoomBooking.ViewModels.Screens
         }
 
         public DateTime NextEventBeginUtcDate => GetNextEventBeginUtcDate();
-
+        public DateTime ServerUTCDate => GetServerUTCDate();
 
         private DateTime GetNextEventBeginUtcDate()
         {
@@ -28,17 +28,21 @@ namespace RoomBooking.ViewModels.Screens
                 //return TimeZoneInfo.ConvertTimeFromUtc(roomBookingEvent.BeginUtcDate, room.TimeZoneInfo);
             }
 
-            return DateTime.MaxValue;
+            return DateTime.Now;
         }
 
-
+        private DateTime GetServerUTCDate()
+        {
+            return DateTime.UtcNow;
+        }
+        
         public void Handle(Input.SyncTimeTrigger action)
         {
-            Room room = this.Room.Data as Room;
+            //Room room = this.Room.Data as Room;
 
             // UTC time  :2008-09-22T14:01:54.9571247Z
             // local time: 1970-01-01T00:00:00-0500  
-            this.ServerUTCDate = DateTime.UtcNow.ToString("o");
+            //this.ServerUTCDate = DateTime.UtcNow.ToString("o");
         }
 
 

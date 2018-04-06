@@ -1,6 +1,6 @@
 using Starcounter;
 
-namespace RoomBooking.ViewModels.Screens
+namespace RoomBooking.ViewModels
 {
     /// <summary>
     /// Will show Free, Busy, Event or Empty page

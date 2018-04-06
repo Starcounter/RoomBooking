@@ -2,7 +2,7 @@
   "Html": "/roombooking/ContentPage.html",
   "MessageBox": { "$": { "Reuse": "RoomBooking.ViewModels.MessageBox" } },
   "ErrorMessage": { "$": { "Reuse": "RoomBooking.ViewModels.ErrorMessageBox" } },
-  "Enabled": false,
+  "Enabled": true,
   "DefaultPageTrigger": false,
   "CalendarPartial": {},
   "ContentPartial": {}

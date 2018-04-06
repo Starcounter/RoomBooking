@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Linq;
 using Starcounter.Templates;
 
-namespace RoomBooking.ViewModels.Screens
+namespace RoomBooking.ViewModels
 {
     partial class NewBookingPage : Json, IBound<RoomBookingEvent>
     {
@@ -38,24 +38,20 @@ namespace RoomBooking.ViewModels.Screens
                 this._DurationHours = (long)(this.Data.EndUtcDate - this.Data.BeginUtcDate).TotalHours;
                 this._DurationMinutes = (long)(this.Data.EndUtcDate - this.Data.BeginUtcDate).Minutes;
             }
-
         }
 
-        public string BeginDay {
-
-
+        public string BeginDay
+        {
             get {
                 return TimeZoneInfo.ConvertTimeFromUtc(this.Data.BeginUtcDate, this.Data.Room.TimeZoneInfo).ToString("yyyy-MM-dd");
             }
             set {
                 this.UpdateDateTime(value, this.StartTime);
             }
-
-
         }
 
-        public string StartTime {
-
+        public string StartTime
+        {
             get {
                 return TimeZoneInfo.ConvertTimeFromUtc(this.Data.BeginUtcDate, this.Data.Room.TimeZoneInfo).ToString("HH:mm");
             }
@@ -64,11 +60,9 @@ namespace RoomBooking.ViewModels.Screens
             }
         }
 
-
-        public string DurationTime {
-
+        public string DurationTime
+        {
             get {
-
                 TimeSpan timeSpan = this.Data.EndUtcDate - this.Data.BeginUtcDate;
 
                 return timeSpan.ToString("c").Substring(0,5); // TODO: What if it's over 24h
@@ -76,7 +70,6 @@ namespace RoomBooking.ViewModels.Screens
                 //return TimeZoneInfo.ConvertTimeFromUtc(this.Data.BeginUtcDate, this.Data.Room.TimeZoneInfo).ToString("HH:mm");
             }
             set {
-
                 // TODO: What if it's over 24h
                 TimeSpan timespan = TimeSpan.ParseExact(value, "hh\\:mm", CultureInfo.CurrentCulture);  // TODO: Is this safe?
                 this.Data.EndUtcDate = this.Data.BeginUtcDate.AddHours(timespan.Hours).AddMinutes(timespan.Minutes);
@@ -85,9 +78,9 @@ namespace RoomBooking.ViewModels.Screens
             }
         }
 
-
         public long _DurationHours;
-        public long DurationHours {
+        public long DurationHours
+        {
             get {
                 return _DurationHours;
             }
@@ -100,8 +93,8 @@ namespace RoomBooking.ViewModels.Screens
 
         public long _DurationMinutes;
 
-        public long DurationMinutes {
-
+        public long DurationMinutes
+        {
             get {
                 return _DurationMinutes;
             }
@@ -111,7 +104,6 @@ namespace RoomBooking.ViewModels.Screens
                 this.UpdateEndUtcDate();
             }
         }
-
 
         /// <summary>
         /// 
@@ -136,14 +128,12 @@ namespace RoomBooking.ViewModels.Screens
             this.Data.EndUtcDate = this.Data.BeginUtcDate.AddHours((double)this.DurationHours).AddMinutes(this.DurationMinutes);
         }
 
-
         /// <summary>
         /// Create booking event
         /// </summary>
         /// <param name="action"></param>
         public void Handle(Input.CreateBookingTrigger action)
         {
-
             if (IsBookedOrOverlappingOtherEvents())
             {
                 this.ValidationMessage = "You can not double book this room";
@@ -164,10 +154,8 @@ namespace RoomBooking.ViewModels.Screens
         private bool IsBookedOrOverlappingOtherEvents()
         {
             //    bool overlap = a.start < b.end && b.start < a.end;
-
             RoomBookingEvent roomBookingEvent = Db.SQL<RoomBookingEvent>($"SELECT o FROM {nameof(RoomBooking)}.\"{nameof(RoomBookingEvent)}\" o WHERE o <> ? AND o.{nameof(RoomBookingEvent.Room)} = ? AND o.{nameof(RoomBookingEvent.BeginUtcDate)} < ? AND ? < o.{nameof(RoomBookingEvent.EndUtcDate)}", this.Data, this.Data.Room, this.Data.EndUtcDate, this.Data.BeginUtcDate).FirstOrDefault();
             return roomBookingEvent != null;
-
         }
 
         /// <summary>

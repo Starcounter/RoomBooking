@@ -111,7 +111,7 @@ namespace RoomBooking.ViewModels
 
         public static void ShowContent(string title, string text, string stackTrace, string helpLink, ushort statusCode, string page_type, Action callback = null)
         {
-            Screens.ContentPage holderPage = Utils.AssureContentPage();
+            ContentPage holderPage = Utils.AssureContentPage();
             if (holderPage == null)
             {
                 // TODO: Show error

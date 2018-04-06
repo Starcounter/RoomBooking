@@ -107,6 +107,26 @@ namespace RoomBooking.Handlers
                 });
 
             });
+
+            Handle.GET("/RoomBooking/Content/{?}", (Func<string, Response>)((string roomId) =>
+            {
+                try
+                {
+                    var room = Db.FromId<Room>(roomId);
+
+                    return Db.Scope(() =>
+                    {
+                        ContentPage mainScreenPage = Utils.AssureContentPage();
+                        mainScreenPage.Data = room;
+                        return mainScreenPage;
+                    });
+                }
+                catch (Exception e)
+                {
+                    ViewModels.ErrorMessageBox.Show(e, Utils.MAIN_PAGE_TYPE);
+                    return Utils.AssureContentPage();
+                }
+            }));
         }
     }
 }

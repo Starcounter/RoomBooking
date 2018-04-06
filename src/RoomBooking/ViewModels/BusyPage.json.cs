@@ -2,7 +2,7 @@ using Starcounter;
 using System;
 using System.Threading;
 
-namespace RoomBooking.ViewModels.Screens
+namespace RoomBooking.ViewModels
 {
     partial class BusyPage : Json
     {
@@ -52,7 +52,6 @@ namespace RoomBooking.ViewModels.Screens
 
         public DateTime EndDate {
             get {
-
                 if (this.Data != null)
                 {
                     //SetEventTimer();

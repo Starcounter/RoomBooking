@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Starcounter;
 using System.Threading;
-using RoomBooking.ViewModels.Screens;
 using RoomBooking.ViewModels;
 
 namespace RoomBooking

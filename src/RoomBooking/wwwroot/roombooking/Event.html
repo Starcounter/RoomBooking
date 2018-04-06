@@ -3,8 +3,6 @@
 <template>
     <dom-bind>
         <template is="dom-bind">
-
-
             <style>
                 .contentPageHolder {
                     background-color: #5d5d5d;
@@ -16,8 +14,6 @@
                     margin: 50px;
                 }
             </style>
-
-
             <div class="contentPageHolder">
 
                 <div class="contentPageHeader">
@@ -33,9 +29,7 @@
                     <button type="button" value="{{model.CloseTrigger$::click}}" class="btn btn-sm btn-primary" onclick="++this.value">Close</button>
                     <button type="button" value="{{model.DeleteTrigger$::click}}" class="btn btn-sm btn-danger" onclick="++this.value">Delete</button>
                 </div>
-
             </div>
-
         </template>
     </dom-bind>
 </template>

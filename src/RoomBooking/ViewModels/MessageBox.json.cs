@@ -105,7 +105,7 @@ namespace RoomBooking.ViewModels
 
         public static void ShowContent(string title, string text, IList<MessageBoxButton> buttons, Action<MessageBoxResult> callback = null)
         {
-            Screens.ContentPage holderPage = Utils.AssureContentPage();
+            ContentPage holderPage = Utils.AssureContentPage();
             if (holderPage == null)
             {
                 // TODO: Show error

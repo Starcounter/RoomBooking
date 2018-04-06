@@ -13,5 +13,6 @@
   "WarnNotificationMinutes$": 0,
   "SaveTrigger$": 0,
   "CloseTrigger$": 0,
-  "DeleteTrigger$": 0
+  "DeleteTrigger$": 0,
+  "ShowContentTrigger$": 0
 }

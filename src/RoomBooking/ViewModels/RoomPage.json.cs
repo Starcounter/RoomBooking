@@ -80,5 +80,11 @@ namespace RoomBooking.ViewModels
                 }
             });
         }
+        public void Handle(Input.ShowContentTrigger action)
+        {
+            this.Transaction.Commit();
+            var url = string.Format("/roombooking/content/{0}", this.Data?.GetObjectID());
+            this.MorphUrl = url;
+        }
     }
 }
