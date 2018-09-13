@@ -2,4 +2,7 @@
 
 IF "%CONFIGURATION%"=="" SET CONFIGURATION=Debug
 
-star %* --resourcedir="%~dp0src\RoomBooking\wwwroot" "%~dp0src/RoomBooking/bin/%CONFIGURATION%/RoomBooking.exe"
+star %* --resourcedir="%~dp0src\RoomBooking\wwwroot" "%~dp0src/RoomBooking/bin/%CONFIGURATION%/RoomBooking.exe" || goto end
+
+:end
+exit /b %errorlevel%
