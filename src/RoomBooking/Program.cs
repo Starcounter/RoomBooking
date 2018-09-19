@@ -21,9 +21,6 @@ namespace RoomBooking
 
             // Handlers
             MainHandlers.Register();
-
-            // Blending
-            BlenderMapping.Register();
         }
     }
 }

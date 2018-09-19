@@ -1,0 +1,11 @@
+﻿[
+  {
+    "Uri": "/RoomBooking/menu",
+    "Token": "",
+    "Contexts": [
+      "menu"
+    ],
+    "AllowFromDirection": true,
+    "AllowToDirection": true
+  }
+]
