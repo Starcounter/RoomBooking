@@ -118,4 +118,6 @@ node_modules
 
 dist/*
 
+# starpack
+src/RoomBooking/RoomBooking*.zip
 RoomBooking/*.zip
