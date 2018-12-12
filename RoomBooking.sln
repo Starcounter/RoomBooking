@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoomBooking", "src\RoomBooking\RoomBooking.csproj", "{BA9976B6-A33A-4EB2-95AD-2CFC635B93CF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoomBooking.Mapper", "src\RoomBooking.Mapper\RoomBooking.Mapper.csproj", "{8BD03575-937A-40BC-A343-E4B442A5F9D0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -15,6 +17,10 @@ Global
 		{BA9976B6-A33A-4EB2-95AD-2CFC635B93CF}.Debug|x64.Build.0 = Debug|x64
 		{BA9976B6-A33A-4EB2-95AD-2CFC635B93CF}.Release|x64.ActiveCfg = Release|x64
 		{BA9976B6-A33A-4EB2-95AD-2CFC635B93CF}.Release|x64.Build.0 = Release|x64
+		{8BD03575-937A-40BC-A343-E4B442A5F9D0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8BD03575-937A-40BC-A343-E4B442A5F9D0}.Debug|x64.Build.0 = Debug|Any CPU
+		{8BD03575-937A-40BC-A343-E4B442A5F9D0}.Release|x64.ActiveCfg = Release|Any CPU
+		{8BD03575-937A-40BC-A343-E4B442A5F9D0}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

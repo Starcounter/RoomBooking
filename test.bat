@@ -11,7 +11,7 @@ set root=%root:~0,-1%
 for %%d in (%root%) do set AppName=%%~nd
 
 pushd %~dp0
-dotnet cake --targets=Pack%AppName%I --configuration="%Configuration%" --starpackArtifactsPath="%StarpackOutputDir%"
+dotnet cake --targets=Test%AppName%I --configuration="%Configuration%"
 popd
 
 endlocal

@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+   <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="M" Version="1.*" />
+    <PackageReference Include="MGen" Version="1.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RoomBooking\RoomBooking.csproj">
+      <!-- Do not copy local output files like blend.json from referenced project to current output directory. -->
+      <Private>false</Private>
+    </ProjectReference>
+  </ItemGroup>
+
+  <!-- Target for generating <App>.map.cpp -->
+  <Target Name="BuildMapCppFile" AfterTargets="Build">
+    <!-- Format: MGen.exe mgen.json -D "config=<Configuration>;mbase=<RootOfMExecutable>;app=<AppName>"-->
+    <Exec Command="&quot;$(MSBuildProjectDirectory)/$(OutDir)MGen.exe&quot; &quot;$(MSBuildProjectDirectory)/mgen.json&quot; -D &quot;config=$(Configuration);mbase=$(MSBuildProjectDirectory)/$(OutDir);app=$([System.String]::Copy('$(MSBuildProjectName)').Replace('.Mapper',''))&quot;" />
+  </Target>
+
+  <!-- Fix for forcing Visual Studio to always build thir target -->
+  <Target Name="CleanMapperOutDir" AfterTargets="BuildMapCppFile">
+    <Delete Files="$(MSBuildProjectDirectory)\$(OutDir)$(MSBuildProjectName).dll" />
+  </Target>
+
+</Project> 

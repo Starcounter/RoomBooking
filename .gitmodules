@@ -1,0 +1,3 @@
+[submodule "src/RoomBooking.Mapper/shared"]
+	path = src/RoomBooking.Mapper/shared
+	url = git@github.com:Starcounter/shared
