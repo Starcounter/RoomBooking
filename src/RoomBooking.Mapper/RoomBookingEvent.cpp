@@ -101,7 +101,7 @@ struct mapper<RoomBooking::RoomBookingEvent>
 
         // TODO(wanderlust-ginge)
         /*const auto warnNotificationMinutes
-		changes.WarnNotificationMinutes
+        changes.WarnNotificationMinutes
         */
 
         changes.Room(room ? some(room->to<RoomBooking::Room>()) : none);
