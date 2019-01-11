@@ -1,5 +1,5 @@
 {
-  "appAssembly": "..\\$app$\\bin\\$config$\\$app$.exe",
+  "appAssembly": "..\\$app$\\bin\\$config$\\$app_exe$.exe",
   "mapperSources": [
     "shared\\Common.cpp",
     "shared\\User.cpp",

@@ -20,7 +20,7 @@
   <!-- Target for generating <App>.map.cpp -->
   <Target Name="BuildMapCppFile" AfterTargets="Build">
     <!-- Format: MGen.exe mgen.json -D "config=<Configuration>;mbase=<RootOfMExecutable>;app=<AppName>"-->
-    <Exec Command="&quot;$(MSBuildProjectDirectory)/$(OutDir)MGen.exe&quot; &quot;$(MSBuildProjectDirectory)/mgen.json&quot; -D &quot;config=$(Configuration);mbase=$(MSBuildProjectDirectory)/$(OutDir);app=$([System.String]::Copy('$(MSBuildProjectName)').Replace('.Mapper',''))&quot;" />
+    <Exec Command="&quot;$(MSBuildProjectDirectory)/$(OutDir)MGen.exe&quot; &quot;$(MSBuildProjectDirectory)/mgen.json&quot; -D &quot;config=$(Configuration);mbase=$(MSBuildProjectDirectory)/$(OutDir);app=$([System.String]::Copy('$(MSBuildProjectName)').Replace('.Mapper',''));app_exe=$([System.String]::Copy('$(MSBuildProjectName)').Replace('.Mapper','').Replace('.',''))&quot;" />
   </Target>
 
   <!-- Fix for forcing Visual Studio to always build thir target -->

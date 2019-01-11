@@ -13,6 +13,7 @@ DirectoryPath GetRoomBookingRoot([System.Runtime.CompilerServices.CallerFilePath
     DirectoryPath rootDirectory = GetRoomBookingRoot();
     string rootPath = rootDirectory.FullPath;
     string targetSubName = rootDirectory.GetDirectoryName();
+    string targetExecutableName = rootDirectory.GetDirectoryName().Replace(".", ""); 
 
     ///
     /// Argument parsing
@@ -63,7 +64,7 @@ DirectoryPath GetRoomBookingRoot([System.Runtime.CompilerServices.CallerFilePath
             Verbosity = NuGetVerbosity.Normal
         };
 
-        NuGetRestore($"{rootPath}/{targetSubName}.sln");
+        NuGetRestore($"{rootPath}/{targetSubName}.sln", settings);
     });
 
     ///
@@ -75,7 +76,6 @@ DirectoryPath GetRoomBookingRoot([System.Runtime.CompilerServices.CallerFilePath
         {
             Configuration = configuration,
             EnvironmentVariables = GetEnvironmentVariables(),
-            MaxCpuCount = 0,
             Verbosity = Verbosity.Minimal,
             Restore = false
         };
@@ -94,7 +94,7 @@ DirectoryPath GetRoomBookingRoot([System.Runtime.CompilerServices.CallerFilePath
         {
             settings.ToolPath = msBuildFullPath;
         }
-
+        
         MSBuild($"{rootPath}/{targetSubName}.sln", settings);
     });
 
@@ -120,17 +120,18 @@ DirectoryPath GetRoomBookingRoot([System.Runtime.CompilerServices.CallerFilePath
                 throw new Exception($"M.exe is missing at {mExecutableFullPath}. Build the solution first");
             }
 
-            cliArgs = $"/c staradmin.exe list apps | findstr /b /c:\"M (in default)\" || star.exe \"{mExecutableFullPath}\"";
-            processSettings.Arguments = new ProcessArgumentBuilder().Append(cliArgs);
+            processSettings.Arguments = new ProcessArgumentBuilder()
+                .Append("/c")
+                .Append($"staradmin.exe list apps | findstr /b /c:\"M (in default)\" || star.exe \"{mExecutableFullPath}\"");
 
             if(StartProcess(cliShell, processSettings) != 0)
             {
-                throw new Exception(string.Format("Error while running: {0} {1}", cliShell, cliArgs));
+                throw new Exception(string.Format("Error while running: {0} {1}", cliShell, processSettings.Arguments.Render()));
             }
         }
 
-        cliArgs = string.Format("/c star.exe --resourcedir=\"{0}/src/{1}/wwwroot\" \"{0}/src/{1}/bin/{2}/{1}.exe\"", 
-            rootPath, targetSubName, configuration);
+        cliArgs = string.Format("/c star.exe --resourcedir=\"{0}/src/{1}/wwwroot\" \"{0}/src/{1}/bin/{2}/{3}.exe\"", 
+            rootPath, targetSubName, configuration, targetExecutableName);
         processSettings.Arguments = new ProcessArgumentBuilder().Append(cliArgs);
 
         if(StartProcess(cliShell, processSettings) != 0)
