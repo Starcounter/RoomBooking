@@ -9,7 +9,7 @@
     "UserSession.cpp",
     "UserRoomRelation.cpp"
   ],
-  "mapperOutput": "..\\$app$\\bin\\$config$\\$app$.map.cpp",
+  "mapperOutput": "..\\$app$\\bin\\$config$\\$app_exe$.map.cpp",
   "mappings": [
     {
       "name": "RoomBooking.Room",
