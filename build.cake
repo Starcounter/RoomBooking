@@ -8,6 +8,7 @@
     DirectoryPath rootDirectory = Context.GetCallerInfo().SourceFilePath.GetDirectory();
     string rootPath = rootDirectory.FullPath;
     string targetSubName = rootDirectory.GetDirectoryName();
+    string targetExecutableName = rootDirectory.GetDirectoryName().Replace(".", ""); 
 
     ///
     /// Argument parsing
@@ -90,7 +91,7 @@
         {
             settings.ToolPath = msBuildFullPath;
         }
-
+        
         MSBuild($"{rootPath}/{targetSubName}.sln", settings);
     });
 
@@ -126,8 +127,8 @@
             }
         }
 
-        cliArgs = string.Format("/c star.exe --resourcedir=\"{0}/src/{1}/wwwroot\" \"{0}/src/{1}/bin/{2}/{1}.exe\"", 
-            rootPath, targetSubName, configuration);
+        cliArgs = string.Format("/c star.exe --resourcedir=\"{0}/src/{1}/wwwroot\" \"{0}/src/{1}/bin/{2}/{3}.exe\"", 
+            rootPath, targetSubName, configuration, targetExecutableName);
         processSettings.Arguments = new ProcessArgumentBuilder().Append(cliArgs);
 
         if(StartProcess(cliShell, processSettings) != 0)
