@@ -1,8 +1,3 @@
-DirectoryPath GetRoomBookingRoot([System.Runtime.CompilerServices.CallerFilePath] string sourceFilePath = "")
-{
-    return new FilePath(sourceFilePath).GetDirectory();
-}
-
 ///
 /// Private namespace
 ///
@@ -10,10 +5,9 @@ DirectoryPath GetRoomBookingRoot([System.Runtime.CompilerServices.CallerFilePath
     ///
     /// Configuration from current script
     ///
-    DirectoryPath rootDirectory = GetRoomBookingRoot();
+    DirectoryPath rootDirectory = Context.GetCallerInfo().SourceFilePath.GetDirectory();
     string rootPath = rootDirectory.FullPath;
     string targetSubName = rootDirectory.GetDirectoryName();
-    string targetExecutableName = rootDirectory.GetDirectoryName().Replace(".", ""); 
 
     ///
     /// Argument parsing
@@ -77,7 +71,9 @@ DirectoryPath GetRoomBookingRoot([System.Runtime.CompilerServices.CallerFilePath
             Configuration = configuration,
             EnvironmentVariables = GetEnvironmentVariables(),
             Verbosity = Verbosity.Minimal,
-            Restore = false
+            Restore = false,
+            MSBuildPlatform = MSBuildPlatform.x64,
+            PlatformTarget = PlatformTarget.x64
         };
 
         if (!string.IsNullOrEmpty(msBuildPropertyAssemblyVersion))
@@ -94,7 +90,7 @@ DirectoryPath GetRoomBookingRoot([System.Runtime.CompilerServices.CallerFilePath
         {
             settings.ToolPath = msBuildFullPath;
         }
-        
+
         MSBuild($"{rootPath}/{targetSubName}.sln", settings);
     });
 
@@ -130,8 +126,8 @@ DirectoryPath GetRoomBookingRoot([System.Runtime.CompilerServices.CallerFilePath
             }
         }
 
-        cliArgs = string.Format("/c star.exe --resourcedir=\"{0}/src/{1}/wwwroot\" \"{0}/src/{1}/bin/{2}/{3}.exe\"", 
-            rootPath, targetSubName, configuration, targetExecutableName);
+        cliArgs = string.Format("/c star.exe --resourcedir=\"{0}/src/{1}/wwwroot\" \"{0}/src/{1}/bin/{2}/{1}.exe\"", 
+            rootPath, targetSubName, configuration);
         processSettings.Arguments = new ProcessArgumentBuilder().Append(cliArgs);
 
         if(StartProcess(cliShell, processSettings) != 0)
