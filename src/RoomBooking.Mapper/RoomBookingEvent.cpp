@@ -50,7 +50,7 @@ struct mapper<RoomBooking::RoomBookingEvent>
 
     static void on_delete(entity root)
     {
-        root.untrack_including_relations();
+        root.untrack();
     }
 
     static void invalidate(change_type type, const entity &obj, const entity::changes &changes, entity::invset &inval)
