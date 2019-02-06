@@ -8,7 +8,7 @@ struct mapper<RoomBooking::UserSession>
 
     static void on_update_User(entity root, const option<RoomBooking::User> &value)
     {
-        from(root).object_of(HaveRelation).filter_subject(UserRelation).for_each([](M::Entity e) { e.del(); });
+        from(root).object_of(HaveRelation).filter_subject(UserRelation).for_each([](entity e) { e.destroy(); });
         if (value)
         {
             root.ensure_object_of(HaveRelation, entity::from(*value));
