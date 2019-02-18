@@ -8,12 +8,12 @@ struct mapper<RoomBooking::UserRoomRelation>
 
     static void on_update_User(entity root, const option<RoomBooking::User> &value)
     {
-        root.subject(entity::from(*value));
+        root.subject(value ? some(entity::from(*value)) : none);
     }
 
     static void on_update_Room(entity root, const option<RoomBooking::Room> &value)
     {
-        root.object(entity::from(*value));
+        root.object(value ? some(entity::from(*value)) : none);
     }
 
     static void on_delete(entity root)
