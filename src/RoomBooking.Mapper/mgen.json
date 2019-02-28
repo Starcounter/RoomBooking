@@ -1,41 +1,41 @@
 {
-  "appAssembly": "..\\$app$\\bin\\$config$\\$app_exe$.exe",
-  "mapperSources": [
-    "shared\\Common.cpp",
-    "shared\\User.cpp",
-    "Room.cpp",
-    "RoomBookingEvent.cpp",
-    "User.cpp",
-    "UserSession.cpp",
-    "UserRoomRelation.cpp"
-  ],
-  "mapperOutput": "..\\$app$\\bin\\$config$\\$app_exe$.map.cpp",
-  "mappings": [
-    {
-      "name": "RoomBooking.Room",
-      "rootedAt": "M.Entity",
-      "dependsOn": []
-    },
-    {
-      "name": "RoomBooking.RoomBookingEvent",
-      "rootedAt": "M.Entity",
-      "dependsOn": []
-    },
-    {
-      "name": "RoomBooking.User",
-      "rootedAt": "M.Entity",
-      "dependsOn": []
-    },
-    {
-      "name": "RoomBooking.UserSession",
-      "rootedAt": "M.Entity",
-      "dependsOn": []
-    },
-    {
-      "name": "RoomBooking.UserRoomRelation",
-      "rootedAt": "M.Entity",
-      "dependsOn": []
-    }
-  ],
-  "extends": "$mbase$\\mgen.json"
+    "appAssembly": "..\\$app$\\bin\\$config$\\$app_exe$.exe",
+    "mapperSources": [
+        "shared\\Common.cpp",
+        "Common.cpp",
+        "Room.cpp",
+        "RoomBookingEvent.cpp",
+        "User.cpp",
+        "UserSession.cpp",
+        "UserRoomRelation.cpp"
+    ],
+    "mapperOutput": "..\\$app$\\bin\\$config$\\$app_exe$.map.cpp",
+    "mappings": [
+        {
+            "name": "RoomBooking.Room",
+            "rootedAt": "M.Entity",
+            "dependsOn": []
+        },
+        {
+            "name": "RoomBooking.RoomBookingEvent",
+            "rootedAt": "M.Entity",
+            "dependsOn": []
+        },
+        {
+            "name": "RoomBooking.User",
+            "rootedAt": "M.Entity",
+            "dependsOn": []
+        },
+        {
+            "name": "RoomBooking.UserSession",
+            "rootedAt": "M.Entity",
+            "dependsOn": []
+        },
+        {
+            "name": "RoomBooking.UserRoomRelation",
+            "rootedAt": "M.Entity",
+            "dependsOn": []
+        }
+    ],
+    "extends": "$mbase$\\mgen.json"
 }

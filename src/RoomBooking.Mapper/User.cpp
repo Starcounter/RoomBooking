@@ -3,7 +3,7 @@ struct mapper<RoomBooking::User>
 {
     static M::Entity on_create()
     {
-        return shared::create_user(Agent, shared::LOCAL_SYSTEM_NAME);
+        return create_user(Agent,shared::LOCAL_SYSTEM_NAME);
     }
 
     static void on_update_Username(entity root, const option<string> &value)
@@ -31,7 +31,7 @@ struct mapper<RoomBooking::User>
     {
         const auto F = obj.features() + (changes.features_assigned() ? changes.features() : featureset{});
 
-        shared::inval_user_relation(F, obj, inval, changes, Agent, true);
+        inval_user_relation(F, obj, inval, changes, Agent, true);
 
         if (Name.test(F) || EmailAddress.test(F))
         {
@@ -41,7 +41,7 @@ struct mapper<RoomBooking::User>
 
     static bool refresh(const entity &root, RoomBooking::User::refresh_batch &changes)
     {
-        if (!shared::refresh_user_relation(root, Agent, shared::LOCAL_SYSTEM_NAME, true))
+        if (!refresh_user_relation(root, Agent,shared::LOCAL_SYSTEM_NAME, true))
         {
             return false;
         }
