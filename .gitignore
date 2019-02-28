@@ -11,6 +11,7 @@
 *.sln.docstates
 *buildp.bat
 *runp.bat
+Error
 
 # Build results
 [Dd]ebug/
