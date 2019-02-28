@@ -5,7 +5,7 @@ static option<entity> lookup_system(const string &sys_name)
 
 const featureset get_relation(bool is_tracked)
 {
-    return is_tracked ? shared::UntrackedEntity(UserRelation) : UserRelation;
+    return is_tracked ? UserRelation.Untracked() : UserRelation;
 }
 
 static M::Entity create_user(const featureset &subject, const string &sys_name)

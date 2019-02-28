@@ -1,7 +1,6 @@
 {
     "appAssembly": "..\\$app$\\bin\\$config$\\$app_exe$.exe",
     "mapperSources": [
-        "shared\\Common.cpp",
         "Common.cpp",
         "Room.cpp",
         "RoomBookingEvent.cpp",

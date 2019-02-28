@@ -3,7 +3,7 @@ struct mapper<RoomBooking::User>
 {
     static M::Entity on_create()
     {
-        return create_user(Agent,shared::LOCAL_SYSTEM_NAME);
+        return create_user(Agent,LOCAL_SYSTEM_NAME);
     }
 
     static void on_update_Username(entity root, const option<string> &value)
@@ -41,7 +41,7 @@ struct mapper<RoomBooking::User>
 
     static bool refresh(const entity &root, RoomBooking::User::refresh_batch &changes)
     {
-        if (!refresh_user_relation(root, Agent,shared::LOCAL_SYSTEM_NAME, true))
+        if (!refresh_user_relation(root, Agent,LOCAL_SYSTEM_NAME, true))
         {
             return false;
         }
