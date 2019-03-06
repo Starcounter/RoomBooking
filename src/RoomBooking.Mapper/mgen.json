@@ -1,12 +1,7 @@
 {
     "appAssembly": "..\\$app$\\bin\\$config$\\$app_exe$.exe",
     "mapperSources": [
-        "Common.cpp",
-        "Room.cpp",
-        "RoomBookingEvent.cpp",
-        "User.cpp",
-        "UserSession.cpp",
-        "UserRoomRelation.cpp"
+        "*.cpp"
     ],
     "mapperOutput": "..\\$app$\\bin\\$config$\\$app_exe$.map.cpp",
     "mappings": [
