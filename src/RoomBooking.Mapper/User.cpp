@@ -3,12 +3,7 @@ struct mapper<RoomBooking::User>
 {
     static M::Entity on_create()
     {
-        auto system = from(M::Entity::by_String(LOCAL_SYSTEM_NAME)).filter(Name).object_of(HaveRelation).having_subject(System).first();
-        if (!system)
-        {
-            system = entity(System.create());
-            HaveRelation.ensure_related(*system, Name.ensure_string(LOCAL_SYSTEM_NAME));
-        }
+        auto system = Name.ensure_string(LOCAL_SYSTEM_NAME).ensure_path_to_subject(HaveRelation, System);
         return UserRelation.create_with().subject(Agent.create()).object(system).go();
     }
 
